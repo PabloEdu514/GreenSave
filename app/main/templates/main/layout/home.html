@@ -1,0 +1,67 @@
+{% extends "main/layout/layout.html" %}
+{% load static %}
+{% block title %}<title>SII | I.T. Morelia</title>{% endblock %}
+{% block navpath %}
+   <li class="breadcrumb-item"><a href="{% url 'home' %}">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid-3x3-gap-fill" viewBox="0 0 16 16">
+         <path d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V7zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z"/>
+      </svg>
+   </a></li>
+{% endblock %}
+{% block content %}
+<div class="container">
+   <div class="card card-primary card-outline">
+      <div class="card-header text-center">
+        <h5 class="m-0">SIGA | SISTEMA INTEGRAL DE GESTIÓN ADMINISTRATIVA</h5>
+      </div>
+      <div class="card-body">
+         <div class="row">
+
+            <div class="col">
+               <center>
+                  <div class="card" style="width: 18rem;">
+                     <a href="#"> 
+                        <img src="{% static 'sarh/img/ITMORELIA-Logo.png' %}" class="card-img-top" alt="SARH">
+                     </a>
+                     <div class="card-body text-center">
+                        <span class="ms-1 font-weight-bold">SARH | Departamento de Recursos Humanos</span>
+                     </div>
+                  </div>
+               </center>
+            </div>
+
+            <div class="col">
+               <center>
+                  <div class="card" style="width: 18rem;">
+                     <a href="{% url 'home.dep' %}"> 
+                        <img src="{% static 'sarh/img/ITMORELIA-Logo.png' %}" class="card-img-top" alt="SARH">
+                     </a>
+                     <div class="card-body text-center">
+                        <span class="ms-1 font-weight-bold">DEP | División de Estudios Profesionales</span>
+                     </div>
+                  </div>
+               </center>
+            </div>
+         
+            <div class="col">
+               <center>
+                  <div class="card" style="width: 18rem;">
+                     <a href="#"> 
+                        <img src="{% static 'sarh/img/ITMORELIA-Logo.png' %}" class="card-img-top" alt="SARH">
+                     </a>
+                     <div class="card-body text-center">
+                        <span class="ms-1 font-weight-bold">SGT | Sistema de Gestión de Tutorías</span>
+                     </div>
+                  </div>
+               </center>
+            </div>
+      </div>
+      <div class="card-footer">
+         <span class="ms-1 font-weight-bold">Derechos Reservados&copy;2022 Instituto Tecnológico de Morelia | FAS - Fábrica Académica de Software</span>
+      </div>
+   </div>
+   
+</div>
+      
+
+{% endblock %}

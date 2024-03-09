@@ -1,0 +1,32 @@
+{% extends "mfa_auth_base.html" %}
+{% block content %}
+<br/>
+<div class='container'>
+<div class="row">
+
+<div class="col-sm-10 col-sm-offset-1 col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 offset-2 col-8">
+<div class="panel panel-default card">
+      <div class="panel-heading card-header">
+	      <strong> Selecciona tu segundo método de verificación.</strong>
+      </div>
+      <div class="panel-body card-body">
+          <ul>
+              {% for method in request.session.mfa_methods %}
+
+              <li><a href="{% url "mfa_goto" method %}">
+                  {% if method == "TOTP" %}{% if 'TOTP' in RENAME_METHODS %}{{ RENAME_METHODS.TOTP }}{% else %}Aplicación de autenticación{% endif %}
+                  {% elif method == "Email" %}{% if 'Email' in RENAME_METHODS %}{{ RENAME_METHODS.Email }}{% else %}Send OTP by Email{% endif %}
+                  {% elif method == "U2F" %}{% if 'U2F' in RENAME_METHODS %}{{ RENAME_METHODS.U2F }}{% else %}Secure Key{% endif %}
+                  {% elif method == "FIDO2" %}{% if 'FIDO2' in RENAME_METHODS %}{{ RENAME_METHODS.FIDO2 }}{% else %}FIDO2 Secure Key{% endif %}
+                  {% elif method == "RECOVERY" %}{% if 'RECOVERY' in RENAME_METHODS %}{{ RENAME_METHODS.RECOVERY }}{% else %}Código de recuperación{% endif %}
+                  {% endif %}
+              </a> </li>
+              {% endfor %}
+          </ul>
+      </div>
+</div>
+</div>
+
+</div>
+</div>
+{% endblock %}

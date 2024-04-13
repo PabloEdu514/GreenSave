@@ -1,0 +1,484 @@
+form {
+    max-width: 1700px;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 190%;
+    color: #1B396B; /* Color subtitulo */
+}
+
+h1 {
+    font-size: 190%;
+    color: #0b0b0b; /* Utilizando el código hexadecimal */
+}
+
+input[type="text"],
+input[type="date"],
+select,
+textarea {
+    width: 100%; /* Cambiado a 100% para que todos los campos tengan el mismo ancho */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+button[type="submit"] {
+    background-color: #041756;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+button[type="submit"]:hover {
+    background-color: #08326d;
+    color: rgb(255, 255, 255);
+}
+
+/* Estilos para el contenedor de los campos de entrada */
+.input-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Estilos para el texto de la etiqueta */
+.label-text {
+    flex: 1;
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+/* Estilos para el contenedor de los campos de entrada */
+.input-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px; /* Agregado para separar los contenedores */
+}
+
+/* Estilos para el texto de la etiqueta */
+.label-text {
+    flex: 1;
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+/* Estilos adicionales para el texto de la descripción */
+.description-label {
+    font-size: 18px;
+    flex: 1; /* Ocupa todo el espacio disponible */
+    margin-bottom: 10px; /* Separación entre la etiqueta y el cuadro de texto */
+    font-size: 14px; 
+}
+
+/* Estilos para el cuadro de texto de la descripción */
+textarea {
+    width: 100%; /* Abarca todo el ancho del contenedor */
+}
+
+/* Estilos para la barra superior */
+.top-bar {
+    background-color: #1B396B; /* Color de fondo azul */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px; /* Espacio interno */
+}
+
+/* Estilos para los botones en la barra superior */
+.top-button {
+    background-color: white;
+    color: var(--azul); /* Color del texto azul */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Estilos adicionales para los botones al pasar el cursor */
+.top-button:hover {
+    background-color: #f0f0f0; /* Color de fondo gris claro al pasar el cursor */
+}
+
+/* Ajustes para los cuadros de texto de la fecha y el folio */
+#id_fecha,
+#id_folio {
+    font-size: 14px;
+    width: 150px; /* Puedes ajustar este valor según tu preferencia */
+    /* Otros estilos si los necesitas */
+}
+
+#id_folio {
+    margin-right: 8px;
+}
+
+/* Ajuste para el texto "Folio" */
+label[for="id_folio"] {
+    display: inline-block; /* Para aplicar estilos flexbox */
+    width: 50%; /* Asigna el 50% del ancho del contenedor */
+    text-align: right; /* Alinea el texto a la derecha */
+    margin-right: 10px; /* Espacio entre el texto y el cuadro de texto */
+    box-sizing: border-box; /* Incluye el padding y el borde en el ancho */
+    
+}
+
+/* Estilos para las etiquetas de los cuadros de texto */
+label {
+    font-size: 12.5px; /* Cambia el valor según el tamaño de fuente deseado */
+}
+
+
+/* Reducir tamaño de cuadros de texto */
+.input-container {
+    text-align: left; /* Alinear el contenido a la izquierda */
+}
+
+#id_fecha {
+    margin-left: 30px;
+}
+
+#id_area_solicitante,
+#id_responsable_area,
+#id_tipos_servicio {
+    width: calc(50% - 5px); /* Reducir el ancho en relación con el diseño actual */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-left: 30px;
+    box-shadow: 2px 2px 5px rgba(55, 55, 55, 0.1);
+}
+
+
+
+.input-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    /*box-shadow: 2px 2px 5px rgba(55, 55, 55, 0.1);*/ /*Sombrea los contenedores*/
+}
+
+.input-container label {
+    width: 140px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.input-field {
+    flex: 1;
+}
+
+.input-field input {
+    width: calc(100% - 210px); /* Restamos el ancho del label */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.input-container label {
+    display: inline-block; /* Cambia a 'inline-block' para que se comporten como bloques */
+    width: 210px; /* Ancho fijo para las etiquetas */
+    text-align: right; /* Alinea el texto a la derecha */
+    margin-right: 0px; /* Espacio entre la etiqueta y el cuadro de texto */
+    font-size: 14px; /* Tamaño de fuente para las etiquetas */
+}
+
+
+.logo-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px; /* Ajusta el margen superior según sea necesario */
+}
+
+.titulo {
+    margin-left: 0.2%; /* Ajusta el valor según sea necesario */
+}
+
+
+.logo {
+    width: 100px; /* Ancho inicial */
+    height: auto; /* Altura ajustable */
+    transition: transform 0.3s ease; /* Agrega una transición suave */
+}
+
+/* Estilos adicionales para el texto de la descripción */
+.description-label {
+    font-size: 18px; /* Tamaño de fuente para la etiqueta de la descripción */
+}
+
+/* Estilos para el cuadro de texto de la descripción */
+.description-text {
+    width: 100%; /* Abarca todo el ancho del contenedor */
+    font-size: 14px; /* Tamaño de fuente para el cuadro de texto de la descripción */
+    padding: 10px;
+    /*border: 1px solid #747474;*/
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(55, 55, 55, 0.1);
+}
+
+/* Cambiar el color de texto de la opción seleccionada */
+select {
+    color: #000000;
+}
+
+ /* Estilos para el botón "Borrar firma" */
+ #clear-signature {
+    background-color: #041756; /* Color de fondo */
+    color: white; /* Color del texto */
+    padding: 10px 20px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambio de cursor al pasar */
+    margin-right: 85px; /* Margen derecho */
+  }
+
+  /* Estilos para el botón "Firmar" */
+  #save-signature {
+    background-color: #041756; /* Color de fondo */
+    color: white; /* Color del texto */
+    padding: 10px 20px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambio de cursor al pasar */
+    
+  }
+
+  #signature-pad canvas {
+    border: 2px solid #041756; /* Borde azul */
+    border-radius: 5px; /* Bordes redondeados */
+  }
+
+  #save-signature:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo para indicar que se ha presionado el botón */
+#save-signature:active {
+    background-color: #0056b3;
+    transform: translateY(1px);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:root {
+    --primary: #111B54;
+    --light: #ffffff;
+    --grey: #efefef;
+    --secondary: #DF851B;
+
+    
+    --vino: #78182F;
+    --blanco: #fff;
+    --gris: #F3F4F6;
+    --azul: #00002D;
+}
+
+body {
+    overflow: hidden;
+    font-family: 'Muli', sans-serif;
+    font-weight: 300;
+    color: var(--primary);
+}
+
+
+a:hover {
+    text-decoration: none;
+}
+
+.bg-light { background-color: var(--light) !important; }
+
+.bg-grey { background-color: var(--grey) !important; }
+
+.bg-mix { background: linear-gradient(180deg, var(--light) 50%, var(--grey) 0); }
+
+.btn-primary {
+    background-color: var(--primary);
+    border: 0;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary);
+}
+
+.btn-secondary {
+    background-color: var(--secondary);
+    border: 0;
+}
+
+.btn-secondary:hover {
+    background-color: var(--secondary);
+}
+
+#sidebar-container {
+    min-height: 100vh;
+
+    background-color: var(--blanco);
+    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 17px;
+    z-index: 1;
+
+}
+  
+#sidebar-container .logo{
+    padding: 0.875rem 1.25rem;
+}
+  
+#sidebar-container .menu {
+    width: 18rem;
+}
+
+#content {  
+    overflow-y: auto;
+    height: 100vh;
+    padding-bottom: 5rem;
+}
+
+.avatar {
+    max-width: 35px;
+}
+
+.btn-search {
+    right: 0;
+}
+
+.stat {
+    border-right: 1px solid var(--grey);
+}
+
+
+.menu .opc{
+    margin: 10px 20px 10px 20px;
+    color: var(--vino);
+    border-radius: 10px;
+    transition: all 0.2s ease-out;
+    font-size: 20px;
+}
+
+.menu .copy{
+    justify-content: center;
+    text-align: center;
+    color: var(--azul);
+    font-size: 15px;
+}
+
+.menu .opc:hover{
+    color: var(--blanco);
+    background-color: var(--azul);
+}
+
+.menu .active{
+    color: var(--blanco);
+    background-color: var(--azul);
+}
+
+.sec{
+    background-color: var(--blanco);
+    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    padding: 30px;
+    overflow: scroll;
+    height: 60vh;
+    
+}
+ .solicitud{
+    background-color: var(--blanco);
+    border-radius: 20px;
+    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.tracking-in-expand {
+	-webkit-animation: tracking-in-expand 0.7s cubic-bezier(0.215, 0.610, 0.355, 1.000) 0.1s both;
+	        animation: tracking-in-expand 0.7s cubic-bezier(0.215, 0.610, 0.355, 1.000) 0.1s both;
+}
+
+/*Start Card*/
+
+
+/*End Card*/
+
+
+@-webkit-keyframes tracking-in-expand {
+    0% {
+      letter-spacing: -0.5em;
+      opacity: 0;
+    }
+    40% {
+      opacity: 0.6;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes tracking-in-expand {
+    0% {
+      letter-spacing: -0.5em;
+      opacity: 0;
+    }
+    40% {
+      opacity: 0.6;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+
+
+
+  
+@media (max-width: 768px) {
+    #sidebar-container {
+      display: none;
+    }
+    .stat {
+        border: 0;
+    }
+  }
+  

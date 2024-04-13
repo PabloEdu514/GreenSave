@@ -1,0 +1,227 @@
+/*estilos de home.css*/
+
+/*Contenedor */
+
+.GestiondeCorreos {
+  background-color: #1b396b;
+}
+
+/*Estilos de la barra de busqueda  */
+.busqueda {
+  padding-right: 5px;
+  padding-left: 5px;
+  margin-left: 5px;
+}
+
+#Buscar {
+  margin-top: 20px;
+  background-color: #ffffff;
+  width: 50px; /* Cambia el ancho del botón */
+  height: 50px; /* Cambia la altura del botón */
+  padding: 5px;
+  border: none; /* Elimina el borde */
+  outline: none; /* Elimina el resaltado cuando está enfocado */
+}
+
+#Buscar svg {
+  color: #1b396b;
+}
+
+#Tbuscar {
+  border-top-right-radius: 10px; /* Redondea la esquina superior izquierda */
+  border-bottom-right-radius: 10px; /* Redondea la esquina inferior izquierda */
+  margin-top: 20px;
+  height: 50px; /* Cambia la altura del botón */
+  width: 70%;
+  font-family: "Inter", sans-serif;
+  color: #1b396b;
+  padding-right: 10px;
+  padding-left: 10px;
+  border: none; /* Elimina el borde */
+  outline: none; /* Elimina el resaltado cuando está enfocado */
+}
+#Tbuscar::placeholder {
+  color: #1b396b; /* Cambia el color del texto del placeholder */
+}
+/*Fin de estilos de la barra de busqueda   */
+
+.correo {
+  background-color: #ffffff;
+}
+
+#Filtro {
+  margin-top: 5px;
+  height: 40px;
+  width: 120px;
+  color: #1b396b;
+  margin-left: 5px;
+}
+#recargar {
+  background-color: #ffffff;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-left: 5px;
+  height: 40px;
+  width: 40px;
+  border: none;
+}
+
+#recargar svg {
+  color: #1b396b;
+}
+
+#Solicitar {
+  font-family: "Inter", sans-serif;
+  background-color: #ffffff;
+  border-radius: 5px;
+  height: 40px;
+  width: 200px;
+  margin-top: 5px;
+  border-color: #1b396b;
+  color: #1b396b;
+  margin-right: 5px;
+}
+#Solicitar svg {
+  color: #1b396b;
+}
+
+
+
+
+
+/*Tabla de correos*/
+.table {
+  margin-top: 20px;
+  font-family: "Inter", sans-serif;
+  color: #1b396b;
+  border-collapse: collapse; /* Colapsa los bordes de las celdas */
+}
+
+.table th,
+.table td {
+  border: none; /* Elimina el borde de las celdas */
+  padding: 8px; /* Añade un relleno opcional */
+}
+
+.table-bordered {
+  border-collapse: collapse; /* Colapsa los bordes de las celdas */
+}
+
+.table-bordered th,
+.table-bordered td {
+  border: none; /* Elimina el borde de las celdas */
+  padding: 8px; /* Añade un relleno opcional */
+}
+
+.fila-1 {
+  text-align: left;
+  background-color: #d9d9d9;
+  border: none;
+}
+.fila-1:hover {
+  cursor: pointer;
+  background-color: rgba(
+    128,
+    128,
+    128,
+    0.5
+  ); /* Cambiar el color de fondo al pasar el cursor */
+}
+.fila-2 {
+  text-align: center;
+  background-color: rgba(37, 189, 13, 0.53);
+  border: none;
+}
+.fila-2:hover {
+  cursor: pointer;
+  background-color: rgba(
+    128,
+    128,
+    128,
+    0.5
+  ); /* Cambiar el color de fondo al pasar el cursor */
+}
+.fila-3 {
+  text-align: center;
+  background-color: rgba(241, 195, 77, 0.53);
+  border: none;
+}
+.fila-3:hover {
+  cursor: pointer;
+  background-color: rgba(
+    128,
+    128,
+    128,
+    0.5
+  ); /* Cambiar el color de fondo al pasar el cursor */
+}
+
+
+.boton-editar {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+}
+
+.boton-editar svg {
+  width: 100%;
+  height: 100%;
+  color: #1b396b;
+}
+
+.button {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.button svg {
+  width: 100%;
+  height: 100%;
+  color: #1b396b;
+}
+
+
+
+
+
+
+.icono-status {
+  width: 80px; /* Tamaño deseado para la celda */
+  height: 30px; /* Tamaño deseado para la celda */
+}
+
+.icono-status svg {
+  width: 30px;
+  height: 30px;
+  color: #1b396b;
+}
+.hora .fecha {
+  width: 30px;
+  height: 30px;
+}
+
+.BotFirmar {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+}
+.BotFirmar svg {
+  width: 30px;
+  height: 30px;
+  color: #1b396b;
+}
+

@@ -1,0 +1,146 @@
+:root{
+    --azul: #00002D;
+    --gold: #DF851B;
+    --vino: #99344C;
+}
+
+
+.login-titulo{
+    text-align: center;
+    font-size: 25px;
+    padding-top: 5rem;
+    font-family: Ledger;
+}
+
+#login-img{
+    width: 70%;
+    padding: 3rem;
+    align-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+#verif-img{
+    width: 70%;
+    padding: 3rem;
+    align-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+
+.login-cont{
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    
+    margin-top: 10vh;
+}
+
+.barra{
+    color: aqua;
+    border-radius: 50px;
+}
+
+#login-user{
+    color: var(--azul);
+    border-radius: 50px;
+    transition: all 0.5s ease-out;
+
+}
+
+
+#login-user:hover, #login-user.active{
+    color: white;
+    background-color: var(--azul);
+}
+
+#login-sol{
+color: var(--azul);
+background-color: white;
+
+
+}
+
+#login-sol:hover, #login-sol:focus {
+    text-decoration: var(--azul)  underline;
+}
+
+/*
+.datosReferencia{
+    background-color: #DF851B;
+}
+
+.avisoReferencia{
+    background-color: #DF851B;
+}
+*/
+
+
+
+
+.btn_regresar{
+    margin:  50px 0 0 50px ;
+    text-decoration: none;
+}
+
+.btn_regresar .text{
+    text-decoration: none;
+}
+
+.btn_regresar .text:hover{
+    color: var(--gold);
+}
+
+.nav-pills .nav-link{
+    border-radius: 1rem;
+}
+
+.img-respo{
+    width: 250px;
+}
+
+.px-10{
+    padding-right: 10rem;
+    padding-left: 10rem;
+}
+
+.progress_bar{
+    height: 75px;
+    border: 4px solid #DF851B;
+    border-radius: 50px
+}
+
+.cart_text-fin{
+    font-size: 25px;
+}
+
+@media screen and (max-width: 550px) {
+    .px-10{
+        padding-right: 0rem ;
+        padding-left: 0rem ;
+    }
+
+    .login-cont{
+        margin-top: 0vh;
+    }
+
+    .progress_bar{
+        height: 50px;
+    }
+
+    .cart_text-fin{
+        text-align: center;
+        font-size: 20px;
+    }
+
+    #login-img{
+        width: 50%;
+        padding: 0rem;
+        display: block;
+    }
+    
+}

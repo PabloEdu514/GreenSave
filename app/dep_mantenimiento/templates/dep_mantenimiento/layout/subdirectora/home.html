@@ -1,0 +1,185 @@
+{% extends "dep_mantenimiento/layout/layout.html" %}
+{% load static %}
+{% block title %}<title>SARH | I.T. Morelia</title>{% endblock %}
+{% block navpath %}
+   <li class="breadcrumb-item"><a href="{% url 'home' %}">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid-3x3-gap-fill" viewBox="0 0 16 16">
+         <path d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V7zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z"/>
+      </svg>
+   </a></li>
+   <li class="breadcrumb-item"><a href="{% url 'home.dep_mantenimiento' %}">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+         <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+         <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+      </svg>
+   </a></li>
+   <li class="breadcrumb-item"> Navegación </li>
+   <li class="breadcrumb-item"> Directorio </li>
+
+{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static "dep_mantenimiento/css/pages/subdirectora/home.css" %}">
+<script src="{% static 'dep_mantenimiento/js/acciones.js' %}"></script>
+<span class="align-middle">
+   <!--Aqui se aventara codigo --> 
+<div id ="Area"class="GestiondeCorreos">
+   
+
+   <div id ="Buscador" class="busqueda">
+           
+      <div class="input-group mb-1">
+         <button class="btn btn-outline-secondary" type="button" id="Buscar">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class="w-200 h-200">
+               <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+         </button>
+                        
+                        
+         <input id="Tbuscar" type="text"  placeholder="Buscar solicitud" ></input>
+
+      </div>   
+              
+           
+   </div>
+
+
+
+   <div id ="Correos" class= "correo">
+      <!-- Botones como filtradro y el boton de solicitud-->
+      <div id="Botones" class ="container-fluid">
+         <div class="row">
+            <div  id ="BFyR" class="col">
+                <div class="row align-items-start">
+                    <div class="col-auto">
+                        <select id="Filtro" class="form-select" aria-label="Default select example">
+                            <option selected></option>
+                            <option value="1">Recientes</option>
+                            <option value="2">Pasadas</option>
+                            <option value="3">Realizadas</option>
+                            <option value="4">En proceso</option>
+                            <option value="5">Rechazados</option>
+                            <option value="6">Pausados</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                     <button id="recargar" type="button" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Recargar tabla de solicitudes">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-200 h-200 ">
+                            <path  stroke-linejoin="round" stroke-width="1.5" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                        </svg>
+                        
+                    </button>
+                    </div>
+                </div>
+            </div>
+            <div id="BS" class="col-auto">
+               <a href="">
+                  <button id="Grafica" type="button" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-html="true" data-bs-title="<em>Ver </em> <b>Grafica de Trabajadores</b>">
+                      <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-40">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5m.75-9 3-3 2.148 2.148A12.061 12.061 0 0 1 16.5 7.605" />
+                         </svg>
+                          <span>Historico de Trabajadores</span>
+                      </span>
+                  </button>
+              </a>
+               <a href="{% url 'formulario.dep_mantenimiento' %}">
+                  <button id="Solicitar" type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="<em>Ir al</em> <b>Formulario de Mantenimiento</b>">
+                      <span>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-250 h-100">
+                              <path stroke-width="1.5" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                          </svg>
+                          <span>Solicitar Formulario</span>
+                      </span>
+                  </button>
+              </a>
+              
+              
+              
+            </div>
+        </div>
+
+      </div>
+      <!--Tabla de los correos-->
+      <table class ="table table-bordered" id="TCorreos"> 
+         <tr class="fila-1">
+            <td class="Solicitud" style="width: 800px; text-align: left;">solicitud 1</td>
+
+            <td class="botones" style="width: 30px; height: 30px;">
+               <a href="" class="boton-editar" id="boton-editar" data-bs-toggle="tooltip" data-bs-title="Editar Solicitud">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-250 h-250">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                  </svg>                  
+              </a>
+               <button id="Eliminar" class="button" data-bs-toggle="tooltip" data-bs-title="Eliminar Solicitud">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-250 h-250">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                  </svg>
+              </button>
+              
+            </td>
+
+            <td class ="Sol.De." style="width: 800px; text-align: left;"></td>
+            <td class="BotAlerta" style="width: 30px; height: 30px;"></td>
+            <td class="icono-status" style="width: 30px; height: 30px;">
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-200 h-200">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
+               </svg>
+            </td>
+            <td class="fecha" style="width: 80px; text-align: right;">Hoy</td>
+            <td class="hora" style="width: 80px; text-align: right;">13:10</td>
+        </tr>
+        
+        <tr class="fila-2">
+         <td class="Solicitud" style="width: 800px; text-align: left;">solicitud 2</td>
+
+         <td class="botones" style="width: 30px; height: 30px;"></td>
+
+         <td class ="Sol.De." style="width: 800px; text-align: left;">Solicitud de:</td>
+         <td class="BotAlerta" >
+         
+        </td>
+         <td class="icono-status" style="width: 30px; height: 30px;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-250 h-250">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+           </svg>
+         </td>
+         <td class="fecha" style="width: 80px; text-align: right;">17 Marzo</td>
+         <td class="hora" style="width: 80px; text-align: right;">12:10</td>
+     </tr>
+     
+     <tr class="fila-3">
+      <td class="Solicitud" style="width: 800px; text-align: left;">solicitud 3</td>
+
+      <td class="botones" style="width: 30px; height: 30px;"></td>
+
+      <td class ="Sol.De." style="width: 800px; text-align: left;">Solicitud de:</td>
+      <td class="BotAlerta" style="width: 50px; height: 30px;">
+         <a href="{% url 'peticion_form.dep_mantenimiento' %}"data-bs-toggle="tooltip" data-bs-title="Ver peticion">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-250 h-250">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+             </svg>
+            
+         </a>
+     </td>
+      <td class="icono-status" style="width: 30px; height: 30px;">
+         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-250 h-250">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 9v6m-4.5 0V9M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        </svg>
+      </td>
+      <td class="fecha" style="width: 80px; text-align: right;">2 Febrero</td>
+      <td class="hora" style="width: 80px; text-align: right;">13:10</td>
+  </tr>
+      
+      
+      </table>
+   </div>
+
+</div>
+
+
+      
+
+{% endblock %}
+
+

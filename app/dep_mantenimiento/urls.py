@@ -9,13 +9,13 @@ urlpatterns = [
     #path('empleado/inicio /', views.dashboard_empleado, name='home.dep_mantenimiento'),
     #path('empleado/formulario/', views.dashboard_firma_form, name='firma_form.dep_mantenimiento'),
     #Enlaces de solicitante
-    #path('solicitante/inicio/', views.dashboard_solicitante, name='home.dep_mantenimiento'),
-    #path('solicitante/formulario/', views.dashboard_solformulario, name='formulario.dep_mantenimiento'),
+    path('solicitante/inicio/', views.dashboard_solicitante, name='home.dep_mantenimiento'),
+    path('solicitante/formulario/', views.dashboard_solformulario, name='formulario.dep_mantenimiento'),
     #Enlaces de subdirectora
-    path('subdirectora/inicio/', views.dashboard_subdirectora, name='home.dep_mantenimiento'),
-    path('subdirectora/formulario/', views.dashboard_subd_formulario, name='formulario.dep_mantenimiento'),
-    path('subdirectora/peticion_formulario/', views.dashboard_subdpeticion_form, name='peticion_form.dep_mantenimiento'),
-    path('subdirectora/rechazar_formulario/', views.dashboard_subrechazar_form, name='rechazar_form.dep_mantenimiento'),
+    #path('subdirectora/inicio/', views.dashboard_subdirectora, name='home.dep_mantenimiento'),
+    #path('subdirectora/formulario/', views.dashboard_subd_formulario, name='formulario.dep_mantenimiento'),
+    #path('subdirectora/peticion_formulario/', views.dashboard_subdpeticion_form, name='peticion_form.dep_mantenimiento'),
+    #path('subdirectora/rechazar_formulario/', views.dashboard_subrechazar_form, name='rechazar_form.dep_mantenimiento'),
     #Enlaces de jefe del Departamento
     #path('jDep/inicio/', views.dashboard_jDep, name='home.dep_mantenimiento'),
     #path('jDep/formulario/', views.dashboard_jDepformulario, name='formulario.dep_mantenimiento'),

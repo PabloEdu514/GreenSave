@@ -23,7 +23,7 @@ def dashboard_empleado(request):
     context = {}
     return render(request, 'dep_mantenimiento/layout/empleado/home.html', context)
 
-def dashboard_firma_form(request):
+def dashboard_empleado_firma_form(request):
     context = {}
     return render(request, 'dep_mantenimiento/layout/empleado/firma_form.html', context)
 

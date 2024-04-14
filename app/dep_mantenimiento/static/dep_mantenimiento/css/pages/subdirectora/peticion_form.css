@@ -267,9 +267,72 @@ select {
 /* Estilo para indicar que se ha presionado el botón */
 #save-signature:active {
     background-color: #0056b3;
-    transform: translateY(1px);
+    transform: translateY(10px);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
+
+.signature-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.nombre-firma { /*estilos para nombre de quien firma*/
+    text-align: center;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #1B396B;
+    font-weight: bold;
+}
+
+
+/* Estilos CSS para la disposición de las firmas */
+.signature-container {
+    display: flex; /* Utiliza un diseño de caja flexible */
+    justify-content: space-around; /* Distribuye el espacio entre los elementos */
+    margin-top: 20px;
+}
+
+.firma {
+    flex: 1; /* Ocupa todo el espacio disponible */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    text-align: center;
+    margin-right: 10px; /* Añade un pequeño margen entre las firmas */
+}
+
+.signature-pad canvas {
+    border: 1px solid #000;
+}
+
+
+
+
+/* Estilos específicos para los campos de firma */
+
+
+.firma-no-editable {
+    width: 300px; /* Ancho aumentado a 300px */
+    height: 150px; /* Alto aumentado a 150px */
+    border: 1px solid #000; /* Añadir borde para mostrar solo el contorno */
+    margin: 0 auto; /* Margen automático izquierdo y derecho para centrar */
+    position: relative;
+    display: flex; /* Usar flexbox */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+}
+
+
+.firma {
+    background-color: #ffffff; /* Cambia el color de fondo de los contenedores de firma */
+   
+}
+
+
+
+
+
 
 
 

@@ -13,120 +13,102 @@ class dep_mantenimiento(models.Model):
         db_table = u'userDep'
 
 
-#class UsuarioManager(BaseUserManager):
-#    class Meta:
-#        app_label = 'dep'
-
-#    def create_user(self,email,username,nombres,apellidos,carrera,password = None):
-#        if not email:
-#            raise ValueError('Favor de ingresar un correo electrónico!')
-
-#        usuario = self.model(
-#            username = username, 
-#            email = self.normalize_email(email), 
-#            nombres = nombres, 
-#            apellidos = apellidos,
-#            carrera = carrera
-#        )
-
-#        usuario.set_password(password)
-#        usuario.save()
-#        return usuario
-
-#   def create_superuser(self,email,username,nombres,apellidos,password, carrera = None):
-#        usuario = self.create_user(
-#            email,
-#            username=username,
-#            nombres=nombres,
-#            apellidos=apellidos,
-#            carrera=carrera,
-#            password=password
-#        )
-#        usuario.rol = "admin"
-#        usuario.save()
-#        return usuario
     
-#   def create_dep_user(self,email,username,nombres,apellidos,password,carrera):
-#        usuario = self.create_user(
-#            email=email,
-#            username=username,
-#            nombres=nombres,
-#            apellidos=apellidos,
-#            carrera=carrera,
-#            password=password
-#        )
-#        usuario.rol = "dep"
-#        usuario.save()
-#        return usuario
-
-#    def create_se_user(self,email,username,nombres,apellidos,password,carrera):
-#        usuario = self.create_user(
-#            email,
-#            username=username,
-#            nombres=nombres,
-#            apellidos=apellidos,
-#            carrera=carrera,
-#            password=password
-#        )
-#        usuario.rol = "se"
-#        usuario.save()
-#        return usuario
-
-#    def create_conta_user(self,email,username,nombres,apellidos,password,carrera):
-        # usuario = self.create_user(
-        #     email,
-        #     username=username,
-        #     nombres=nombres,
-        #     apellidos=apellidos,
-        #     carrera=carrera,
-        #     password=password
-        # )
-        # usuario.rol = "fin"
-        # usuario.save()
-        # return usuario
     
-#    def create_ca_user(self,email,username,nombres,apellidos,password,carrera):
-#         usuario = self.create_user(
-#             email=email,
-#             username=username,
-#             nombres=nombres,
-#             apellidos=apellidos,
-#             carrera=carrera,
-#             password=password
-#         )
-#         usuario.rol = "ca"
-#         usuario.save()
-#         return usuario
+class solicitante(models.Model):
+    id= models.IntegerField(primary_key=True) 
+    nombre= models.CharField(max_length=50)
+    apellidosPaterno= models.CharField(max_length=50)
+    apellidosMaterno= models.CharField(max_length=50)
+    area= models.CharField(max_length=50)
+    cargo= models.CharField(max_length=50)
+    class Meta:
+        app_label = 'dep_mantenimiento'
+        db_table = 'solicitante'
+        
+   
+  ####  
+class trabajadores(models.Model):
+    id= models.IntegerField(primary_key=True) 
+    nombre= models.CharField(max_length=50)
+    apellidosPaterno= models.CharField(max_length=50)
+    apellidosMaterno= models.CharField(max_length=50)
+    num_solicitudes=models.IntegerField()
+    class Meta:
+        app_label = 'dep_mantenimiento'
+        db_table = 'trabajadores'
 
+class jefDepartamento(models.Model):
+    id= models.IntegerField(primary_key=True) 
+    nombre= models.CharField(max_length=50)
+    apellidosPaterno= models.CharField(max_length=50)
+    apellidosMaterno= models.CharField(max_length=50)
+    departamento= models.CharField(max_length=50)
+    class Meta:
+        app_label = 'dep_mantenimiento'
+        db_table = 'jefDepartamento'
     
+class jefMantenimiento(models.Model):
+    id= models.IntegerField(primary_key=True) 
+    nombre= models.CharField(max_length=50)
+    apellidosPaterno= models.CharField(max_length=50)
+    apellidosMaterno= models.CharField(max_length=50)
+    trabajadores=models.ForeignKey(trabajadores, on_delete=models.CASCADE)
+    class Meta:
+        app_label = 'dep_mantenimiento'
+        db_table = 'jefMantenimiento'
 
-# class Usuario(AbstractBaseUser):
-#     username = models.CharField('Nombre de Usuario', max_length = 100, unique=True)
-#     email = models.EmailField('Correo Electronico', max_length = 254, unique = True)
-#     nombres = models.CharField('Nombres', max_length = 200, blank = True, null = True)
-#     apellidos = models.CharField('Apellidos', max_length = 200, blank = True, null = True)
-#     imagen = models.ImageField('Imagen de Perfil', upload_to='perfil/', blank=True, null= True)
-#     usuario_activo = models.BooleanField(default=True)
-#     carrera = models.CharField('Carrera', max_length = 200, blank=True, null= True)
-#     rol = models.CharField('Rol', max_length=40)
-#     objects = UsuarioManager()
-
-#     USERNAME_FIELD = 'username'
-#     REQUIRED_FIELDS = ['email','nombres','apellidos']
-
-#     def __str__(self):
-#         return f'{self.nombres},{self.apellidos}'
-
-#     def has_perm(self, perm, obj = None):
-#         return True
-
-#     def has_module_perms(self, app_label):
-#         return True
+class subdirectora(models.Model):
+    id= models.IntegerField(primary_key=True) 
+    nombre= models.CharField(max_length=50)
+    apellidosPaterno= models.CharField(max_length=50)
+    apellidosMaterno= models.CharField(max_length=50)
+    class Meta:
+        app_label = 'dep_mantenimiento'
+        db_table = 'subdirectora'
     
-
-#     @property
-#     def is_staff(self):
-#         return self.rol
-
-#     class Meta:
-#         app_label = 'dep'
+class Solicitud(models.Model):
+    id= models.IntegerField (primary_key=True)
+    folio= models.IntegerField()
+    area_solicitante= models.CharField(max_length=50)
+    responsable_Area= models.CharField(max_length=50)
+    servicos={
+        ('Electrica','Electrica'),
+        ('Herrería','Herrería'),
+        ('Plomería','Plomería'),
+        ('Pintura','Pintura'),
+        ('Cañones','Cañones'),
+        ('Pintarrón','Pintarrón'),
+        ('Cerrajería','Cerrajería'),
+        ('Otro','Otro')
+        
+    }
+    
+    tipo_servicio= models.CharField(choices=servicos,max_length=50)
+    descripcion= models.CharField(max_length=50)
+    des_Serv_Realizado= models.CharField(max_length=50)
+    des_Serv_no_Realizado= models.CharField(max_length=50)
+    estatus={
+        ('Pendiente','Pendiente'),
+        ('Realizada','Realizada'),
+        ('Rechazada','Rechazada'),
+        ('Cancelada','Cancelada'),
+        ('En proceso','En proceso'),
+        ('En espera','En espera')
+        
+    }
+    
+    status= models.CharField(choices=estatus,max_length=50)
+    solicitante=models.ForeignKey(solicitante, on_delete=models.CASCADE)
+    jefMantenimiento=models.ForeignKey(jefMantenimiento, on_delete=models.CASCADE)
+    jefDepartamento=models.ForeignKey(jefDepartamento, on_delete=models.CASCADE)
+    trabajadores=models.ForeignKey(trabajadores, on_delete=models.CASCADE)
+    subdirectora=models.ForeignKey(subdirectora,null=True, on_delete=models.CASCADE)
+    fecha= models.DateField()
+    hora= models.TimeField()
+    material_utilizado= models.CharField(null=True,max_length=50)
+    imagen= models.FileField(null=True,upload_to='dep_mantenimiento/img')
+    motv_rechazo= models.CharField(null=True,max_length=50)
+    class Meta:
+        app_label = 'dep_mantenimiento'
+        db_table = 'solicitudes'

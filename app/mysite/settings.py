@@ -117,7 +117,7 @@ SESSION_COOKIE_AGE=28800
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-DATABASE_ROUTERS = ['mysite.dbRouter.DepRouter', 'mysite.dbRouter.AuthRouter', ]
+DATABASE_ROUTERS = ['mysite.dbRouter.DepRouter', 'mysite.dbRouter.AuthRouter','mysite.dbRouter.SARHRouter','mysite.dbRouter.MSRouter' ]
 
 DATABASES = {
     'default': {
@@ -128,14 +128,33 @@ DATABASES = {
         'USER': 'adminsarh',
         'PASSWORD': 'adminsarhpassword.$',
     },
-    'dep_db': {
+    'sarh_db': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dep_db',
         'USER': 'admindep',
         'PASSWORD': 'admindeppassword.$',
         'HOST': 'bases-datos',
         'PORT': '5432',
+    },
+         'dep_db': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dep_db',
+        'USER': 'admindep',
+        'PASSWORD': 'admindeppassword.$',
+        'HOST': 'bases-datos',
+        'PORT': '5432',
+    },
+         #Base de Datos de mantenimiento y el usuario que se encarga es admindep
+        'ms_db': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ms_db',
+        'USER': 'admindep',
+        'PASSWORD': 'admindeppassword.$',
+        'HOST': 'bases-datos',
+        'PORT': '5432',
     }
+         
+         
 }
 
 # Password validation

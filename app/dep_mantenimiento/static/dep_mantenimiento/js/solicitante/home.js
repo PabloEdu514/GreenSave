@@ -1,50 +1,45 @@
-//home.js
-$(document).ready(function(){
-   
-    // Obtener el botón de recargar
-    var botonRecargar = document.getElementById("recargar");
-
-    // Agregar un evento de clic al botón
-    botonRecargar.addEventListener("click", function() {
-        // Mostrar una alerta cuando se hace clic en el botón
-        alert("Tabla de solicitudes recargada");
+$(document).ready(function() {
+    // Delegar eventos de clic a los botones "Editar" y "Eliminar" dentro de la tabla
+    $('#Solicitudes').on('click', '.editar-btn', function() {
+        // Redirigir a la URL de edición
+        window.location.href = "";
     });
 
+    $('#Solicitudes').on('click', '.eliminar-btn', function() {
+        // Obtener el ID de la solicitud que se va a eliminar
+        var solicitudId = $(this).data('solicitud-id');
 
-
-    // Manejador de clic para el botón "Eliminar"
-    $("#Eliminar").click(function(event){
-        event.stopPropagation(); // Evitar que el evento se propague a la fila
-        eliminar(); // Llamar a la función eliminar()
+        // Mostrar un mensaje de confirmación
+        if (confirm("¿Estás seguro de que deseas eliminar esta solicitud?")) {
+            // Si el usuario confirma la eliminación, enviar una solicitud AJAX para eliminar la solicitud
+            $.ajax({
+                url: '/eliminar-solicitud/',  // URL de la vista que maneja la eliminación de la solicitud
+                type: 'POST',  // Método HTTP para enviar la solicitud
+                data: {
+                    solicitud_id: solicitudId  // Enviar el ID de la solicitud a eliminar
+                },
+                success: function(response) {
+                    // Si la solicitud se elimina con éxito, actualizar la tabla o recargar la página
+                    // Por ejemplo, podrías recargar la página completa o eliminar la fila de la tabla
+                    // correspondiente a la solicitud eliminada
+                    // window.location.reload();  // Recargar la página completa
+                    // $(this).closest('tr').remove();  // Eliminar la fila de la tabla
+                    alert("La solicitud se eliminó con éxito.");
+                },
+                error: function(xhr, errmsg, err) {
+                    // Si ocurre un error al eliminar la solicitud, mostrar un mensaje de error
+                    console.log(xhr.status + ": " + xhr.responseText);
+                    alert("Se produjo un error al intentar eliminar la solicitud.");
+                }
+            });
+        }
     });
-    
-    // Manejador de clic para el botón "Editar"
-    $("#boton-editar").click(function(event) {
-        event.stopPropagation(); // Evitar que el evento se propague a la fila
-        alert("Haz hecho clic en el botón Editar. Puede editar el elemento aquí.");
+
+    // Agregar el evento de clic para expandir la descripción
+    $(document).on('click', '.columna-descripcion', function() {
+        // Cambiar el estilo para mostrar todo el texto al hacer clic
+        $(this).css('white-space', 'normal');
+        $(this).css('overflow', 'visible');
+        $(this).css('text-overflow', 'inherit');
     });
-    
-        // Manejador de clic para la fila 1
-    $(".fila-1").click(function(){
-        alert("Haz hecho clic en la fila 1");
-    });
-
-    // Manejador de clic para la fila 2
-    $(".fila-2").click(function(){
-        alert("Haz hecho clic en la fila 2");
-    });
-
-    // Manejador de clic para la fila 3
-    $(".fila-3").click(function(){
-        alert("Haz hecho clic en la fila 3");
-    });
-
-   
-
-
 });
-
-function eliminar() {
-    alert("¡Solicitud eliminada correctamente!");
-}
-

@@ -48,8 +48,8 @@
      <h2 class="subtitle">Solicitud de mantenimiento</h2>
      
      <!-- Resto del formulario -->
-     <form method="post">
-         {% csrf_token %}
+     <form action="{% url 'guardar_datos' %}" method="post">
+        {% csrf_token %}
          <div class="input-container">
              <label for="id_fecha">Fecha:</label>
              <input type="date" id="id_fecha" name="fecha">
@@ -64,11 +64,11 @@
       </div>
       
       <div class="input-container">
-       <label for="id_responsable_area">Responsable del Área:</label>
-       <div class="input-field">
-           <input type="text" id="id_responsable_area" name="responsable_area">
-       </div>
-   </div>
+        <label for="id_responsable_area">Responsable del Área:</label>
+        <div class="input-field">
+            <input type="text" id="id_responsable_area" name="responsable_Area">
+        </div>
+    </div>
    
    <div class="input-container">
        <label for="id_tipos_servicio">Tipo de Servicio:</label>
@@ -200,4 +200,4 @@
 
       
 
-{% endblock %}
+{% endblock %}

@@ -22,7 +22,7 @@ urlpatterns = [
     path('dep_alumnos/',include('dep_alumnos.urls')),
     path('mfa/', include('mfa.urls')),
     path('dep_mantenimiento/', include('dep_mantenimiento.urls')),
-
+    path('admin/', admin.site.urls),
      #login
     #path('accounts/', include('django.contrib.auth.urls')),
 

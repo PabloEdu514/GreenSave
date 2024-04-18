@@ -1,19 +1,28 @@
 /*estilos de home.css*/
 
 /*Contenedor */
-
 .GestiondeCorreos {
-  background-color: #1b396b;
+  background-color: #ffffff;
+  max-width: 100%; /* Ancho máximo del contenedor */
+  margin: 0 auto; /* Centra el contenedor en la página */
 }
+
+.input-group {
+  background-color: #1b396b;
+  
+}
+
+
 
 /*Estilos de la barra de busqueda  */
-.busqueda {
-  padding-right: 5px;
-  padding-left: 5px;
-  margin-left: 5px;
-}
+
 
 #Buscar {
+  
+   
+  margin-left: 10px;
+   
+
   margin-top: 20px;
   background-color: #ffffff;
   width: 50px; /* Cambia el ancho del botón */
@@ -90,12 +99,16 @@
 
 
 /*Tabla de correos*/
+/* Estilos de la tabla */
 .table {
-  margin-top: 20px;
+  margin-top: 10px;
   font-family: "Inter", sans-serif;
   color: #1b396b;
   border-collapse: collapse; /* Colapsa los bordes de las celdas */
+  max-width: 100%; /* Ancho máximo de la tabla */
+  overflow-x: auto; /* Agrega desplazamiento horizontal si es necesario */
 }
+
 
 .table th,
 .table td {
@@ -112,52 +125,58 @@
   border: none; /* Elimina el borde de las celdas */
   padding: 8px; /* Añade un relleno opcional */
 }
-
-.fila-1 {
-  text-align: left;
-  background-color: #d9d9d9;
-  border: none;
-}
-.fila-1:hover {
-  cursor: pointer;
-  background-color: rgba(
-    128,
-    128,
-    128,
-    0.5
-  ); /* Cambiar el color de fondo al pasar el cursor */
-}
-.fila-2 {
-  text-align: center;
-  background-color: rgba(37, 189, 13, 0.53);
-  border: none;
-}
-.fila-2:hover {
-  cursor: pointer;
-  background-color: rgba(
-    128,
-    128,
-    128,
-    0.5
-  ); /* Cambiar el color de fondo al pasar el cursor */
-}
-.fila-3 {
-  text-align: center;
-  background-color: rgba(241, 195, 77, 0.53);
-  border: none;
-}
-.fila-3:hover {
-  cursor: pointer;
-  background-color: rgba(
-    128,
-    128,
-    128,
-    0.5
-  ); /* Cambiar el color de fondo al pasar el cursor */
+th.columna-numero,
+td.columna-numero {
+  background-color: #ffffff;
+  width: 10px;
+  height: 40px;
 }
 
+th.columna-tipo-servicio,
+td.columna-tipo-servicio {
+  background-color: #ffffff;
+  width: 10px;
+  height: 40px;
+}
+th.columna-descripcion,
+td.columna-descripcion {
+  height: 40px;
+  background-color: #ffffff;
+  width: 10px;
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+  overflow: hidden; /* Oculta el texto que sobresale del contenedor */
+  text-overflow: ellipsis; /* Agrega puntos suspensivos al final del texto */
+}
 
-.boton-editar {
+th.columna-estado,
+td.columna-estado {
+  height: 40px;
+  background-color: #ffffff;
+  width: 20px;
+}
+
+th.columna-fecha,
+td.columna-fecha {
+  height: 40px;
+  background-color: #ffffff;
+  width: 10px;
+}
+th.columna-hora,
+td.columna-hora {
+  height: 40px;
+  background-color: #ffffff;
+  width: 10px;
+}
+th.columna-acciones,
+td.columna-acciones {
+  background-color: #ffffff;
+  width: 30px;
+  height: 40px;
+}
+
+
+
+.btn {
   display: inline-block;
   width: 30px;
   height: 30px;
@@ -167,27 +186,12 @@
   cursor: pointer;
   border: none;
 }
-
-.boton-editar svg {
-  width: 100%;
-  height: 100%;
-  color: #1b396b;
-}
-
-.button {
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
 .button svg {
   width: 100%;
   height: 100%;
   color: #1b396b;
 }
+
 .icono-status {
   width: 80px; /* Tamaño deseado para la celda */
   height: 30px; /* Tamaño deseado para la celda */

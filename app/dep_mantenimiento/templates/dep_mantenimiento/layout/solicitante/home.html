@@ -1,208 +1,150 @@
-{% extends "dep_mantenimiento/layout/layout.html" %}
-{% load static %}
-{% block title %}<title>SARH | I.T. Morelia</title>{% endblock %}
-{% block navpath %} 
-   <li class="breadcrumb-item"><a href="{% url 'home' %}">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid-3x3-gap-fill" viewBox="0 0 16 16">
-         <path d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V7zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z"/>
-      </svg>
-   </a></li>
-   <li class="breadcrumb-item"><a href="{% url 'Correo_Solicitante' %}">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
-         <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
-         <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
-      </svg>
-   </a></li>
-   <li class="breadcrumb-item"> Navegación </li>
-   <li class="breadcrumb-item"> Directorio </li>
+{% extends "dep_mantenimiento/layout/layout.html" %} {% load static %} {% block
+title %}<title>SARH | I.T. Morelia</title>{% endblock %} {% block navpath %}
+<li class="breadcrumb-item">
+  <a href="{% url 'home' %}">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="currentColor"
+      class="bi bi-grid-3x3-gap-fill"
+      viewBox="0 0 16 16"
+    >
+      <path
+        d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V7zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z"
+      />
+    </svg>
+  </a>
+</li>
+<li class="breadcrumb-item">
+  <a href="{% url 'Inicio_Solicitante' %}">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="currentColor"
+      class="bi bi-house"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"
+      />
+      <path
+        fill-rule="evenodd"
+        d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"
+      />
+    </svg>
+  </a>
+</li>
+<li class="breadcrumb-item">Navegación</li>
+<li class="breadcrumb-item">Directorio</li>
 
-{% endblock %}
-{% block content %}
-<div class="container-fluid">
- 
- 
- <!--DataTable-->
- <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
- <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-<!--css-->
-<link rel="stylesheet" href="{% static "dep_mantenimiento/css/pages/solicitante/home.css" %}">
-         
-<!--JDataTable-->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
-<!--Bootstrap-->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+{% endblock %} {% block content %}
 
 <span class="align-middle">
-   
-    <div id ="Area"class="GestiondeCorreos">
-        <div id ="Buscador" class="busqueda">
-           
-            <div class="input-group mb-1">
-               <button class="btn btn-outline-secondary" type="button" id="Buscar">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class="w-200 h-200">
-                     <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                  </svg>
-               </button>
-                              
-                              
-               <input id="Tbuscar" type="text"  placeholder="Buscar solicitud" ></input>
-      
-            </div>   
-                    
-                 
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8" />
+
+      <!--css-->
+
+      <!-- css bootstrap 5-->
+      <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+        crossorigin="anonymous"
+      />
+      <link
+        rel="stylesheet"
+        href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css"
+      />
+      <link rel="stylesheet" href="{% static
+      "dep_mantenimiento/css/pages/solicitante/home.css" %}">
+    </head>
+    <body>
+      <div
+        class="container-sm container-md container-lg container-xl container-xxl"
+      >
+        <!-- filtrado de estatus -->
+
+        <!--Tabla de  Solicitudes-->
+        <div class="table-responsive">
+          <table id="Tabla_correos" class="table table-borderless">
+            <thead>
+              <tr class="Columnas">
+                <th class="centered">#</th>
+                <th class="centered">Tipo de Servicio</th>
+                <th class="centered">Descripción</th>
+                <th class="centered"></th>
+                <th class="centered">Estado</th>
+                <th class="centered">Fecha</th>
+                <th class="centered">Hora</th>
+              </tr>
+            </thead>
+            <tbody id="vista_solicitudes" class="table-group-divider"></tbody>
+          </table>
         </div>
-      
-      
-      
-         <div id ="Correos" class= "correo">
-            <!-- Botones como filtradro y el boton de solicitud-->
-            <div id="Botones" class ="container-fluid">
-               <div class="row">
-                  <div  id ="BFyR" class="col">
-                      <div class="row align-items-start">
-                          <div class="col-auto">
-                              <select id="Filtro" class="form-select" aria-label="Default select example">
-                                  <option selected></option>
-                                  <option value="1">Recientes</option>
-                                  <option value="2">Pasadas</option>
-                                  <option value="3">Realizadas</option>
-                                  <option value="4">En proceso</option>
-                                  <option value="5">Rechazados</option>
-                                  <option value="6">Pausados</option>
-                              </select>
-                          </div>
-                          <div class="col-auto">
-                           <button  id="recargar" type="button" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Recargar tabla de solicitudes">
-                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-200 h-200 ">
-                                  <path  stroke-linejoin="round" stroke-width="1.5" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-                              </svg>
-                              
-                          </button>
-                          </div>
-                      </div>
-                  </div>
-                 
-                  <div id="BS" class="col-auto">
-                     <a href="{% url 'formulario_Solicitante' %}">
-                        <button id="Solicitar" type="button" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-html="true" data-bs-title="<em>Ir al</em> <b>Formulario de Mantenimiento</b>">
-                            <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-250 h-100">
-                                    <path stroke-width="1.5" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-                                </svg>
-                                <span>Solicitar Formulario</span>
-                            </span>
-                        </button>
-                    </a>
-                  </div>
-              </div>
-            </div>
-        </div>
+      </div>
 
+      <!--Scripts-->
+      <!--Scripts bootstrap 5-->
+      <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"
+      ></script>
+      <!--jquery-->
+      <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
+      <script>
+        let dataTable;
+        let dataTableInitialized = false;
 
-        
+        const initDataTable = async () => {
+          if (dataTableInitialized) {
+            dataTable.destroy();
+          }
+          await listSolicitudes();
+          dataTable = $("#Tabla_correos").DataTable({
+            searching: false,
+            paging: false,
+            ordering: false,
+            info: false,
+          });
+          dataTableInitialized = true;
+        };
 
-         <!--Tabla_correos-->
-         
-         <div >
-            <table id="Tabla_correos" class=" Tabla_correos table table-bordered dataTable">
-                <thead>
-                    <tr>
-                        <th class="columna-numero">#</th>
-                        <th class="columna-tipo-servicio">Servicio</th>
-                        <th class="columna-descripcion" >Descripción</th>
-                        <th class="columna-acciones"></th>
-                        <th class="columna-estado">Estado</th>
-                        <th class="columna-fecha">Fecha</th>
-                        <th class="columna-hora">Hora</th>
-                    </tr>
-                </thead>
-                <tbody id="Solicitudes">
-                    {% for solicitud in Solicitudes %}
-                    <tr data-solicitud-id="{{ solicitud.id }}">
-                        <td>{{ forloop.counter }}</td> <!-- Incrementa el contador del bucle para mostrar el índice + 1 -->
-                        <td>{{ solicitud.tipo_servicio }}</td> <!-- Muestra el tipo de servicio de la solicitud -->
-                        <td>{{ solicitud.descripcion }}</td> <!-- Muestra la descripción de la solicitud -->
-                        <td>
-                            <!-- Verifica si la solicitud está dentro del límite de tiempo para editar -->
-                            {% if solicitud.tiempo_transcurrido < 3600 %}
-                                <!-- Si la solicitud está dentro del límite de tiempo, muestra los botones de editar y eliminar -->
-                                <button id="Editar" class="btn btn-primary">
-                                
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-200 h-200">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
-                                  </svg>
-                                  
-                                </button>
-                                <button class="btn btn-danger eliminar-btn" data-solicitud-id="{{ solicitud.id }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-200 h-200">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                      </svg>
-                                      
-
-
-
-                                </button>
-                            {% endif %}
-                        </td>
-                        <td>{{ solicitud.status }}</td> <!-- Muestra el estado de la solicitud -->
-                        <td>{{ solicitud.fecha }}</td> <!-- Muestra la fecha de la solicitud -->
-                        <td>{{ solicitud.hora }}</td> <!-- Muestra la hora de la solicitud -->
-                    </tr>
-                    {% endfor %}
-        
-                </tbody>
-            </table>
-        </div>
-
-             
-
-
-
-        
-
-         
-
-
-
-         
-      
-    </div>
- 
-
-    <!--Scripts-->
-         
-   
- 
- <!-- jquery!-->
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <!--    scrip de eliminar -->
-    <script>
-        $('.eliminar-btn').click(function() {
-            var solicitudId = parseInt($(this).data('solicitud-id'));
-            console.log('Valor de solicitudId:', solicitudId);
-            var solicitudNumero = $(this).closest('tr').find('.columna-numero').text();
-            
-            if (confirm("¿Estás seguro de que deseas eliminar la solicitud #" + solicitudNumero + "?")) {
-                $.ajax({
-                    url: '/eliminar-solicitud/' + solicitudId + '/',
-                    type: 'DELETE',
-                    success: function(response) {
-                        // Manejar la respuesta exitosa, como recargar la página o actualizar la tabla de solicitudes
-                    },
-                    error: function(xhr, errmsg, err) {
-                        // Manejar errores
-                    }
-                });
-            }
+        const listSolicitudes = async () => {
+          try {
+            const response = await fetch("{% url 'CargarSolicitudes' %}");
+            const data = await response.json();
+            let content = "";
+            data.Solicitudes.forEach((solicitud, index) => {
+              content += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${solicitud.tipo_servicio}</td>
+                            <td>${solicitud.descripcion}</td>
+                            <td></td>
+                            <td>${solicitud.status}</td>
+                            <td>${solicitud.fecha}</td>
+                            <td>${solicitud.hora}</td>
+                        </tr>
+                        `;
+            });
+            vista_solicitudes.innerHTML = content;
+          } catch (ex) {
+            alert(ex);
+          }
+        };
+        window.addEventListener("load", async () => {
+          await initDataTable();
         });
-        
-        
-    </script>
-    
+      </script>
+    </body>
+  </html>
 </span>
-      
-
 {% endblock %}
-
-

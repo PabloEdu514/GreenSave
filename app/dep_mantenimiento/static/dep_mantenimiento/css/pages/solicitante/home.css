@@ -1,42 +1,150 @@
 
-#Filtro {
-  margin-top: 5px;
-  height: 40px;
-  width: 120px;
-  color: #1b396b;
-  margin-left: 5px;
-}
-#recargar {
-  background-color: #ffffff;
-  border-radius: 5px;
-  margin-top: 5px;
-  margin-left: 5px;
-  height: 40px;
-  width: 40px;
-  border: none;
+#Contenido{
+    background-color:white !important;
+    font-family: "Inter", sans-serif !important;
+    
 }
 
-#recargar svg {
-  color: #1b396b;
+/* Estilos para el encabezado de la tabla */
+/* Estilos para el Buscador */
+#Buscador{
+    padding-top: 10px !important;
+    background-color: #1B396B !important;
+}
+.input-group-text {
+    color: #1B396B !important;
+    background-color:white !important;
 }
 
-#Solicitar {
-  font-family: "Inter", sans-serif;
-  background-color: #ffffff;
-  border-radius: 5px;
-  height: 40px;
-  width: 200px;
-  margin-top: 5px;
-  border-color: #1b396b;
-  color: #1b396b;
-  margin-right: 5px;
+
+
+#searchInput {
+    color: #1B396B !important;
+    background-color:white !important;
 }
-#Solicitar svg {
-  color: #1b396b;
+/* Estilos para el Filtro */
+.container-fluid {
+    background-color: #ffffff !important;
+    padding-top: 10px !important;
+
 }
 
-.centered{
-  text-align: center  !important;
-  color: #1b396b !important;
-  font-weight: bold !important;
+/* Botones de Filtrado, Recargar Tabla y Solicitar-formulario */
+#Filtro{
+   
+    background-color: #ffffff !important;
+    color:#1B396B !important;
+}
+
+#Recargar{
+    border: none !important; /* Elimina el borde */
+    background-color: #ffffff !important;
+    color:#1B396B !important;
+}
+#Solicitar-formulario{
+    
+    background-color: #ffffff !important;
+    color:#1B396B !important;
+}
+
+
+/* Estilos para el encabezado de la tabla */
+#Tabla-Solicitudes {
+   
+    
+    padding-top: 10px !important;
+}
+
+/* Agrega estilos al pasar el mouse sobre las filas de la tabla */
+#Tabla-Solicitudes tbody tr:hover {
+   
+    /* Otros estilos que desees aplicar al pasar el mouse sobre las filas */
+    cursor: pointer !important;
+}
+
+
+
+.centered  {
+    text-align: center !important;
+    color: #1B396B !important;
+    font-weight: bold !important;
+    width: 10px !important;
+    height: 50px !important;
+
+}
+.ColDesc{
+    text-align: left    !important;
+    color: #1B396B !important;
+    font-weight: bold !important;
+    width: 800px !important;
+    height: 50px !important;
+}
+
+/* Estilos para las filas de la tabla */
+.texto{
+    color: #0b0b0b !important;
+    text-align: center !important;
+    width: 10px !important;
+    height: 50px !important;
+}
+
+
+.status{
+    color: #1B396B !important;
+    text-align: center !important;
+    width: 10px !important;
+    height: 50px !important;
+}
+
+.descripcion{
+    color: #0b0b0b;
+    text-align: left    !important;
+    width: 800px !important;
+    height: 50px !important;
+}
+
+.fecha{
+    color: #0b0b0b!important ;
+    text-align: center !important;
+    height: 50px !important;
+}
+.hora{
+    color: #0b0b0b!important ;
+    text-align: center !important;
+    height: 50px !important;
+}
+
+
+
+.botones .btn {
+    border: none !important; /* Quitar los bordes */
+    background-color: transparent !important; /* Hacer el fondo transparente */
+}
+
+.enviado {
+    background-color: #3366cc; /* Azul para estado 'Enviado' */
+}
+
+.pendiente {
+    background-color: #ff9933; /* Naranja para estado 'Pendiente' */
+}
+
+.realizado {
+    background-color: #00cc66; /* Verde para estado 'Realizado' */
+}
+
+.rechazado {
+    background-color: #ff3333; /* Rojo para estado 'Rechazado' */
+}
+
+.alerta {
+    background-color: #ffcc00; /* Amarillo para estado 'Alerta' */
+}
+
+.enproceso {
+    background-color: #cc9900; /* Marrón para estado 'En proceso' */
+}
+
+.enespera {
+    background-color: #cccccc; /* Gris para estado 'En espera' */
 }

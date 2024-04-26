@@ -1,10 +1,16 @@
 from django.urls import path
 from . import views
 from django.conf.urls import handler404
-#from .views import Views_Solicitantes, guardar_datos
+from .views import vistas_solicitantes_cargar_inicio
 
 urlpatterns = [
     path('logout/', views.cerrar_sesion, name='cerrar_sesion'),
+    # Validar el inicio del usuario
+    path('Ingresar', views.inicio, name='inicio'),
+
+    # Enlaces del Docente
+    path('CargarSolicitudes/<int:id_Docente>/', views.vistas_solicitantes_cargar_inicio.obtener_solicitudes, name='obtener_solicitudes'),
+    path('Inicio/Docente/<int:id>/', views.vistas_solicitantes_cargar_inicio.cargar_Inicio, name='inicio_docente'),
     
     #Enlaces de empleado
     # path('empleado/inicio/', views.dashboard_empleado, name='Inicio_Empleado'),

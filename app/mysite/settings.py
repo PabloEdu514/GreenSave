@@ -70,8 +70,9 @@ INSTALLED_APPS = [
     'mfa',
     'sslserver',
     'crispy_forms',
-    'django.contrib.admin',#Admin hasta abajo porque si no estorba para el logout
+   
     'dep_mantenimiento',
+    'django.contrib.admin',#Admin hasta abajo porque si no estorba para el logout
     
 ]
 

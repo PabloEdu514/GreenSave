@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.conf.urls import handler404
-from .views import vistas_solicitantes_cargar_inicio
+from .views import vistas_solicitantes_cargar_inicio,Formulario
 
 urlpatterns = [
     path('logout/', views.cerrar_sesion, name='cerrar_sesion'),
@@ -11,7 +11,7 @@ urlpatterns = [
     # Enlaces del Docente
     path('CargarSolicitudes/<int:id_Docente>/', views.vistas_solicitantes_cargar_inicio.obtener_solicitudes, name='obtener_solicitudes'),
     path('Inicio/Docente/<int:id>/', views.vistas_solicitantes_cargar_inicio.cargar_Inicio, name='inicio_docente'),
-    
+    path('Formulario/Docente/', views.Formulario.guardar_datos, name='Formulario'),
     #Enlaces de empleado
     # path('empleado/inicio/', views.dashboard_empleado, name='Inicio_Empleado'),
     # path('empleado/firma_formulario/', views.dashboard_empleado_firma_form, name='Firma_form_Empleado'),

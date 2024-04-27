@@ -121,30 +121,30 @@
     background-color: transparent !important; /* Hacer el fondo transparente */
 }
 
-.enviado {
+.Enviado {
     background-color: #3366cc; /* Azul para estado 'Enviado' */
 }
 
-.pendiente {
+.Pendiente {
     background-color: #ff9933; /* Naranja para estado 'Pendiente' */
 }
 
-.realizado {
+.Realizado {
     background-color: #00cc66; /* Verde para estado 'Realizado' */
 }
 
-.rechazado {
+.Rechazado {
     background-color: #ff3333; /* Rojo para estado 'Rechazado' */
 }
 
-.alerta {
+.Alerta {
     background-color: #ffcc00; /* Amarillo para estado 'Alerta' */
 }
 
-.enproceso {
+.En proceso {
     background-color: #cc9900; /* Marrón para estado 'En proceso' */
 }
 
-.enespera {
+.Enespera {
     background-color: #cccccc; /* Gris para estado 'En espera' */
 }

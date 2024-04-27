@@ -15,6 +15,7 @@ from django.db import transaction
 from .models import Solicitud_Mantenimiento,trabajadores
 from django.shortcuts import redirect
 from datetime import datetime
+from .forms import SolicitudMantenimientoForm
 
 @login_required
 
@@ -111,7 +112,7 @@ class vistas_solicitantes_cargar_inicio(View):
             # Si la solicitud no existe, lanzar una excepción Http404
              raise Http404("Las solicitudes del docente no existen")
         
-        
+
 
     
     

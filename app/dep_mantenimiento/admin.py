@@ -12,3 +12,4 @@ admin.site.register(trabajadores)
 admin.site.register(Solicitud_Mantenimiento)
 # admin.site.register(empleado)
 # admin.site.register(dep_mantenimiento)
+

@@ -13,7 +13,7 @@ urlpatterns = [
     path('Inicio/Docente/<int:id>/', views.vistas_solicitantes_cargar_inicio.cargar_Inicio, name='inicio_docente'),
     path('Formulario/Docente/<int:id_Docente>/', views.vistas_solicitantes_cargar_inicio.cargar_Formulario, name='formulario_docente'),
 
-    # Enlaces del para rellenar el formulario
+    # Enlaces del para guardar el formulario
     path('guardar/<int:id_Docente>/', views.rellenar_formulario.guardar_datos_Docente, name='guardar_formulario_Docente'),
     
     # Eliminar solicitud

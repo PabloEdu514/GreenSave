@@ -12,7 +12,7 @@ class SolicitudMantenimientoForm(forms.Form):
     fecha = forms.DateField(label='Fecha', widget=forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'Seleccione la fecha'}))
     folio = forms.CharField(label='Folio', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el folio'}))
     area_solicitante = forms.CharField(label='Área Solicitante', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el área solicitante'}))
-    responsable_area = forms.CharField(label='Responsable del Área', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el responsable del área'}))
+    responsable_Area = forms.CharField(label='Responsable del Área', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el responsable del área'}))
     tipos_servicio = forms.ChoiceField(label='Tipo de Servicio', choices=[
         ('', 'Seleccionar'),
         ('Electrica', 'Electrica'),

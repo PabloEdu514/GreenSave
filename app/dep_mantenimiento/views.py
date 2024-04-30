@@ -17,7 +17,7 @@ from django.shortcuts import redirect
 from datetime import datetime
 from .forms import SolicitudMantenimientoForm
 from django.db import transaction,connection
-from .forms import SolicitudMantenimientoForm
+
 @login_required
 
 def inicio(request):
@@ -76,7 +76,7 @@ class vistas_solicitantes_cargar_inicio(View):
     def cargar_Formulario(request,id_Docente):
         # Lógica para determinar el tipo de usuario
         es_docente = True  # Por ejemplo, asumamos que el usuario es un docente
-
+        form = SolicitudMantenimientoForm()
         if es_docente:
             
             url_formulario = reverse('formulario_docente', args=[id_Docente])  # Asegúrate de pasar el id adecuado aquí
@@ -85,7 +85,8 @@ class vistas_solicitantes_cargar_inicio(View):
 
         contexto = {
             'id': id_Docente,
-            'url_formulario': url_formulario
+            'url_formulario': url_formulario,
+            'form': form,  # Pasar el formulario al contexto
         }
         return render(request, 'dep_mantenimiento/layout/solicitante/formulario.html', contexto)
 
@@ -152,19 +153,22 @@ def eliminar_solicitud(request, solicitud_id):
     
 class rellenar_formulario(View):
     @staticmethod   
+     
     def guardar_datos_Docente(request, id_Docente):
         if request.method == 'POST':
             form = SolicitudMantenimientoForm(request.POST)
             if form.is_valid():
-                id_fecha = form.cleaned_data['fecha'] #Debe ordenar la fecha actual
+                id_fecha = form.cleaned_data['fecha']
                 id_folio = form.cleaned_data['folio']
                 id_area_solicitante = form.cleaned_data['area_solicitante']
-                id_responsable_area = form.cleaned_data['responsable_area']
+                id_responsable_area = form.cleaned_data['responsable_Area']
                 id_tipos_servicio = form.cleaned_data['tipos_servicio']
                 id_descripcion = form.cleaned_data['descripcion']
                 hora_actual = datetime.now().time()
-                id_Docente = id_Docente
-                # Crea una instancia de tu modelo Solicitud y asigna los valores
+                # Obtener la instancia del trabajador correspondiente al ID
+                trabajador = trabajadores.objects.get(id=id_Docente)
+                
+                # Crea una instancia del modelo Solicitud y asigna los valores
                 datos_nuevos = Solicitud_Mantenimiento(
                     fecha=id_fecha,
                     folio=id_folio,
@@ -173,18 +177,21 @@ class rellenar_formulario(View):
                     tipo_servicio=id_tipos_servicio,
                     descripcion=id_descripcion,
                     hora=hora_actual,
-                    id_Trabajador = id_Docente
+                    id_Trabajador=trabajador, # Asignar la instancia del trabajador, no solo el ID
+                    status='Enviado',
                 )
                 
                 # Guarda los datos en la base de datos
                 datos_nuevos.save()
 
-               
-                return redirect ('inicio') # Redirige a la URL de solicitante por defecto
+                # Redirige a la URL de la vista de inicio del docente
+                return redirect('inicio_docente', id=id_Docente)
+                
         else:
             form = SolicitudMantenimientoForm()
             
-        return redirect ('inicio')
+        # Renderiza el formulario
+        return render(request, 'dep_mantenimiento/layout/solicitante/formulario.html', {'form': form})
     
 
 class Error404Views(TemplateView):

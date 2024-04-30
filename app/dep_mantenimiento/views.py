@@ -16,7 +16,8 @@ from .models import Solicitud_Mantenimiento,trabajadores
 from django.shortcuts import redirect
 from datetime import datetime
 from .forms import SolicitudMantenimientoForm
-
+from django.db import transaction,connection
+from .forms import SolicitudMantenimientoForm
 @login_required
 
 def inicio(request):
@@ -71,7 +72,23 @@ class vistas_solicitantes_cargar_inicio(View):
         }
 
         return render(request, 'dep_mantenimiento/layout/solicitante/home.html', contexto)
-   
+    @staticmethod
+    def cargar_Formulario(request,id_Docente):
+        # Lógica para determinar el tipo de usuario
+        es_docente = True  # Por ejemplo, asumamos que el usuario es un docente
+
+        if es_docente:
+            
+            url_formulario = reverse('formulario_docente', args=[id_Docente])  # Asegúrate de pasar el id adecuado aquí
+        else:
+            url_formulario = reverse('inicio')
+
+        contexto = {
+            'id': id_Docente,
+            'url_formulario': url_formulario
+        }
+        return render(request, 'dep_mantenimiento/layout/solicitante/formulario.html', contexto)
+
     @staticmethod
     def obtener_solicitudes(request, id_Docente):
         try:
@@ -113,10 +130,61 @@ class vistas_solicitantes_cargar_inicio(View):
              raise Http404("Las solicitudes del docente no existen")
         
 
+def eliminar_solicitud(request, solicitud_id):
+    try:
+        # Eliminar la solicitud
+        solicitud = Solicitud_Mantenimiento.objects.get(id=solicitud_id)
+        solicitud.delete()
 
+         # Reiniciar la secuencia de IDs de la tabla de la base de datos
+         ###
+#         with connection.cursor() as cursor:s
+#             cursor.execute('ALTER SEQUENCE public.solicitud_mantenimiento_id_seq RESTART WITH 1;')
+
+#             cursor.execute('UPDATE "solicitud_mantenimiento" SET id = id - 1 WHERE id > 1;')    
+# ###
+        return redirect ('inicio')
+    except Solicitud_Mantenimiento.DoesNotExist:
+        return JsonResponse({'error': 'La solicitud no existe'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
     
     
-    
+class rellenar_formulario(View):
+    @staticmethod   
+    def guardar_datos_Docente(request, id_Docente):
+        if request.method == 'POST':
+            form = SolicitudMantenimientoForm(request.POST)
+            if form.is_valid():
+                id_fecha = form.cleaned_data['fecha'] #Debe ordenar la fecha actual
+                id_folio = form.cleaned_data['folio']
+                id_area_solicitante = form.cleaned_data['area_solicitante']
+                id_responsable_area = form.cleaned_data['responsable_area']
+                id_tipos_servicio = form.cleaned_data['tipos_servicio']
+                id_descripcion = form.cleaned_data['descripcion']
+                hora_actual = datetime.now().time()
+                id_Docente = id_Docente
+                # Crea una instancia de tu modelo Solicitud y asigna los valores
+                datos_nuevos = Solicitud_Mantenimiento(
+                    fecha=id_fecha,
+                    folio=id_folio,
+                    area_solicitante=id_area_solicitante,
+                    responsable_Area=id_responsable_area,
+                    tipo_servicio=id_tipos_servicio,
+                    descripcion=id_descripcion,
+                    hora=hora_actual,
+                    id_Trabajador = id_Docente
+                )
+                
+                # Guarda los datos en la base de datos
+                datos_nuevos.save()
+
+               
+                return redirect ('inicio') # Redirige a la URL de solicitante por defecto
+        else:
+            form = SolicitudMantenimientoForm()
+            
+        return redirect ('inicio')
     
 
 class Error404Views(TemplateView):

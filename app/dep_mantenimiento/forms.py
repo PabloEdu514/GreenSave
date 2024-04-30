@@ -15,14 +15,17 @@ class SolicitudMantenimientoForm(forms.Form):
     responsable_area = forms.CharField(label='Responsable del Área', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el responsable del área'}))
     tipos_servicio = forms.ChoiceField(label='Tipo de Servicio', choices=[
         ('', 'Seleccionar'),
-        ('Electrica','Electrica'),
-        ('Herrería','Herrería'),
-        ('Plomería','Plomería'),
-        ('Pintura','Pintura'),
-        ('Cañones','Cañones'),
-        ('Pintarrón','Pintarrón'),
-        ('Cerrajería','Cerrajería'),
-        ('Otro','Otro')
+        ('Electrica', 'Electrica'),
+        ('Herrería', 'Herrería'),
+        ('Plomería', 'Plomería'),
+        ('Pintura', 'Pintura'),
+        ('Cañones', 'Cañones'),
+        ('Pintarrón', 'Pintarrón'),
+        ('Cerrajería', 'Cerrajería'),
+        ('Otro', 'Otro'),
     ], widget=forms.Select(attrs={'class': 'form-select'}))
-    descripcion = forms.CharField(label='Descripción del Servicio o Falla a Reparar', widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese la descripción', 'rows': 5}))
-    id_Trabajador=forms.IntegerField()
+    descripcion = forms.CharField(label='Descripción del Servicio o Falla a Reparar', widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese la descripción', 'rows': 2}))
+    des_Serv_no_Realizado = forms.CharField(label='Descripción del porque no se puede realizar', widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese la descripción', 'rows': 2}),required=False)
+    motv_rechazo = forms.CharField(label='Descripción del porque no se puede realizar', widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese la descripción', 'rows': 2}),required=False)
+    des_Serv_Realizado = forms.CharField(label='Descripción del trabajo o servicio realizado', widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese la descripción', 'rows': 2}),required=False)
+    material_utilizado = forms.CharField(label='Material utilizado', widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese la descripción', 'rows': 2}),required=False)

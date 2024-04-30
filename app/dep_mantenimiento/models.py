@@ -27,7 +27,7 @@ class trabajadores(models.Model):
 
     
 class Solicitud_Mantenimiento(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     folio= models.IntegerField(null=False,blank=True)
     area_solicitante= models.CharField(max_length=150,null=False,blank=True)
     responsable_Area= models.CharField(max_length=300,null=False,blank=True)
@@ -79,8 +79,8 @@ class Solicitud_Mantenimiento(models.Model):
     
     class Meta:
         app_label = 'dep_mantenimiento'
-        db_table = 'solicitud mantenimiento'
-        verbose_name = 'Solicitud de mantenimiento'
+        db_table = 'solicitud_mantenimiento'
+        verbose_name = 'Solicitud_de_mantenimiento'
 
 
 #Asignar permisos a los trabajadores (Docentes, Jefes, Subdirectores) que no pertenece al DEPARTAMENTO DE MANTENIMIENTO DE EQUIPO

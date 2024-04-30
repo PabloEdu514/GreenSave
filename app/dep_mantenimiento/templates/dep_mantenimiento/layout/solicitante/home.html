@@ -93,7 +93,8 @@
 
 
                   <div class="col-auto">
-                     <a  id="Solicitar-formulario" class="btn btn-light"  href="#" role="button">
+                     <a id="Solicitar-formulario" class="btn btn-light" href="{% url 'formulario_docente' id_Docente=id %}" role="button">
+
                         <i class="fa-solid fa-file-medical"></i>
                         Solicitar Formulario
 
@@ -110,20 +111,20 @@
 
             <div class="row">
                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                  <div class="table-responsive">
-                     <table class="table table-borderless table-hover" id="Tabla-Solicitudes">
+                  <div class="table-responsive-md">
+                     <table class="table  table-hover" id="Tabla-Solicitudes">
                         <thead>
                         <tr>
-                           <th class ="centered">#</th>
-                           <th class ="centered">Servicio</th>
-                           <th class ="ColDesc">Descripción</th>
-                           <th class ="centered"></th>
-                           <th class ="centered">Proceso</th>
-                           <th class ="centered">Fecha</th>
-                           <th class ="centered">Hora</th>
+                           <th scope="col" class ="centered">#</th>
+                           <th scope="col" class ="centered">Servicio</th>
+                           <th scope="col" class ="ColDesc">Descripción</th>
+                           <th scope="col" class ="centered"></th>
+                           <th scope="col" class ="centered">Proceso</th>
+                           <th scope="col" class ="centered">Fecha</th>
+                           <th scope="col" class ="centered">Hora</th>
                         </tr>
                         </thead>
-                        <tbody id="tbodySolicitudes" >
+                        <tbody class="table-group-divider" id="tbodySolicitudes" >
                         </tbody>
                      </table>
                   </div>

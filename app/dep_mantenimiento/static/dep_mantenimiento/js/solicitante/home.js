@@ -64,19 +64,39 @@ const listSolicitudes = async () => {
 
             content += `
                 <tr onclick="openDetalle(${solicitudes.id})" class="${solicitudes.status}">
-                    <td class ="texto">${index + 1}</td>
+                    <td scope="row"  class ="texto">${index + 1}</td>
                     <td class ="servicio">${solicitudes.tipo_servicio}</td>
                     <td class ="descripcion">${solicitudes.descripcion}</td>
                     <td class ="botones">
                         ${!hideButtons ? `
-                        <button class="btn btn-sm-1"  onclick="editSolicitud(${solicitudes.id})">   
+                        <button  class="btn btn-sm-2"  onclick="editSolicitud(${solicitudes.id}, event)">   
                         <i class="fa fa-pencil-square" aria-hidden="true" style="color: #1B396B !important"></i>
                         
                         </button>
-                        <button class="btn btn-sm-1" onclick="confirmDelete(${solicitudes.id})">
+                        <button  class="btn  btn-sm-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     
-                        <i class="fa fa-trash" aria-hidden="true" style="color: #1B396B !important"></i>
+                        <i class="fa fa-trash" aria-hidden="true" style="color: #1B396B !important" ></i>
                         </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Solicitud </h1>
+                                <button  class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Quieres eliminar la solicitud ${solicitudes.id}?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button   data-bs-dismiss="modal">Cancelar</button>
+                                <a class="btn btn-danger" href="/dep_mantenimiento/eliminar-solicitud/${solicitudes.id}/">Eliminar</a>
+
+                            </div>
+                            </div>
+                        </div>
+                        </div>
                     ` : ''}
                     </td>
                     <td class ="status">${icono}</td> <!-- Aquí se mostrará el icono correspondiente -->
@@ -98,8 +118,45 @@ const listSolicitudes = async () => {
     }
 };
 
+function editSolicitud(solicitudId, event) {
+    event.stopPropagation();
+    // Lógica para editar la solicitud
+}
+
+function eliminarSolicitud(solicitudId) {
+    // Realizar la eliminación de la solicitud utilizando fetch, AJAX u otra técnica de tu elección
+    fetch(`/dep_mantenimiento/eliminar-solicitud/${solicitudId}/`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken') // Asegúrate de enviar el token CSRF
+        },
+    })
+    .then(response => {
+        if (response.ok) {
+            // Recargar la tabla de solicitudes después de eliminar una solicitud
+            reloadDataTable();
+        } else {
+            throw new Error('No se pudo eliminar la solicitud.');
+        }
+    })
+    .catch(error => {
+        console.error('Error al eliminar la solicitud:', error);
+    });
+}
+
+
+
+
+// Función para obtener el valor de la cookie CSRF
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
 
 function openDetalle(solicitudId) {
+   
     // Redirige a la página HTML deseada con el ID de la solicitud
     //window.location.href = `/detalle_solicitud.html?id=${solicitudId}`;
      // Mostrar una alerta con los detalles de la solicitud

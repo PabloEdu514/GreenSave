@@ -195,6 +195,21 @@
     color: #ffffff !important;
 }
 
+.modal-footer a.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #dc3545 !important; /* Color de fondo del botón */
+    color: #fff; /* Color del texto del botón */
+    text-decoration: none; /* Quita la subrayado del enlace */
+    cursor: pointer;
+}
+
+.modal-footer a.btn:hover {
+    background-color: #c82333 !important; /* Color de fondo del botón al pasar el mouse */
+}
+
+
 .modal-footer button:hover {
     background-color: #e3e6ea;
 }

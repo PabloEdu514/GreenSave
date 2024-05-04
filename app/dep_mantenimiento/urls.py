@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.conf.urls import handler404
-from .views import vistas_solicitantes_cargar_inicio,rellenar_formulario
+from .views import vistas_solicitantes_cargar_inicio,rellenar_formulario,vistas_Jefe_Departamento_cargar_inicio
 
 urlpatterns = [
     path('logout/', views.cerrar_sesion, name='cerrar_sesion'),
@@ -12,6 +12,13 @@ urlpatterns = [
     path('CargarSolicitudes/<int:id_Docente>/', views.vistas_solicitantes_cargar_inicio.obtener_solicitudes, name='obtener_solicitudes'),
     path('Inicio/Docente/<int:id>/', views.vistas_solicitantes_cargar_inicio.cargar_Inicio, name='inicio_docente'),
     path('Formulario/Docente/<int:id_Docente>/', views.vistas_solicitantes_cargar_inicio.cargar_Formulario, name='formulario_docente'),
+
+
+    # Enlaces del jefe de Departamento
+    path('CargarSolicitudesJdep/<int:id_Jefe_Departamento>/', views.vistas_Jefe_Departamento_cargar_inicio.obtener_solicitudes, name='obtener_solicitudes_jefe_departamento'),
+    path('Inicio/Jefe_Departamento/<int:id>/', views.vistas_Jefe_Departamento_cargar_inicio.cargar_Inicio, name='inicio_jefe_departamento'),
+    #path('Formulario/Jefe_Departamento/<int:id_Jefe_Departamento>/', views.vistas_Jefe_Departamento_cargar_inicio.cargar_Formulario, name='formulario_jefe_departamento'),
+
 
     # Enlaces del para guardar el formulario
     path('guardar/<int:id_Docente>/', views.rellenar_formulario.guardar_datos_Docente, name='guardar_formulario_Docente'),

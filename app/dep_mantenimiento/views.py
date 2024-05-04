@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse,Http404
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import logout
 from django.views import View
-
+from django.contrib.auth.models import User, AbstractUser
 from django.http import Http404
 from django.views.generic import TemplateView
 from django.shortcuts import render
@@ -24,10 +24,10 @@ def inicio(request):
     user = request.user
     if user.is_authenticated:
         try:
-            id_trabajador = trabajadores.objects.get(user=user.id)
+            id_trabajador = trabajadores.objects.get(user_id=user.id)
             
             if id_trabajador.puesto == 'Jefe' and id_trabajador.departamento != 'Mantenimiento de Equipo':
-                            return redirect('inicio_jefe_departamento')  # Redireccionar al inicio del jefe de otro departamento
+                            return redirect('inicio_jefe_departamento',id=id_trabajador.id)  # Redireccionar al inicio del jefe de otro departamento
             elif id_trabajador.puesto == 'Docente':
                         # Redirigir a la página de inicio del docente
                         return redirect('inicio_docente', id=id_trabajador.id) 
@@ -138,17 +138,106 @@ def eliminar_solicitud(request, solicitud_id):
         solicitud.delete()
 
          # Reiniciar la secuencia de IDs de la tabla de la base de datos
-         ###
-#         with connection.cursor() as cursor:s
-#             cursor.execute('ALTER SEQUENCE public.solicitud_mantenimiento_id_seq RESTART WITH 1;')
-
-#             cursor.execute('UPDATE "solicitud_mantenimiento" SET id = id - 1 WHERE id > 1;')    
+         ### 1,2,3,4,5,6,7,8,10,11
+         # forloop para reiniciar la secuencia
+        # with connection.cursor() as cursor:
+        #     cursor.execute('UPDATE "solicitud_mantenimiento" SET id = id - 1 WHERE id > 1;')  
+        #     cursor.execute('ALTER SEQUENCE public.solicitud_mantenimiento_id_seq RESTART WITH 1;')
 # ###
         return redirect ('inicio')
     except Solicitud_Mantenimiento.DoesNotExist:
         return JsonResponse({'error': 'La solicitud no existe'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+    
+ 
+#vistas Jefe Departamento
+class vistas_Jefe_Departamento_cargar_inicio(View):
+    @staticmethod
+    def cargar_Inicio(request, id):
+        # Lógica para determinar el tipo de usuario
+        es_Jeje_dep = True  # Por ejemplo, asumamos que el usuario es un docente
+
+        if es_Jeje_dep:
+            
+            url_inicio = reverse('inicio_jefe_departamento', args=[id])  # Asegúrate de pasar el id adecuado aquí
+        else:
+            url_inicio = reverse('inicio')
+
+        contexto = {
+            'id': id,
+            'url_inicio': url_inicio
+        }
+
+        return render(request, 'dep_mantenimiento/layout/jDep/home.html', contexto)
+    @staticmethod
+    def cargar_Formulario(request,id_Jefe_Departamento):
+        # Lógica para determinar el tipo de usuario
+        es_Jeje_dep = True  # Por ejemplo, asumamos que el usuario es un docente
+        form = SolicitudMantenimientoForm()
+        if es_Jeje_dep:
+            
+            url_formulario = reverse('formulario_jefe_departamento', args=[id_Jefe_Departamento])  # Asegúrate de pasar el id adecuado aquí
+        else:
+            url_formulario = reverse('inicio')
+
+        contexto = {
+            'id': id_Jefe_Departamento,
+            'url_formulario': url_formulario,
+            'form': form,  # Pasar el formulario al contexto
+        }
+        return render(request, 'dep_mantenimiento/layout/jDep/formulario.html', contexto)
+
+    @staticmethod
+    def obtener_solicitudes(request, id_Jefe_Departamento):
+        try:
+            # Filtrar las solicitudes asociadas al jefe de departamento
+            solicitudes = Solicitud_Mantenimiento.objects.filter(id_Jefe_Departamento=id_Jefe_Departamento).order_by('-fecha', '-hora')
+
+           
+
+            # Crear una lista para almacenar las solicitudes con la información de los trabajadores
+            solicitudes_con_info_trabajador = []
+
+            # Iterar sobre cada solicitud
+            for solicitud in solicitudes:
+                # Crear un diccionario para almacenar la información de la solicitud
+                solicitud_dict = {
+                    'id': solicitud.id,
+                    'tipo_servicio': solicitud.tipo_servicio,
+                    'descripcion': solicitud.descripcion,
+                    'status': solicitud.status,
+                    'fecha': solicitud.fecha.strftime("%d/%m/%Y"),  # Formatear la fecha como dd/mm/aaaa
+                    'hora': solicitud.hora.strftime("%H:%M"),  # Formatear la hora como hh:mm
+                }
+
+               # Verificar si la solicitud tiene un trabajador asociado
+            if solicitud.id_Trabajador:
+                
+                
+                # Obtener la instancia de trabajadores usando el ID
+                try:
+                    trabajador = trabajadores.objects.get(id=solicitud.id_Trabajador.id)
+                    # Obtener la instancia del usuario usando el ID
+                    usuario_trabajador = User.objects.get(id=trabajador.user)
+                        
+                    # Obtener el nombre completo del trabajador
+                    nombre_completo = f"{usuario_trabajador.first_name} {usuario_trabajador.last_name}"
+
+                    # Agregar el nombre completo del trabajador al diccionario de la solicitud
+                    solicitud_dict['nombre_completo_trabajador'] = nombre_completo
+                except trabajadores.DoesNotExist:
+                    # Manejar la excepción si el trabajador no existe
+                    pass
+            
+            solicitudes_con_info_trabajador = [solicitud_dict]
+            
+            # Retornar las solicitudes en formato JSON
+            return JsonResponse({'solicitudes': solicitudes_con_info_trabajador})
+
+        except Solicitud_Mantenimiento.DoesNotExist:
+            # Si no se encuentran solicitudes, lanzar una excepción Http404
+            raise Http404("Las solicitudes del jefe de departamento no existen")
     
     
 class rellenar_formulario(View):

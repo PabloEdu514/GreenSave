@@ -5,26 +5,52 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
 
 class trabajadores(models.Model):
-    id=models.AutoField(primary_key=True)
-    user=models.PositiveIntegerField( null=True, blank=True)
+    SEXO = (
+        ('H', 'Hombre'),
+        ('M', 'Mujer'),
+    )
+    Activo = (
+        ('Activo', 'Activo'),
+        ('Inactivo', 'Inactivo'),
+    )
+
     Puestos={
         ('Subdirector','Subdirector/a'),
         ('Jefe','Jefe'),
         ('Docente','Docente'),
         ('Empleado','Empleado'),
-        ('Secretario','Secretario/a')
-       
+        ('Secretario','Secretario/a')     
         
     }
-    puesto=models.CharField(choices=Puestos,max_length=100,blank=True)# si es jefe, docente etc
-    departamento=models.CharField(max_length=100,blank=True)#y al departamento que pertenece 
-    campus= models.CharField(max_length=100,blank=True)
-    foto_Perfil = models.ImageField('Imagen de Perfil', upload_to='dep_mantenimiento/img', blank=True, null= True)
+    id=models.AutoField(primary_key=True)
+    user_id=models.PositiveIntegerField( null=True, blank=True)
+    nombres = models.CharField("Nombre(s)", max_length=40, db_column='nombres',blank=True, null=True)
+    appaterno = models.CharField("Apellido Paterno", max_length=40, db_column='appaterno', blank=True, null=True)
+    apmaterno = models.CharField("Apellido Materno", max_length=40, db_column='apmaterno', blank=True, null=True)
+    activo = models.CharField(choices=Activo, max_length=15, db_column='activo', blank=True, null=True, default="activo")
+    sexo = models.CharField("Sexo", max_length=1, choices=SEXO, db_column='sexo',blank=True, null=True)
+    puesto=models.CharField(choices=Puestos,max_length=100,blank=True, null=True)# si es jefe, docente etc 
+    departamento=models.CharField(max_length=100,blank=True, null=True)#y al departamento que pertenece 
+    campus= models.PositiveIntegerField( null=True, blank=True)
+    email = models.EmailField("Correo", max_length=100, db_column='email', blank=True, null=True)
+    foto_Perfil = models.ImageField('Imagen de Perfil', upload_to='dep_mantenimiento/img/Foto_Perfil', blank=True, null= True)
+
     class Meta:
         app_label = 'dep_mantenimiento'
         db_table = 'trabajador'
         verbose_name = 'Perfil de trabajador'
-
+    #     permissions = (
+    #     ('view_mantenimiento_trabajador', 'Usuarios de Mantenimiento de Equipo pueden ver'),
+    #     ('change_mantenimiento_trabajador', 'Usuarios de Mantenimiento de Equipo pueden editar'),
+    #     ('view_all_trabajador', 'Usuarios Solcitantes pueden ver'),
+    #     ('change_all_trabajador', 'Usuarios Solcitantes pueden editar'),
+    #     ('add_all_trabajador', 'Usuarios Solcitantes pueden agregar'),
+    #     ('delete_all_trabajador', 'Usuarios Solcitantes pueden borrar'),
+    # )
+        
+    def nombre_completo(self):
+        nombre= self.nombres+" "+self.appaterno+" "+self.apmaterno
+        return nombre
     
 class Solicitud_Mantenimiento(models.Model):
     id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
@@ -53,8 +79,8 @@ class Solicitud_Mantenimiento(models.Model):
         ('Realizado','Realizado'),
         ('Rechazado','Rechazado'),
         ('Alerta','Alerta'),
-        ('En proceso','En proceso'),
-        ('En espera','En espera')
+        ('En_proceso','En proceso'),
+        ('En_espera','En espera')
         
     }
     
@@ -77,67 +103,13 @@ class Solicitud_Mantenimiento(models.Model):
     firma_Empleado = models.BooleanField(default=False,blank=True)
     firma_Jefe_Mantenimiento = models.BooleanField(default=False,blank=True)
     
+    # Imagenes de las firmas
+    firma_Jefe_Departamento_img= models.ImageField(null=True,upload_to='dep_mantenimiento/img',blank=True)
+    firma_Empleado_img= models.ImageField(null=True,upload_to='dep_mantenimiento/img',blank=True)
+    firma_Jefe_Mantenimiento_img= models.ImageField(null=True,upload_to='dep_mantenimiento/img',blank=True)
+    
     class Meta:
         app_label = 'dep_mantenimiento'
         db_table = 'solicitud_mantenimiento'
         verbose_name = 'Solicitud_de_mantenimiento'
 
-
-#Asignar permisos a los trabajadores (Docentes, Jefes, Subdirectores) que no pertenece al DEPARTAMENTO DE MANTENIMIENTO DE EQUIPO
-#Estos pueden solicitar solicitudes, Editar solicitudes, Eliminar solicitudes, Crear solicitudes     
-      
-      
-
-# Define una función para crear permisos personalizados
-# def create_custom_permissions():
-#     # Obtiene el contenido para el modelo de Solicitud_Mantenimiento
-#     content_type = ContentType.objects.get_for_model(Solicitud_Mantenimiento)
-
-#     # Verifica si los permisos ya existen
-#     existing_permissions = Permission.objects.filter(
-#         codename__in=['can_create_solicitud_mantenimiento', 'can_edit_solicitud_mantenimiento', 'can_delete_solicitud_mantenimiento'],
-#         content_type=content_type,
-#     )
-
-#     if existing_permissions.exists():
-#         return existing_permissions
-
-#     # Crea los permisos si no existen
-#     permission_create = Permission.objects.create(
-#         codename='can_create_solicitud_mantenimiento',
-#         name='Can create solicitud mantenimiento',
-#         content_type=content_type,
-#     )
-
-#     permission_edit = Permission.objects.create(
-#         codename='can_edit_solicitud_mantenimiento',
-#         name='Can edit solicitud mantenimiento',
-#         content_type=content_type,
-#     )
-
-#     permission_delete = Permission.objects.create(
-#         codename='can_delete_solicitud_mantenimiento',
-#         name='Can delete solicitud mantenimiento',
-#         content_type=content_type,
-#     )
-
-#     return permission_create, permission_edit, permission_delete
-
-# # Define una función para asignar permisos a los usuarios específicos
-# def assign_permissions_to_specific_users():
-#     # Obtiene o crea el grupo para usuarios con permisos de solicitud
-#     group, created = Group.objects.get_or_create(name='Usuarios con permisos de solicitud mantenimiento')
-
-#     # Asigna permisos de solicitud al grupo
-#     permission_create, permission_edit, permission_delete = create_custom_permissions()
-#     group.permissions.add(permission_create, permission_edit, permission_delete)
-
-#     # Filtra los usuarios que no pertenecen al departamento de Mantenimiento de Equipo
-#     specific_users = trabajadores.objects.exclude(departamento='Mantenimiento de Equipo')
-
-#     # Asigna los usuarios al grupo
-#     for user in specific_users:
-#         user.groups.add(group)
-
-# # Llama a la función para asignar permisos a usuarios específicos
-# assign_permissions_to_specific_users()

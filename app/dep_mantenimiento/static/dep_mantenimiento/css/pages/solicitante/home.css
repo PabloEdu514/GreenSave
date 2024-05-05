@@ -90,7 +90,7 @@
 
 
 .status{
-    color: #1B396B !important;
+  
     text-align: center !important;
     width: 10px !important;
     height: 50px !important;
@@ -121,33 +121,7 @@
     background-color: transparent !important; /* Hacer el fondo transparente */
 }
 
-.Enviado {
-    background-color: #3366cc; /* Azul para estado 'Enviado' */
-}
 
-.Pendiente {
-    background-color: #ff9933; /* Naranja para estado 'Pendiente' */
-}
-
-.Realizado {
-    background-color: #00cc66; /* Verde para estado 'Realizado' */
-}
-
-.Rechazado {
-    background-color: #ff3333; /* Rojo para estado 'Rechazado' */
-}
-
-.Alerta {
-    background-color: #ffcc00; /* Amarillo para estado 'Alerta' */
-}
-
-.En proceso {
-    background-color: #cc9900; /* Marrón para estado 'En proceso' */
-}
-
-.Enespera {
-    background-color: #cccccc; /* Gris para estado 'En espera' */
-}
 
 
 /* Estilos para el modal */

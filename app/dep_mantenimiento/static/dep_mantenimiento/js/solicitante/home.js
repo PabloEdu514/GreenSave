@@ -6,11 +6,34 @@ let dataTableInitialized=false;
 
 const dataTableOptions = {
     searching: false,
-    paging: false,
+    paging: true, // Habilita la paginación
+    pagingType: "full_numbers", // Utiliza la paginación completa
+    lengthChange: false, // Desactiva la opción de cambiar la cantidad de entradas por página
+    pageLength: 30, // Define la cantidad de datos por página
     ordering: false,
     info: false,
-    
-    destroy: true
+    destroy: true,
+    language: {
+        paginate: {
+            first: '', // Deja en blanco el texto para el botón "First"
+            previous: '<i class="fas fa-chevron-left"></i>', // Icono para el botón "Anterior"
+            next: '<i class="fas fa-chevron-right"></i>', // Icono para el botón "Siguiente"
+            last: '' // Deja en blanco el texto para el botón "Last"
+        }
+    }
+};
+
+
+
+function limitarDescripcion(descripcion, limitePalabras) {
+    // Convertir la descripción a cadena de texto
+    const descripcionString = descripcion.toString();
+    const palabras = descripcionString.split(' ');
+    if (palabras.length > limitePalabras) {
+        return palabras.slice(0, limitePalabras).join(' ') + '...';
+    } else {
+        return descripcionString;
+    }
 }
 
 
@@ -21,6 +44,7 @@ const initDataTable=async ()=>{
     }
 
     await listSolicitudes();
+    
     dataTable=$('#Tabla-Solicitudes').DataTable(dataTableOptions);
     dataTableInitialized=true;  
         
@@ -39,14 +63,14 @@ const listSolicitudes = async () => {
             const hideButtons = solicitudes.tiempo_transcurrido > 3600;
             let icono;
             switch (solicitudes.status) {
-                case 'En proceso':
-                    icono = '<i id="En proceso" class="fa-solid fa-circle-play" style="color: #1B396B "></i>'; // Icono de "play" cuando el estado es "En proceso"
+                case 'En_proceso':
+                    icono = '<i id="En_proceso" class="fa-solid fa-circle-play" style="color: #1B396B "></i>'; // Icono de "play" cuando el estado es "En proceso"
                     break;
                 case 'Realizado':
                     icono = '<i id="Realizado" class="fa-solid fa-circle-check" style="color: #1B396B "></i>'; // Icono de "check" cuando el estado es "Completado"
                     break;
-                case 'En espera':
-                    icono = '<i id="En espera" class="fa-solid fa-circle-pause" style="color: #1B396B "></i>';
+                case 'En_espera':
+                    icono = '<i id="En_espera" class="fa-solid fa-circle-pause" style="color: #1B396B "></i>';
                     break;             
                 case 'Pendiente':
                     icono = '<i id="Pendiente" class="fa fa-clock-o" aria-hidden="true" style="color: #1B396B"></i>'; 
@@ -60,23 +84,27 @@ const listSolicitudes = async () => {
                 default:
                     icono = solicitudes.status; // Usa el texto del estado como icono por defecto
             }
+            // Limitar la descripción a 10 palabras y agregar puntos suspensivos
+            const descripcionLimitada = limitarDescripcion(solicitudes.descripcion, 10);
 
 
             content += `
                 <tr onclick="openDetalle(${solicitudes.id})" class="${solicitudes.status}">
                     <td scope="row"  class ="texto">${index + 1}</td>
                     <td class ="servicio">${solicitudes.tipo_servicio}</td>
-                    <td class ="descripcion">${solicitudes.descripcion}</td>
+                    <td class ="descripcion">${descripcionLimitada}</td>
                     <td class ="botones">
                         ${!hideButtons ? `
-                        <button  class="btn btn-sm-2"  onclick="editSolicitud(${solicitudes.id}, event)">   
-                        <i class="fa fa-pencil-square" aria-hidden="true" style="color: #1B396B !important"></i>
+                        <button  class="btn btn-sm-2" style="background-color: #1a759f !important;" onclick="editSolicitud(${solicitudes.id}, event)">   
+                        <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
                         
                         </button>
-                        <button  class="btn  btn-sm-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <button  class="btn  btn-sm-2" data-bs-toggle="modal" style="background-color: #d90429 !important;" data-bs-target="#exampleModal">
                     
-                        <i class="fa fa-trash" aria-hidden="true" style="color: #1B396B !important" ></i>
+                        <i class="fa fa-trash" aria-hidden="true" style=" color: #ffffff !important;" ></i>
                         </button>
+
+
 
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -122,29 +150,6 @@ function editSolicitud(solicitudId, event) {
     event.stopPropagation();
     // Lógica para editar la solicitud
 }
-
-function eliminarSolicitud(solicitudId) {
-    // Realizar la eliminación de la solicitud utilizando fetch, AJAX u otra técnica de tu elección
-    fetch(`/dep_mantenimiento/eliminar-solicitud/${solicitudId}/`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken') // Asegúrate de enviar el token CSRF
-        },
-    })
-    .then(response => {
-        if (response.ok) {
-            // Recargar la tabla de solicitudes después de eliminar una solicitud
-            reloadDataTable();
-        } else {
-            throw new Error('No se pudo eliminar la solicitud.');
-        }
-    })
-    .catch(error => {
-        console.error('Error al eliminar la solicitud:', error);
-    });
-}
-
 
 
 

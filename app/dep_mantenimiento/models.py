@@ -1,9 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User, AbstractUser
-from django.contrib.auth.models import Group, Permission
-from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
-
+from django.dispatch import receiver
 class trabajadores(models.Model):
     SEXO = (
         ('H', 'Hombre'),
@@ -34,23 +31,26 @@ class trabajadores(models.Model):
     campus= models.PositiveIntegerField( null=True, blank=True)
     email = models.EmailField("Correo", max_length=100, db_column='email', blank=True, null=True)
     foto_Perfil = models.ImageField('Imagen de Perfil', upload_to='dep_mantenimiento/img/Foto_Perfil', blank=True, null= True)
-
+    grupos = models.ManyToManyField('CustomGroup', related_name='trabajadores', blank=True)
     class Meta:
         app_label = 'dep_mantenimiento'
         db_table = 'trabajador'
         verbose_name = 'Perfil de trabajador'
-    #     permissions = (
-    #     ('view_mantenimiento_trabajador', 'Usuarios de Mantenimiento de Equipo pueden ver'),
-    #     ('change_mantenimiento_trabajador', 'Usuarios de Mantenimiento de Equipo pueden editar'),
-    #     ('view_all_trabajador', 'Usuarios Solcitantes pueden ver'),
-    #     ('change_all_trabajador', 'Usuarios Solcitantes pueden editar'),
-    #     ('add_all_trabajador', 'Usuarios Solcitantes pueden agregar'),
-    #     ('delete_all_trabajador', 'Usuarios Solcitantes pueden borrar'),
-    # )
+        permissions = [
+        ('view_mantenimiento_trabajador', 'Usuarios de Mantenimiento de Equipo pueden ver'),
+        ('change_mantenimiento_trabajador', 'Usuarios de Mantenimiento de Equipo pueden editar'),
+        ('view_all_trabajador', 'Usuarios Solcitantes pueden ver'),
+        ('change_all_trabajador', 'Usuarios Solcitantes pueden editar'),
+        ('add_all_trabajador', 'Usuarios Solcitantes pueden agregar'),
+        ('delete_all_trabajador', 'Usuarios Solcitantes pueden borrar')
+        ]
         
     def nombre_completo(self):
         nombre= self.nombres+" "+self.appaterno+" "+self.apmaterno
         return nombre
+    
+    def __str__(self):
+        return self.nombre_completo()
     
 class Solicitud_Mantenimiento(models.Model):
     id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
@@ -112,4 +112,32 @@ class Solicitud_Mantenimiento(models.Model):
         app_label = 'dep_mantenimiento'
         db_table = 'solicitud_mantenimiento'
         verbose_name = 'Solicitud_de_mantenimiento'
+        permissions = [
+            ('view_Solicitud_Mantenimiento_Solicitantes', 'Usuarios Solicitantes pueden ver las solicitudes de mantenimiento'),
+            ('change_Solicitud_Mantenimiento_Solicitantes', 'Usuarios Solicitantes pueden cambiar las solicitudes de mantenimiento'),
+            ('add_Solicitud_Mantenimiento_Solicitantes', 'Usuarios Solicitantes pueden agregar las solicitudes de mantenimiento'),
+            ('delete_Solicitud_Mantenimiento_Solicitantes', 'Usuarios Solicitantes pueden borrar las solicitudes de mantenimiento'),
 
+            ('view_Solicitud_Mantenimiento_Mantenimiento', 'Usuarios Mantenimiento pueden ver las solicitudes de mantenimiento'),
+            ('change_Solicitud_Mantenimiento_Mantenimiento', 'Usuarios Mantenimiento pueden cambiar las solicitudes de mantenimiento'),
+        ]# Modelo para los grupos personalizados
+class CustomGroup(models.Model):
+    name = models.CharField(max_length=150, unique=True)
+    class Meta:
+        app_label = 'dep_mantenimiento'
+        db_table = 'Grupos'
+        verbose_name = 'Grupo'
+    def __str__(self):
+        return self.name
+
+# Define tus señales aquí
+@receiver(post_save, sender=trabajadores)
+def asignar_grupo(sender, instance, created, **kwargs):
+    if created:
+        if instance.puesto == 'Jefe' or instance.puesto == 'Empleado' and  instance.departamento == 'Mantenimiento de Equipo':
+           
+                grupo, _ = CustomGroup.objects.get_or_create(name='Trabajadores de Mantenimiento')
+                instance.grupos.add(grupo)
+        else:
+            grupo, _ = CustomGroup.objects.get_or_create(name='Usuarios Solicitantes')
+            instance.grupos.add(grupo)

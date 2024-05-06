@@ -1,208 +1,256 @@
-
-#Contenido{
-  background-color:white !important;
+#Contenido {
+  background-color: white !important;
   font-family: "Inter", sans-serif !important;
-  
 }
-
 /* Estilos para el encabezado de la tabla */
+
 /* Estilos para el Buscador */
-#Buscador{
+#Buscador {
   padding-top: 10px !important;
-  background-color: #1B396B !important;
+  background-color: #1b396b !important;
 }
 .input-group-text {
-  color: #1B396B !important;
-  background-color:white !important;
+  color: #1b396b !important;
+  background-color: white !important;
 }
 
-
-
 #searchInput {
-  color: #1B396B !important;
-  background-color:white !important;
+  color: #1b396b !important;
+  background-color: white !important;
 }
 /* Estilos para el Filtro */
 .container-fluid {
   background-color: #ffffff !important;
   padding-top: 10px !important;
-
 }
 
 /* Botones de Filtrado, Recargar Tabla y Solicitar-formulario */
-#Filtro{
- 
+#Filtro {
   background-color: #ffffff !important;
-  color:#1B396B !important;
+  color: #1b396b !important;
 }
 
-#Recargar{
+#Recargar {
   border: none !important; /* Elimina el borde */
   background-color: #ffffff !important;
-  color:#1B396B !important;
+  color: #1b396b !important;
 }
-#Solicitar-formulario{
-  
+#Solicitar-formulario {
   background-color: #ffffff !important;
-  color:#1B396B !important;
+  color: #1b396b !important;
 }
-
-
 /* Estilos para el encabezado de la tabla */
 #Tabla-Solicitudes {
- 
-  
-  padding-top: 10px !important;
+  width: 100%; /* Ancho completo de la tabla */
+  height: 50px !important; /* Establece la altura deseada para las filas */
+  border-collapse: collapse; /* Fusionar los bordes de las celdas */
+  max-height: 50px !important;
 }
 
+
+
 /* Agrega estilos al pasar el mouse sobre las filas de la tabla */
-#Tabla-Solicitudes tbody tr:hover {
- 
-  /* Otros estilos que desees aplicar al pasar el mouse sobre las filas */
+
+#Tabla-Solicitudes tbody tr:hover td {
+  background-color: #a2d2ff !important;
+  color: white !important;
   cursor: pointer !important;
 }
 
-
-
-.centered  {
-  text-align: center !important;
-  color: #1B396B !important;
-  font-weight: bold !important;
-  width: 10px !important;
-  height: 50px !important;
+/* Estilos de las filas de la tabla dependiendo del progreso de la solicitud */
+.Pendiente td{
+  background-color: rgba(217, 217, 217, 1) !important;
+}
+.Realizado td{
+  background-color: rgba(37, 189, 13, 0.53) !important;
+}
+.En_espera td{
+  background-color: rgba(241, 195, 77, 0.53) !important;
+  color: rgb(0, 0, 0) !important;
 
 }
-.ColDesc{
-  text-align: left    !important;
-  color: #1B396B !important;
+.Rechazado td{
+  background-color: rgba(255, 46, 0, 0.53) !important;
+  color: white !important;
+
+}
+
+
+
+/* Estilos de las columnas de la tabla */
+.Colindex {
+  font-size: 16px;
+  text-align: center !important;
+  color: #1b396b !important;
   font-weight: bold !important;
-  width: 800px !important;
+
+  width: 20px !important;
   height: 50px !important;
+  max-height: 50px !important;
+  max-width: 20px !important;
+}
+
+.Colservicio {
+  font-size: 16px;
+  text-align: center !important;
+  color: #1b396b !important;
+  font-weight: bold !important;
+
+  width: 80px !important;
+  height: 50px !important;
+  max-height: 50px !important;
+  max-width: 80px !important;
+}
+
+.ColDesc {
+  font-size: 16px;
+  text-align: left !important;
+  color: #1b396b !important;
+  font-weight: bold !important;
+  width: 250px !important;
+  height: 50px !important;
+  max-height: 50px !important;
+  max-width: 250px !important;
+}
+.ColPertenece {
+  font-size: 16px;
+  text-align: center !important;
+  color: #1b396b !important;
+  font-weight: bold !important;
+  width: 150px !important;
+  height: 50px !important;
+  max-height: 50px !important;
+  max-width: 150px !important;
+}
+
+.Colbotones {
+  font-size: 16px;
+  text-align: center !important;
+  color: #1b396b !important;
+  font-weight: bold !important;
+  width: 150px !important;
+  height: 50px !important;
+  max-width: 150px !important;
+  max-height: 50px !important;
+}
+
+.Colstatus {
+  font-size: 16px;
+  text-align: center !important;
+  align-items: center !important;
+  color: #1b396b !important;
+  font-weight: bold !important;
+  width: 80px !important;
+  height: 50px !important;
+  max-width: 80px !important; /* Para evitar que el contenido se desborde */
+  max-height: 50px !important;
+}
+
+.Colfecha {
+  font-size: 16px;
+  color: #1b396b !important;
+  text-align: center !important;
+  height: 50px !important;
+  width: 100px !important;
+  font-weight: bold !important;
+  max-width: 100px !important;
+  max-height: 50px !important;
+}
+.Colhora {
+  font-size: 16px;
+  color: #1b396b !important;
+  text-align: center !important;
+  align-items: center !important;
+  height: 50px !important;
+  width: 60px !important;
+  font-weight: bold !important;
+  max-height: 50px !important;
+  max-width: 60px !important;
 }
 
 /* Estilos para las filas de la tabla */
-.texto{
+.index {
+  font-size: 16px;
   color: #0b0b0b !important;
   text-align: center !important;
-  width: 10px !important;
+  align-items: center !important;
+  width: 20px !important;
   height: 50px !important;
+  max-height: 50px !important;
+  max-width: 20px !important;
 }
-
-
-.status{
-
+.servicio {
+  font-size: 16px;
+  color: #0b0b0b !important;
   text-align: center !important;
-  width: 10px !important;
+  width: 50px !important;
   height: 50px !important;
+  max-height: 50px !important;
+  max-width: 50px !important;
 }
 
-.descripcion{
+.descripcion {
+  font-size: 16px;
   color: #0b0b0b;
-  text-align: left    !important;
-
-  height: 50px !important;
+  text-align: left !important;
+  max-width: 250px !important; /* Para evitar que el contenido se desborde */
+  max-height: 50px !important;
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+  overflow: hidden; /* Oculta el texto que se desborde */
+  text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al texto que se desborde */
 }
-
-.fecha{
-  color: #0b0b0b!important ;
+.Pertenece {
+  font-size: 16px;
+  color: #0b0b0b !important;
   text-align: center !important;
-  height: 50px !important;
+  max-width: 250px !important; /* Para evitar que el contenido se desborde */
+  max-height: 50px !important;
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+  overflow: hidden; /* Oculta el texto que se desborde */
+  text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al texto que se desborde */
 }
-.hora{
-  color: #0b0b0b!important ;
+
+.botones {
   text-align: center !important;
+  align-items: center !important;
+  width: 150px !important;
   height: 50px !important;
+  max-width: 150px !important; /* Para evitar que el contenido se desborde */
+  max-height: 50px !important;
 }
-.Firmado{
+
+.status {
+  max-height: 50px !important;
   text-align: center !important;
-  width: 10px !important;
+  width: 50px !important;
   height: 50px !important;
+  max-width: 50px !important; /* Para evitar que el contenido se desborde */
+  max-height: 50px !important;
 }
-.Pertenece{
+.hora {
+  font-size: 16px;
+  color: #0b0b0b !important;
   text-align: center !important;
-  width: 10px !important;
+  width: 60px !important;
   height: 50px !important;
+  max-width: 60px !important; /* Para evitar que el contenido se desborde */
+  max-height: 50px !important;
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+  overflow: hidden; /* Oculta el texto que se desborde */
+  text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al texto que se desborde */
+}
+
+.fecha {
+  font-size: 16px;
+  color: #0b0b0b !important;
+  text-align: center !important;
+  width: 100px !important;
+  max-width: 100px !important; /* Para evitar que el contenido se desborde */
+  max-height: 50px !important;
+  height: 50px !important;
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+  overflow: hidden; /* Oculta el texto que se desborde */
+  text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al texto que se desborde */
 }
 
 
-
-.botones .btn {
-  border: none !important; /* Quitar los bordes */
-  background-color: transparent !important; /* Hacer el fondo transparente */
-}
-
-
-
-
-/* Estilos para el modal */
-.modal-content {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-
-}
-
-.modal-header {
-  background-color: #ffffff;
-  color: #1B396B !important;
-  border-radius: 10px 10px 0 0;
-}
-
-.modal-title {
-  font-family: "Inter", sans-serif !important;
-  font-weight: bold;
-  color: #1B396B !important;
-}
-
-.modal-body {
-  padding: 20px;
-  background-color:#ffffff !important;
-  color: #000000 !important;
-  font-family: "Inter", sans-serif !important;
-}
-
-.modal-footer {
-  background-color:#ffffff !important;
-  border-top: 1px solid #dee2e6;
-  border-radius: 0 0 10px 10px;
-}
-
-/* Estilos para los botones */
-.modal-footer button {
-  border: none;
-  cursor: pointer;
-  padding: 10px 20px;
-  margin: 0 5px;
-  border-radius: 5px;
-  font-weight: bold;
-  background-color:#1B396B!important;
-  color: #ffffff !important;
-}
-
-.modal-footer a.btn {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  background-color: #dc3545 !important; /* Color de fondo del botón */
-  color: #fff; /* Color del texto del botón */
-  text-decoration: none; /* Quita la subrayado del enlace */
-  cursor: pointer;
-}
-
-.modal-footer a.btn:hover {
-  background-color: #c82333 !important; /* Color de fondo del botón al pasar el mouse */
-}
-
-
-.modal-footer button:hover {
-  background-color: #e3e6ea;
-}
-
-.modal-footer button[data-bs-dismiss="modal"] {
-  background-color: #ccc;
-  color: #333;
-}
-
-.modal-footer button[data-bs-dismiss="modal"]:hover {
-  background-color: #bbb;
-}

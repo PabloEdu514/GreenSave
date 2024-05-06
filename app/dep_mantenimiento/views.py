@@ -64,7 +64,7 @@ def inicio(request):
             elif id_trabajador.puesto == 'Jefe' and id_trabajador.departamento == 'Mantenimiento de Equipo':
                         return redirect('inicio_jefe_mantenimiento')  # Redireccionar al inicio de jefe de mantenimiento del departamento de Mantenimiento de Equipo
             elif id_trabajador.puesto == 'Empleado'and id_trabajador.departamento == 'Mantenimiento de Equipo':
-                        return redirect('inicio_empleado')  # Redireccionar al inicio de un empleado del departamento de Mantenimiento de Equipo
+                        return redirect('inicio_empleado', id=id_trabajador.id)  # Redireccionar al inicio de un empleado del departamento de Mantenimiento de Equipo
             else:
                     # Mostrar un mensaje de alerta para otros usuarios con permisos de solicitud
                     messages.warning(request, 'Tu perfil no tiene una página de inicio asignada. Contacta al administrador.')
@@ -95,12 +95,34 @@ class vistas_solicitantes_cargar_inicio(View):
 
         return render(request, 'dep_mantenimiento/layout/solicitante/home.html', contexto)
     @staticmethod
-    def cargar_Formulario(request,id_Docente):
+    def cargar_Formulario(request, id_Docente):
         # Lógica para determinar el tipo de usuario
         es_docente = True  # Por ejemplo, asumamos que el usuario es un docente
-        form = SolicitudMantenimientoForm()
+
+        # Obtener la fecha actual
+        fecha_actual = datetime.now().date()
+        trabajador = trabajadores.objects.get(id=id_Docente)
+        # Obtener el área solicitante y el responsable del área
+        departamento = trabajador.departamento
+                
+                # Obtener el jefe del departamento
+        jefe_departamento = trabajadores.objects.filter(departamento=departamento, puesto='Jefe').first()
+                # Verificar si se encontró un jefe para el departamento
+        if jefe_departamento:
+                    # Obtener el nombre completo del jefe del departamento
+                nombre_jefe_departamento = jefe_departamento.nombre_completo()
+        else:
+                    # Manejar el caso en el que no se encuentre ningún jefe para el departamento
+            nombre_jefe_departamento = "No asignado"
+
+        # Crear una instancia del formulario con los valores iniciales
+        form = SolicitudMantenimientoForm(initial={
+            'fecha': fecha_actual,
+            'area_solicitante': departamento,
+            'responsable_Area': nombre_jefe_departamento,
+        })
+
         if es_docente:
-            
             url_formulario = reverse('formulario_docente', args=[id_Docente])  # Asegúrate de pasar el id adecuado aquí
         else:
             url_formulario = reverse('inicio')
@@ -263,35 +285,104 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
             # Si no se encuentran solicitudes, lanzar una excepción Http404
             raise Http404("Las solicitudes del jefe de departamento no existen")
 
-    
+# Vistas para la sección de Empleados
+class vistas_Empleados(View):
+    @staticmethod
+    def cargar_Inicio(request, id):
+        return render(request, 'dep_mantenimiento/layout/empleado/home.html', {'id': id})
+
+    @staticmethod
+    def obtener_solicitudes(request, idEmpleado):
+        try:
+            # Filtrar las solicitudes asociadas al empleado
+            solicitudes = Solicitud_Mantenimiento.objects.filter(id_Empleado=idEmpleado).order_by('-fecha', '-hora')
+            
+            # Crear una lista para almacenar las solicitudes con la información adicional
+            solicitudes_con_info_adicional = []
+
+            # Iterar sobre cada solicitud
+            for solicitud in solicitudes:
+                # Crear un diccionario para almacenar la información de la solicitud
+                solicitud_dict = {
+                    'id': solicitud.id,
+                    'tipo_servicio': solicitud.tipo_servicio,
+                    'descripcion': solicitud.descripcion,
+                    'status': solicitud.status,
+                    'fecha': solicitud.fecha.strftime("%d/%m/%Y"),  # Formatear la fecha como dd/mm/aaaa
+                    'hora': solicitud.hora.strftime("%H:%M"),  # Formatear la hora como hh:mm
+                    'firmado_jefe_departamento': solicitud.firma_Jefe_Departamento,  # Firma del jefe de departamento
+                    'fimrado_empleado': solicitud.firma_Empleado,  # Firma del jefe de mantenimiento
+                }
+
+                # Verificar si la solicitud tiene un trabajador asociado
+                if solicitud.id_Trabajador:
+                    # Obtener la instancia del trabajador asociado a la solicitud
+                    trabajador = solicitud.id_Trabajador
+                    # Obtener el nombre completo del trabajador utilizando el método nombre_completo del modelo Trabajador
+                    nombre_completo = trabajador.nombre_completo()
+                    # Obtener el departamento del trabajador
+                    departamento = trabajador.departamento
+                    # Agregar el nombre completo y el departamento del trabajador al diccionario de la solicitud
+                    solicitud_dict['nombre_completo_trabajador'] = nombre_completo
+                    solicitud_dict['departamento_trabajador'] = departamento
+                elif solicitud.id_Jefe_Departamento:
+                    # Obtener la instancia del jefe de departamento asociado a la solicitud
+                    jefe_departamento = solicitud.id_Jefe_Departamento
+                    # Obtener el nombre completo del jefe de departamento utilizando el método nombre_completo del modelo JefeDepartamento
+                    nombre_completo = jefe_departamento.nombre_completo()
+                    # Obtener el departamento del jefe de departamento
+                    departamento = jefe_departamento.departamento
+                    # Agregar el nombre completo y el departamento del jefe de departamento al diccionario de la solicitud
+                    solicitud_dict['nombre_completo_jefe_departamento'] = nombre_completo
+                    solicitud_dict['departamento_jefe_departamento'] = departamento
+                
+                # Agregar el diccionario de la solicitud a la lista de solicitudes con información adicional
+                solicitudes_con_info_adicional.append(solicitud_dict)
+            
+            # Retornar las solicitudes en formato JSON
+            return JsonResponse({'solicitudes': solicitudes_con_info_adicional})
+        
+        except Solicitud_Mantenimiento.DoesNotExist:
+            # Si no se encuentran solicitudes, lanzar una excepción Http404
+            raise Http404("Las solicitudes del empleado no existen")
+
     
 class rellenar_formulario(View):
     @staticmethod   
-     
     def guardar_datos_Docente(request, id_Docente):
         if request.method == 'POST':
             form = SolicitudMantenimientoForm(request.POST)
             if form.is_valid():
-                id_fecha = form.cleaned_data['fecha']
+                id_fecha = datetime.now().date()
                 id_folio = form.cleaned_data['folio']
-                id_area_solicitante = form.cleaned_data['area_solicitante']
-                id_responsable_area = form.cleaned_data['responsable_Area']
                 id_tipos_servicio = form.cleaned_data['tipos_servicio']
                 id_descripcion = form.cleaned_data['descripcion']
                 hora_actual = datetime.now().time()
                 # Obtener la instancia del trabajador correspondiente al ID
                 trabajador = trabajadores.objects.get(id=id_Docente)
+                departamento = trabajador.departamento
                 
+                # Obtener el jefe del departamento
+                jefe_departamento = trabajadores.objects.filter(departamento=departamento, puesto='Jefe').first()
+                # Verificar si se encontró un jefe para el departamento
+                if jefe_departamento:
+                    # Obtener el nombre completo del jefe del departamento
+                    nombre_jefe_departamento = jefe_departamento.nombre_completo()
+               
+                else:
+                    # Manejar el caso en el que no se encuentre ningún jefe para el departamento
+                    nombre_jefe_departamento = "No asignado"  # O puedes manejarlo de otra manera según tu lógica de negocio
                 # Crea una instancia del modelo Solicitud y asigna los valores
                 datos_nuevos = Solicitud_Mantenimiento(
                     fecha=id_fecha,
                     folio=id_folio,
-                    area_solicitante=id_area_solicitante,
-                    responsable_Area=id_responsable_area,
+                    area_solicitante=departamento,
+                    responsable_Area=nombre_jefe_departamento,  # Aquí asignamos el jefe del departamento como responsable del área
                     tipo_servicio=id_tipos_servicio,
                     descripcion=id_descripcion,
                     hora=hora_actual,
-                    id_Trabajador=trabajador, # Asignar la instancia del trabajador, no solo el ID
+                    id_Trabajador=trabajador,
+                    id_Jefe_Departamento=jefe_departamento,
                     status='Enviado',
                 )
                 
@@ -300,7 +391,6 @@ class rellenar_formulario(View):
 
                 # Redirige a la URL de la vista de inicio del docente
                 return redirect('inicio_docente', id=id_Docente)
-                
         else:
             form = SolicitudMantenimientoForm()
             

@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.conf.urls import handler404,handler403
-from .views import vistas_solicitantes_cargar_inicio,rellenar_formulario,vistas_Jefe_Departamento_cargar_inicio
+from .views import vistas_solicitantes_cargar_inicio,rellenar_formulario,vistas_Jefe_Departamento_cargar_inicio,vistas_Empleados
 
 urlpatterns = [
     path('logout/', views.cerrar_sesion, name='cerrar_sesion'),
@@ -20,6 +20,9 @@ urlpatterns = [
     #path('Formulario/Jefe_Departamento/<int:id_Jefe_Departamento>/', views.vistas_Jefe_Departamento_cargar_inicio.cargar_Formulario, name='formulario_jefe_departamento'),
     #path('FirmarSolicitud/Jefe_Departamento/<int:id_solicitud>/', views.firmar_solicitud, name='firmar_solicitud'),
 
+    # Enlaces del Empleados
+    path('CargarSolicitudesEmpleados/<int:idEmpleado>/', views.vistas_Empleados.obtener_solicitudes, name='obtener_solicitudes_empleados'),
+    path('Inicio/Empleado/<int:id>/', views.vistas_Empleados.cargar_Inicio, name='inicio_empleado'),
     # Enlaces del para guardar el formulario
     path('guardar/<int:id_Docente>/', views.rellenar_formulario.guardar_datos_Docente, name='guardar_formulario_Docente'),
     

@@ -9,11 +9,10 @@ const dataTableOptions = {
     paging: true, // Habilita la paginación
     pagingType: "full_numbers", // Utiliza la paginación completa
     lengthChange: false, // Desactiva la opción de cambiar la cantidad de entradas por página
-    pageLength: 2, // Define la cantidad de datos por página
+    pageLength: 30, // Define la cantidad de datos por página
     ordering: false,
     info: false,
     destroy: true,
-    
     language: {
         paginate: {
             first: '', // Deja en blanco el texto para el botón "First"
@@ -22,7 +21,6 @@ const dataTableOptions = {
             last: '' // Deja en blanco el texto para el botón "Last"
         }
     }
-    
 };
 
 
@@ -66,82 +64,88 @@ const listSolicitudes = async () => {
             let icono;
             switch (solicitudes.status) {
                 case 'En_proceso':
-                    icono = '<i id="En_proceso" class="fa-solid fa-circle-play" style="color: #1B396B "></i>'; // Icono de "play" cuando el estado es "En proceso"
+                    icono = '<i id="En proceso" class="fa-solid fa-circle-play" style="color: #1B396B ;font-size: 30px;"></i>'; // Icono de "play" cuando el estado es "En proceso"
                     break;
                 case 'Realizado':
-                    icono = '<i id="Realizado" class="fa-solid fa-circle-check" style="color: #1B396B "></i>'; // Icono de "check" cuando el estado es "Completado"
+                    icono = '<i id="Realizado" class="fa-solid fa-circle-check" style="color: #1B396B ;font-size: 30px;"></i>'; // Icono de "check" cuando el estado es "Completado"
                     break;
                 case 'En_espera':
-                    icono = '<i id="En_espera" class="fa-solid fa-circle-pause" style="color: #1B396B "></i>';
+                    icono = '<i id="En espera" class="fa-solid fa-circle-pause" style="color: #1B396B ;font-size: 30px;"></i>';
                     break;             
                 case 'Pendiente':
-                    icono = '<i id="Pendiente" class="fa fa-clock-o" aria-hidden="true" style="color: #1B396B"></i>'; 
+                    icono = '<i id="Pendiente" class="fa fa-clock-o" aria-hidden="true" style="color: #1B396B;font-size: 30px;"></i>'; 
                     break;
                 case 'Rechazado':
-                    icono = '<i id="Rechazado" class="fa-solid fa-circle-xmark" style="color: #1B396B "></i>';
+                    icono = '<i id="Rechazado" class="fa-solid fa-circle-xmark" style="color: #1B396B;font-size: 30px; "></i>';
                     break;
                 case 'Enviado':
-                    icono = '<i id="Enviado" class="fa fa-envelope" aria-hidden="true" style="color: #1B396B "></i> ';
+                    icono = '<i id="Enviado" class="fa fa-envelope" aria-hidden="true" style="color: #1B396B;font-size: 30px; "></i> ';
                     break;                
                 default:
                     icono = solicitudes.status; // Usa el texto del estado como icono por defecto
             }
             // Limitar la descripción a 10 palabras y agregar puntos suspensivos
             const descripcionLimitada = limitarDescripcion(solicitudes.descripcion, 10);
-            // Chequeamos si hay un trabajador asociado a la solicitud
-            const nombreTrabajador = solicitudes.nombre_completo_trabajador ? solicitudes.nombre_completo_trabajador : 'N/A';
             // Botón o icono dependiendo del estado de la firma del jefe de departamento
             let actionElement;
-            if (solicitudes.firmado_jefe_departamento==true) {
-                actionElement = '<i class="fa fa-check-circle" style="color: green;"></i>';
+            if (solicitudes.firmado_jefe_departamento === true) {
+                actionElement = `
+                <button class="btn btn-sm-2" style="background-color: #6a994e !important;">   
+                <i class="fa fa-check-square" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
+                </button>`;
             } else {
-                actionElement = `<button class="btn btn-sm btn-primary" onclick="enviarSolicitudFirmaJefeDepartamento(${solicitudes.id})">Firmar</button>`;
+                actionElement = `<button class="btn btn-sm-2" style="background-color: #118ab2 !important;" onclick="fimarSolicitud(${solicitudes.id}, event)">   
+                                    <i class="fa fa-pencil-square-o" style="color: #ffffff !important; font-size: 25px ;" aria-hidden="true"></i>
+                                 </button>`;
             }
+            // Chequeamos si hay un trabajador asociado a la solicitud
+            const nombreTrabajador = solicitudes.nombre_completo_trabajador ? `De: ${solicitudes.nombre_completo_trabajador}` : '';
+
+
             content += `
                 <tr onclick="openDetalle(${solicitudes.id})" class="${solicitudes.status}">
-                    <td scope="row"  class ="texto">${index + 1}</td>
+                    <td scope="row"  class ="index">${index + 1}</td>
                     <td class ="servicio">${solicitudes.tipo_servicio}</td>
-                    <td class="descripcion" ${!solicitudes.nombre_completo_trabajador ? 'colspan="2"' : ''}>${descripcionLimitada}</td>
-                    ${solicitudes.nombre_completo_trabajador ? `<td class="Pertenece">De: ${nombreTrabajador}</td>` : ''}
+                    <td class ="descripcion">${descripcionLimitada}</td>
+                  
+                    <td class ="Pertenece">   ${nombreTrabajador}</td>
                     <td class ="botones">
-                        ${!hideButtons ? `
+                  
+                    ${actionElement}
+                  
+                    
+                    
+                    
+                    ${!hideButtons ? `
                         <button  class="btn btn-sm-2" style="background-color: #1a759f !important;" onclick="editSolicitud(${solicitudes.id}, event)">   
                         <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
                         
                         </button>
-                        <button  class="btn  btn-sm-2" data-bs-toggle="modal" style="background-color: #d90429 !important;" data-bs-target="#exampleModal">
+                        <button  class="btn  btn-sm-2" data-bs-toggle="modal" style="background-color: #d90429 !important;">
                     
                         <i class="fa fa-trash" aria-hidden="true" style=" color: #ffffff !important;" ></i>
                         </button>
 
 
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Solicitud </h1>
-                                <button  class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>¿Quieres eliminar la solicitud ${solicitudes.id}?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button   data-bs-dismiss="modal">Cancelar</button>
-                                <a class="btn btn-danger" href="/dep_mantenimiento/eliminar-solicitud/${solicitudes.id}/">Eliminar</a>
-
-                            </div>
-                            </div>
+                        
                         </div>
-                        </div>
-                    ` : ''}
+                    ` : ` 
+                    </button>
+                    <button  class="btn  btn-sm-2"  style="background-color: #6c757d !important;" >
+                
+                    <i class="fa fa-lock" style=" color: #ffffff !important;" aria-hidden="true"></i>
+                    </button>
+                    
+                    
+                    `}
                     </td>
-                    <td class ="Firmado">                     ${actionElement}                    </td>
                     <td class ="status">${icono}</td> <!-- Aquí se mostrará el icono correspondiente -->
                     <td class ="fecha">${solicitudes.fecha}</td>
                    
                     <td class ="hora">${solicitudes.hora}</td>
+
+                    
                 </tr>
 
 
@@ -162,32 +166,19 @@ function editSolicitud(solicitudId, event) {
     // Lógica para editar la solicitud
 }
 
+function fimarSolicitud(solicitudId, event) {
+    event.stopPropagation();
+    // Lógica para editar la solicitud
+}
 
-// Función para enviar la solicitud de firma al jefe de departamento
 
-const enviarSolicitudFirmaJefeDepartamento = async (solicitudId) => {
-    try {
-        // Realiza una solicitud POST para enviar la solicitud de firma al jefe de departamento
-        const response = await fetch(`/FirmarSolicitud/Jefe_Departamento/${solicitudId}/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken') // Agrega el token CSRF a las cabeceras
-            }
-        });
-        if (response.ok) {
-            // Si la solicitud se envió correctamente, actualiza la interfaz cambiando el botón por un icono de check
-            const row = document.querySelector(`#Tabla-Solicitudes tbody tr[data-id="${solicitudId}"]`);
-            row.querySelector('.Firmado').innerHTML = '<i class="fa fa-check-circle" style="color: green;"></i>';
-        } else {
-            throw new Error('Error al enviar la solicitud de firma al jefe de departamento');
-        }
-    } catch (error) {
-        console.error(error);
-        alert('Error al enviar la solicitud de firma al jefe de departamento');
-    }
-};
 
+// Función para obtener el valor de la cookie CSRF
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
 
 function openDetalle(solicitudId) {
    

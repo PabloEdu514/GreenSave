@@ -95,10 +95,9 @@ const listSolicitudes = async () => {
                     <td class ="descripcion">${descripcionLimitada}</td>
                     <td class ="botones">
                         ${!hideButtons ? `
-                        <button  class="btn btn-sm-2" style="background-color: #1a759f !important;" onclick="editSolicitud(${solicitudes.id}, event)">   
+                        <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="/dep_mantenimiento/Formulario/Docente/Solicitud/${solicitudes.id}" role="button">
                         <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
-                        
-                        </button>
+                        </a>
                         <button  class="btn  btn-sm-2"  style="background-color: #d90429 !important;" >
                     
                         <i class="fa fa-trash" aria-hidden="true" style=" color: #ffffff !important;" ></i>

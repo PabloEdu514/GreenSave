@@ -11,9 +11,12 @@ urlpatterns = [
     # Enlaces del Docente
     path('CargarSolicitudes/<int:id_Docente>/', views.vistas_solicitantes_cargar_inicio.obtener_solicitudes, name='obtener_solicitudes'),
     path('Inicio/Docente/<int:id>/', views.vistas_solicitantes_cargar_inicio.cargar_Inicio, name='inicio_docente'),
+    # Enlaces del para guardar el formulario
     path('Formulario/Docente/<int:id_Docente>/', views.vistas_solicitantes_cargar_inicio.cargar_Formulario, name='formulario_docente'),
-
-
+    path('guardar/<int:id_Docente>/', views.vistas_solicitantes_cargar_inicio.guardar_datos_Docente, name='guardar_formulario_Docente'),
+    #Enlaces del para Editar el formulario
+    path('Formulario/Docente/Solicitud/<int:idFormulario>/', views.vistas_solicitantes_cargar_inicio.cargar_Formulario_Editar, name='formulario_editar'),
+    path('editar/<int:idFormulario>/', views.vistas_solicitantes_cargar_inicio.edtiarFormulario, name='edtiarFormulario'),
     # Enlaces del jefe de Departamento
     path('CargarSolicitudesJdep/<int:id_Jefe>/', views.vistas_Jefe_Departamento_cargar_inicio.obtener_solicitudes, name='obtener_solicitudes_jefe_departamento'),
     path('Inicio/Jefe_Departamento/<int:id>/', views.vistas_Jefe_Departamento_cargar_inicio.cargar_Inicio, name='inicio_jefe_departamento'),
@@ -23,8 +26,7 @@ urlpatterns = [
     # Enlaces del Empleados
     path('CargarSolicitudesEmpleados/<int:idEmpleado>/', views.vistas_Empleados.obtener_solicitudes, name='obtener_solicitudes_empleados'),
     path('Inicio/Empleado/<int:id>/', views.vistas_Empleados.cargar_Inicio, name='inicio_empleado'),
-    # Enlaces del para guardar el formulario
-    path('guardar/<int:id_Docente>/', views.rellenar_formulario.guardar_datos_Docente, name='guardar_formulario_Docente'),
+   
     
     # Eliminar solicitud
      path('eliminar-solicitud/<int:solicitud_id>/', views.eliminar_solicitud, name='eliminar_solicitud'),

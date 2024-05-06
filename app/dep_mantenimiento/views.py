@@ -173,8 +173,128 @@ class vistas_solicitantes_cargar_inicio(View):
         except Solicitud_Mantenimiento.DoesNotExist:
             # Si la solicitud no existe, lanzar una excepción Http404
              raise Http404("Las solicitudes del docente no existen")
-        
+    @staticmethod   
+    def guardar_datos_Docente(request, id_Docente):
+        if request.method == 'POST':
+            form = SolicitudMantenimientoForm(request.POST)
+            if form.is_valid():
+                id_fecha = datetime.now().date()
+                id_folio = form.cleaned_data['folio']
+                id_tipos_servicio = form.cleaned_data['tipos_servicio']
+                id_descripcion = form.cleaned_data['descripcion']
+                hora_actual = datetime.now().time()
+                # Obtener la instancia del trabajador correspondiente al ID
+                trabajador = trabajadores.objects.get(id=id_Docente)
+                departamento = trabajador.departamento
+                
+                # Obtener el jefe del departamento
+                jefe_departamento = trabajadores.objects.filter(departamento=departamento, puesto='Jefe').first()
+                # Verificar si se encontró un jefe para el departamento
+                if jefe_departamento:
+                    # Obtener el nombre completo del jefe del departamento
+                    nombre_jefe_departamento = jefe_departamento.nombre_completo()
+               
+                else:
+                    # Manejar el caso en el que no se encuentre ningún jefe para el departamento
+                    nombre_jefe_departamento = "No asignado"  # O puedes manejarlo de otra manera según tu lógica de negocio
+                # Crea una instancia del modelo Solicitud y asigna los valores
+                datos_nuevos = Solicitud_Mantenimiento(
+                    fecha=id_fecha,
+                    folio=id_folio,
+                    area_solicitante=departamento,
+                    responsable_Area=nombre_jefe_departamento,  # Aquí asignamos el jefe del departamento como responsable del área
+                    tipo_servicio=id_tipos_servicio,
+                    descripcion=id_descripcion,
+                    hora=hora_actual,
+                    id_Trabajador=trabajador,
+                    id_Jefe_Departamento=jefe_departamento,
+                    status='Enviado',
+                )
+                
+                # Guarda los datos en la base de datos
+                datos_nuevos.save()
 
+                # Redirige a la URL de la vista de inicio del docente
+                return redirect('inicio_docente', id=id_Docente)
+        else:
+            form = SolicitudMantenimientoForm()
+            
+        # Renderiza el formulario
+        return render(request, 'dep_mantenimiento/layout/solicitante/formulario.html', {'form': form})
+    #funciones para editar la solicitud
+    def cargar_Formulario_Editar(request, idFormulario):
+        try:
+            solicitud = Solicitud_Mantenimiento.objects.get(id=idFormulario)
+        except Solicitud_Mantenimiento.DoesNotExist:
+            return HttpResponse("La solicitud no existe", status=404)
+
+        # Obtener los valores necesarios para inicializar el formulario
+        departamento = solicitud.area_solicitante
+        nombre_jefe_departamento = solicitud.responsable_Area
+        tipo_servicio_id = solicitud.tipo_servicio
+        descripcion = solicitud.descripcion
+        fecha=solicitud.fecha
+        folio=solicitud.folio
+        # Crear un formulario con los datos de la solicitud
+        form = SolicitudMantenimientoForm(initial={
+            'area_solicitante': departamento,
+            'responsable_Area': nombre_jefe_departamento,
+            'tipo_servicio': tipo_servicio_id,
+            'descripcion': descripcion,
+            'fecha': fecha,
+            'folio': folio
+            
+        })
+        # Pasar idFormulario al contexto de la plantilla
+        context = {
+            'form': form,
+            'idFormulario': idFormulario,  # Pasar el ID de la solicitud al contexto
+        }
+
+        return render(request, 'dep_mantenimiento/layout/solicitante/formularioEdit.html', context)
+    
+    
+    
+    
+    
+    
+    def edtiarFormulario(request, idFormulario):
+        # Obtener la solicitud correspondiente al idFormulario
+        try:
+            solicitud = Solicitud_Mantenimiento.objects.get(id=idFormulario)
+        except Solicitud_Mantenimiento.DoesNotExist:
+            # Manejar el caso en que la solicitud no exista
+            return HttpResponse("La solicitud no existe", status=404)
+        
+        # Verificar si el método de solicitud es POST (es decir, se envió un formulario)
+        if request.method == 'POST':
+            # Crear un formulario con los datos de la solicitud y los datos enviados en la solicitud POST
+            form = SolicitudMantenimientoForm(request.POST, initial={
+                'folio': solicitud.folio,
+                'tipos_servicio': solicitud.tipo_servicio,
+                'descripcion': solicitud.descripcion,
+            })
+            # Verificar si el formulario es válido
+            if form.is_valid():
+                # Guardar los cambios en la solicitud
+                solicitud.folio = form.cleaned_data['folio']
+                solicitud.tipo_servicio = form.cleaned_data['tipos_servicio']
+                solicitud.descripcion = form.cleaned_data['descripcion']
+                solicitud.save()
+                # Redirigir a alguna página de éxito o cargar la vista de inicio, por ejemplo
+                return redirect('inicio')
+        else:
+            # Si el método de solicitud no es POST, cargar el formulario con los datos de la solicitud
+            form = SolicitudMantenimientoForm(initial={
+                'folio': solicitud.folio,
+                'tipos_servicio': solicitud.tipo_servicio,
+                'descripcion': solicitud.descripcion,
+            })
+        
+        # Renderizar el formulario
+        return render(request, 'dep_mantenimiento/layout/solicitante/formularioEdit.html', {'form': form})
+        
+####
 def eliminar_solicitud(request, solicitud_id):
     try:
         # Obtener la solicitud
@@ -348,54 +468,7 @@ class vistas_Empleados(View):
 
     
 class rellenar_formulario(View):
-    @staticmethod   
-    def guardar_datos_Docente(request, id_Docente):
-        if request.method == 'POST':
-            form = SolicitudMantenimientoForm(request.POST)
-            if form.is_valid():
-                id_fecha = datetime.now().date()
-                id_folio = form.cleaned_data['folio']
-                id_tipos_servicio = form.cleaned_data['tipos_servicio']
-                id_descripcion = form.cleaned_data['descripcion']
-                hora_actual = datetime.now().time()
-                # Obtener la instancia del trabajador correspondiente al ID
-                trabajador = trabajadores.objects.get(id=id_Docente)
-                departamento = trabajador.departamento
-                
-                # Obtener el jefe del departamento
-                jefe_departamento = trabajadores.objects.filter(departamento=departamento, puesto='Jefe').first()
-                # Verificar si se encontró un jefe para el departamento
-                if jefe_departamento:
-                    # Obtener el nombre completo del jefe del departamento
-                    nombre_jefe_departamento = jefe_departamento.nombre_completo()
-               
-                else:
-                    # Manejar el caso en el que no se encuentre ningún jefe para el departamento
-                    nombre_jefe_departamento = "No asignado"  # O puedes manejarlo de otra manera según tu lógica de negocio
-                # Crea una instancia del modelo Solicitud y asigna los valores
-                datos_nuevos = Solicitud_Mantenimiento(
-                    fecha=id_fecha,
-                    folio=id_folio,
-                    area_solicitante=departamento,
-                    responsable_Area=nombre_jefe_departamento,  # Aquí asignamos el jefe del departamento como responsable del área
-                    tipo_servicio=id_tipos_servicio,
-                    descripcion=id_descripcion,
-                    hora=hora_actual,
-                    id_Trabajador=trabajador,
-                    id_Jefe_Departamento=jefe_departamento,
-                    status='Enviado',
-                )
-                
-                # Guarda los datos en la base de datos
-                datos_nuevos.save()
-
-                # Redirige a la URL de la vista de inicio del docente
-                return redirect('inicio_docente', id=id_Docente)
-        else:
-            form = SolicitudMantenimientoForm()
-            
-        # Renderiza el formulario
-        return render(request, 'dep_mantenimiento/layout/solicitante/formulario.html', {'form': form})
+   pass
     
 
 class Error404Views(TemplateView):

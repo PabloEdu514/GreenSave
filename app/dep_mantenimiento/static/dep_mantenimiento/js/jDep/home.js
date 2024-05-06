@@ -117,10 +117,13 @@ const listSolicitudes = async () => {
                     
                     
                     ${!hideButtons ? `
-                        <button  class="btn btn-sm-2" style="background-color: #1a759f !important;" onclick="editSolicitud(${solicitudes.id}, event)">   
-                        <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
-                        
-                        </button>
+                    <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="#" role="button">
+                    <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
+                    </a>
+                
+
+
+
                         <button  class="btn  btn-sm-2" data-bs-toggle="modal" style="background-color: #d90429 !important;">
                     
                         <i class="fa fa-trash" aria-hidden="true" style=" color: #ffffff !important;" ></i>
@@ -161,10 +164,6 @@ const listSolicitudes = async () => {
     }
 };
 
-function editSolicitud(solicitudId, event) {
-    event.stopPropagation();
-    // Lógica para editar la solicitud
-}
 
 function fimarSolicitud(solicitudId, event) {
     event.stopPropagation();

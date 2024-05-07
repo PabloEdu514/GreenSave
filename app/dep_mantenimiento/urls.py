@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.conf.urls import handler404,handler403
-from .views import vistas_solicitantes_cargar_inicio,rellenar_formulario,vistas_Jefe_Departamento_cargar_inicio,vistas_Empleados
+from .views import vistas_solicitantes_cargar_inicio,vistas_Jefe_Departamento_cargar_inicio,vistas_Empleados,vistas_Subdirectora,vistas_Jefe_Mantenimiento
 
 urlpatterns = [
     path('logout/', views.cerrar_sesion, name='cerrar_sesion'),
@@ -26,6 +26,12 @@ urlpatterns = [
     # Enlaces del Empleados
     path('CargarSolicitudesEmpleados/<int:idEmpleado>/', views.vistas_Empleados.obtener_solicitudes, name='obtener_solicitudes_empleados'),
     path('Inicio/Empleado/<int:id>/', views.vistas_Empleados.cargar_Inicio, name='inicio_empleado'),
+   # Enlaces del Subdirectora
+    path('CargarSolicitudesSubdirectora/<int:idSubdirectora>/', views.vistas_Subdirectora.obtener_solicitudes, name='obtener_solicitudes_subdirectora'),
+    path('Inicio/Subdirectora/<int:id>/', views.vistas_Subdirectora.cargar_Inicio, name='inicio_subdirector_servicios'),
+   # Enlaces del Jefe de Mantenimiento
+    path('CargarSolicitudesJefeMantenimiento/<int:idJefeMantenimiento>/', views.vistas_Jefe_Mantenimiento.obtener_solicitudes, name='obtener_solicitudes_jefe_mantenimiento'),
+    path('Inicio/Jefe_Mantenimiento/<int:id>/', views.vistas_Jefe_Mantenimiento.cargar_Inicio, name='inicio_jefe_mantenimiento'),
    
     
     # Eliminar solicitud

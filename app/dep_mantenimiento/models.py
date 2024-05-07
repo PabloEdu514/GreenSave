@@ -102,7 +102,7 @@ class Solicitud_Mantenimiento(models.Model):
     firma_Jefe_Departamento = models.BooleanField(default=False,blank=True)
     firma_Empleado = models.BooleanField(default=False,blank=True)
     firma_Jefe_Mantenimiento = models.BooleanField(default=False,blank=True)
-    
+    resolvio = models.BooleanField(default=False,blank=True)
     # Imagenes de las firmas
     firma_Jefe_Departamento_img= models.ImageField(null=True,upload_to='dep_mantenimiento/img',blank=True)
     firma_Empleado_img= models.ImageField(null=True,upload_to='dep_mantenimiento/img',blank=True)

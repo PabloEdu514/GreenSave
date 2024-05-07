@@ -9,7 +9,7 @@ const dataTableOptions = {
     paging: true, // Habilita la paginación
     pagingType: "full_numbers", // Utiliza la paginación completa
     lengthChange: false, // Desactiva la opción de cambiar la cantidad de entradas por página
-    pageLength: 5, // Define la cantidad de datos por página
+    pageLength: 30, // Define la cantidad de datos por página
     ordering: false,
     info: false,
     destroy: true,
@@ -23,8 +23,6 @@ const dataTableOptions = {
     }
 };
 
-
-
 function limitarDescripcion(descripcion, limitePalabras) {
     // Convertir la descripción a cadena de texto
     const descripcionString = descripcion.toString();
@@ -36,9 +34,7 @@ function limitarDescripcion(descripcion, limitePalabras) {
     }
 }
 
-
-const initDataTable=async ()=>{
-
+const initDataTable = async () => {
     if(dataTableInitialized){
         dataTable.destroy();
     }
@@ -47,20 +43,15 @@ const initDataTable=async ()=>{
     
     dataTable=$('#Tabla-Solicitudes').DataTable(dataTableOptions);
     dataTableInitialized=true;  
-        
-    }
-
-
+};
 
 const listSolicitudes = async () => {
     try {
-        const response = await fetch(`/dep_mantenimiento/CargarSolicitudesJdep/${userId}`);
-
+        const response = await fetch(`/dep_mantenimiento/CargarSolicitudesJefeMantenimiento/${userId}`);
         const data = await response.json();
         let content = '';
         data.solicitudes.forEach((solicitudes, index) => {
-            // checamos el tiempo transcurrido de la solicitud para mostrar o no los botones de editar y eliminar
-            const hideButtons = solicitudes.tiempo_transcurrido > 3600;
+           
             let icono;
             switch (solicitudes.status) {
                 case 'En_proceso':
@@ -86,9 +77,9 @@ const listSolicitudes = async () => {
             }
             // Limitar la descripción a 10 palabras y agregar puntos suspensivos
             const descripcionLimitada = limitarDescripcion(solicitudes.descripcion, 10);
-            // Botón o icono dependiendo del estado de la firma del jefe de departamento
+            // Botón o icono dependiendo del estado de la firma del empleado
             let actionElement;
-            if (solicitudes.firmado_jefe_departamento === true) {
+            if (solicitudes.firmado_empleado === true) {
                 actionElement = `
                 <button class="btn btn-sm-2" style="background-color: #6a994e !important;">   
                 <i class="fa fa-check-square" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
@@ -98,9 +89,20 @@ const listSolicitudes = async () => {
                                     <i class="fa fa-pencil-square-o" style="color: #ffffff !important; font-size: 25px ;" aria-hidden="true"></i>
                                  </button>`;
             }
-            // Chequeamos si hay un trabajador asociado a la solicitud
-            const nombreTrabajador = solicitudes.nombre_completo_trabajador ? `De: ${solicitudes.nombre_completo_trabajador}` : '';
+            
+          
+           // Agregamos la información de pertenencia y departamento
+            const perteneceInfo = solicitudes.nombre_completo_trabajador ? 
+                `De: ${solicitudes.nombre_completo_trabajador}` : 
+                `De: ${solicitudes.nombre_completo_jefe_departamento}`;
 
+            const departamentoInfo = solicitudes.nombre_completo_trabajador ? 
+                solicitudes.departamento_trabajador : 
+                solicitudes.departamento_jefe_departamento;
+
+             // Chequeamos si hay un trabajador asociado a la solicitud
+             const nombre_Empleado = solicitudes.nombre_completo_empleado ? `De: ${solicitudes.nombre_completo_empleado}` : 'Sin Empleado Aignado';
+           
 
             content += `
                 <tr onclick="openDetalle(${solicitudes.id})" class="${solicitudes.status}">
@@ -108,41 +110,9 @@ const listSolicitudes = async () => {
                     <td class ="servicio">${solicitudes.tipo_servicio}</td>
                     <td class ="descripcion">${descripcionLimitada}</td>
                   
-                    <td class ="Pertenece">   ${nombreTrabajador}</td>
-                    <td class ="botones">
-                  
-                    ${actionElement}
-                  
-                    
-                    
-                    
-                    ${!hideButtons ? `
-                    <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="#" role="button">
-                    <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
-                    </a>
-                
-
-
-
-                        <button  class="btn  btn-sm-2" data-bs-toggle="modal" style="background-color: #d90429 !important;">
-                    
-                        <i class="fa fa-trash" aria-hidden="true" style=" color: #ffffff !important;" ></i>
-                        </button>
-
-
-
-                        
-                        </div>
-                    ` : ` 
-                    </button>
-                    <button  class="btn  btn-sm-2"  style="background-color: #6c757d !important;" >
-                
-                    <i class="fa fa-lock" style=" color: #ffffff !important;" aria-hidden="true"></i>
-                    </button>
-                    
-                    
-                    `}
-                    </td>
+                    <td class ="Pertenece">${perteneceInfo}</td>
+                    <td class ="Departamento">${departamentoInfo}</td>
+                    <td class ="Asignado"> ${nombre_Empleado}   </td>
                     <td class ="status">${icono}</td> <!-- Aquí se mostrará el icono correspondiente -->
                     <td class ="fecha">${solicitudes.fecha}</td>
                    
@@ -157,20 +127,20 @@ const listSolicitudes = async () => {
         });
         tbodySolicitudes.innerHTML = content;
         
-        
-        
     } catch (e) {
         alert(e);
     }
 };
 
+function editSolicitud(solicitudId, event) {
+    event.stopPropagation();
+    // Lógica para editar la solicitud
+}
 
 function fimarSolicitud(solicitudId, event) {
     event.stopPropagation();
     // Lógica para editar la solicitud
 }
-
-
 
 // Función para obtener el valor de la cookie CSRF
 function getCookie(name) {
@@ -180,14 +150,9 @@ function getCookie(name) {
 }
 
 function openDetalle(solicitudId) {
-   
-    // Redirige a la página HTML deseada con el ID de la solicitud
-    //window.location.href = `/detalle_solicitud.html?id=${solicitudId}`;
-     // Mostrar una alerta con los detalles de la solicitud
-     alert(`Le diste clic a la solicitud: ${solicitudId}
-     `);
-     console.log('Detalles de la solicitud:', solicitudId);
-
+    // Mostrar una alerta con los detalles de la solicitud
+    alert(`Le diste clic a la solicitud: ${solicitudId}`);
+    console.log('Detalles de la solicitud:', solicitudId);
 }
 
 const reloadDataTable = async () => {
@@ -198,7 +163,6 @@ const reloadFilDataTable = async () => {
     const filtro = document.getElementById('Filtro').value;
     filterTable(filtro);
 };
-
 
 
 // Función para filtrar la tabla
@@ -227,12 +191,6 @@ const filterTable = (filtro) => {
     }
 };
 
-
-
-
-
-
-
 window.addEventListener('load', async () => {
     await initDataTable();
 
@@ -260,15 +218,9 @@ window.addEventListener('load', async () => {
         });
     });
 
-    // Agrega un evento de escucha al campo del filtro para filtrar los resultados de la tabla
+     // Agrega un evento de escucha al campo del filtro para filtrar los resultados de la tabla
     $('#Filtro').on('change', function () {
         const filtro = document.getElementById('Filtro').value;
         filterTable(filtro);
     });
-
-
-
-
-
-
 });

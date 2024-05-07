@@ -57,12 +57,12 @@ def inicio(request):
                         return redirect('inicio_docente', id=id_trabajador.id) 
             elif id_trabajador.puesto == 'Subdirector':
                             if  id_trabajador.departamento == 'Servicios Administrativos':
-                                return redirect('inicio_subdirector_servicios')  # redireccionar al inicio subdirectora de servicios
+                                return redirect('inicio_subdirector_servicios', id=id_trabajador.id)  # redireccionar al inicio subdirectora de servicios
                             else:
-                                return redirect('inicio_subdirector')  # redireccionar al inicio subdirectorato             
+                                return redirect('inicio_docente', id=id_trabajador.id)  # redireccionar al inicio subdirectorato             
           
             elif id_trabajador.puesto == 'Jefe' and id_trabajador.departamento == 'Mantenimiento de Equipo':
-                        return redirect('inicio_jefe_mantenimiento')  # Redireccionar al inicio de jefe de mantenimiento del departamento de Mantenimiento de Equipo
+                        return redirect('inicio_jefe_mantenimiento', id=id_trabajador.id)  # Redireccionar al inicio de jefe de mantenimiento del departamento de Mantenimiento de Equipo
             elif id_trabajador.puesto == 'Empleado'and id_trabajador.departamento == 'Mantenimiento de Equipo':
                         return redirect('inicio_empleado', id=id_trabajador.id)  # Redireccionar al inicio de un empleado del departamento de Mantenimiento de Equipo
             else:
@@ -95,6 +95,7 @@ class vistas_solicitantes_cargar_inicio(View):
 
         return render(request, 'dep_mantenimiento/layout/solicitante/home.html', contexto)
     @staticmethod
+    #Jalar datos de la BD
     def cargar_Formulario(request, id_Docente):
         # Lógica para determinar el tipo de usuario
         es_docente = True  # Por ejemplo, asumamos que el usuario es un docente
@@ -455,7 +456,17 @@ class vistas_Empleados(View):
                     # Agregar el nombre completo y el departamento del jefe de departamento al diccionario de la solicitud
                     solicitud_dict['nombre_completo_jefe_departamento'] = nombre_completo
                     solicitud_dict['departamento_jefe_departamento'] = departamento
-                
+                elif solicitud.id_Subdirectora:
+                    # Obtener la instancia de la subdirectora asociada a la solicitud
+                    subdirectora = solicitud.id_Subdirectora
+                    # Obtener el nombre completo de la subdirectora utilizando el método nombre_completo del modelo Subdirectora
+                    nombre_completo = subdirectora.nombre_completo()
+                    # Obtener el departamento de la subdirectora
+                    departamento = subdirectora.departamento
+                    # Agregar el nombre completo y el departamento del jefe de departamento al diccionario de la solicitud
+                    solicitud_dict['nombre_completo_subdirectora'] = nombre_completo
+                    solicitud_dict['departamento_subdirectora'] = departamento
+                    
                 # Agregar el diccionario de la solicitud a la lista de solicitudes con información adicional
                 solicitudes_con_info_adicional.append(solicitud_dict)
             
@@ -467,8 +478,157 @@ class vistas_Empleados(View):
             raise Http404("Las solicitudes del empleado no existen")
 
     
-class rellenar_formulario(View):
-   pass
+# Vistas para la sección de Subdirectora    
+class vistas_Subdirectora(View):
+    @staticmethod
+    def cargar_Inicio(request, id):
+        return render(request, 'dep_mantenimiento/layout/subdirectora/home.html', {'id': id})   
+    @staticmethod
+    def obtener_solicitudes(request, idSubdirectora):
+        try:
+            # Filtrar las solicitudes asociadas al subdirectora
+            solicitudes = Solicitud_Mantenimiento.objects.filter(id_Subdirectora=idSubdirectora).order_by('-fecha', '-hora')
+
+            # Crear una lista para almacenar las solicitudes con la información adicional   
+            solicitudes_con_info_adicional = []
+            # Obtener la fecha y hora actual
+            now = datetime.now()
+            # Iterar sobre cada solicitud
+            for solicitud in solicitudes:
+                 # Calcular el tiempo transcurrido
+                tiempo_transcurrido = now - datetime.combine(solicitud.fecha, solicitud.hora)
+                    # Convertir el tiempo transcurrido a segundos
+                tiempo_transcurrido_segundos = tiempo_transcurrido.total_seconds()
+                # Crear un diccionario para almacenar la información de la solicitud
+                solicitud_dict = {
+                    'id': solicitud.id,
+                    'tipo_servicio': solicitud.tipo_servicio,
+                    'descripcion': solicitud.descripcion,
+                    'status': solicitud.status,
+                    'fecha': solicitud.fecha.strftime("%d/%m/%Y"),  # Formatear la fecha como dd/mm/aaaa
+                    'hora': solicitud.hora.strftime("%H:%M"),  # Formatear la hora como hh:mm
+                    'firmado_jefe_departamento': solicitud.firma_Jefe_Departamento,  # Firma del jefe de departamento
+                    'resolvio':solicitud.resolvio,
+                    'tiempo_transcurrido': tiempo_transcurrido
+                }
+                 # Verificar si la solicitud tiene un trabajador asociado
+                if solicitud.id_Trabajador:
+                    # Obtener la instancia del trabajador asociado a la solicitud
+                    trabajador = solicitud.id_Trabajador
+                    # Obtener el nombre completo del trabajador utilizando el método nombre_completo del modelo Trabajador
+                    nombre_completo = trabajador.nombre_completo()
+                    # Obtener el departamento del trabajador
+                    departamento = trabajador.departamento
+                    # Agregar el nombre completo y el departamento del trabajador al diccionario de la solicitud
+                    solicitud_dict['nombre_completo_trabajador'] = nombre_completo
+                    solicitud_dict['departamento_trabajador'] = departamento
+                elif solicitud.id_Jefe_Departamento:
+                    # Obtener la instancia del jefe de departamento asociado a la solicitud
+                    jefe_departamento = solicitud.id_Jefe_Departamento
+                    # Obtener el nombre completo del jefe de departamento utilizando el método nombre_completo del modelo JefeDepartamento
+                    nombre_completo = jefe_departamento.nombre_completo()
+                    # Obtener el departamento del jefe de departamento
+                    departamento = jefe_departamento.departamento
+                    # Agregar el nombre completo y el departamento del jefe de departamento al diccionario de la solicitud
+                    solicitud_dict['nombre_completo_jefe_departamento'] = nombre_completo
+                    solicitud_dict['departamento_jefe_departamento'] = departamento
+                    
+                
+                # Agregar el diccionario de la solicitud a la lista de solicitudes con información adicional
+                solicitudes_con_info_adicional.append(solicitud_dict)
+            
+            # Retornar las solicitudes en formato JSON
+            return JsonResponse({'solicitudes': solicitudes_con_info_adicional})
+        
+        except Solicitud_Mantenimiento.DoesNotExist:
+            # Si no se encuentran solicitudes, lanzar una excepción Http404
+            raise Http404("Las solicitudes del subdirectora no existen")
+
+#vistas para el jefe de Mantenimiento
+class vistas_Jefe_Mantenimiento(View):
+    @staticmethod
+    def cargar_Inicio(request, id):
+        return render(request, 'dep_mantenimiento/layout/jMantenimiento/home.html', {'id': id})
+   
+    @staticmethod
+    def obtener_solicitudes(request, idJefeMantenimiento):
+        try:
+            # Filtrar las solicitudes asociadas al empleado
+            solicitudes = Solicitud_Mantenimiento.objects.filter(id_Jefe_Mantenimiento=idJefeMantenimiento).order_by('-fecha', '-hora')
+            
+            # Crear una lista para almacenar las solicitudes con la información adicional
+            solicitudes_con_info_adicional = []
+
+            # Iterar sobre cada solicitud
+            for solicitud in solicitudes:
+                # Crear un diccionario para almacenar la información de la solicitud
+                solicitud_dict = {
+                    'id': solicitud.id,
+                    'tipo_servicio': solicitud.tipo_servicio,
+                    'descripcion': solicitud.descripcion,
+                    'status': solicitud.status,
+                    'fecha': solicitud.fecha.strftime("%d/%m/%Y"),  # Formatear la fecha como dd/mm/aaaa
+                    'hora': solicitud.hora.strftime("%H:%M"),  # Formatear la hora como hh:mm
+                    'firmado_jefe_departamento': solicitud.firma_Jefe_Departamento,  # Firma del jefe de departamento
+                    'fimrado_empleado': solicitud.firma_Empleado,  # Firma del jefe de mantenimiento
+                }
+
+                # Verificar si la solicitud tiene un trabajador asociado
+                if solicitud.id_Trabajador:
+                    # Obtener la instancia del trabajador asociado a la solicitud
+                    trabajador = solicitud.id_Trabajador
+                    # Obtener el nombre completo del trabajador utilizando el método nombre_completo del modelo Trabajador
+                    nombre_completo = trabajador.nombre_completo()
+                    # Obtener el departamento del trabajador
+                    departamento = trabajador.departamento
+                    # Agregar el nombre completo y el departamento del trabajador al diccionario de la solicitud
+                    solicitud_dict['nombre_completo_trabajador'] = nombre_completo
+                    solicitud_dict['departamento_trabajador'] = departamento
+                elif solicitud.id_Jefe_Departamento:
+                    # Obtener la instancia del jefe de departamento asociado a la solicitud
+                    jefe_departamento = solicitud.id_Jefe_Departamento
+                    # Obtener el nombre completo del jefe de departamento utilizando el método nombre_completo del modelo JefeDepartamento
+                    nombre_completo = jefe_departamento.nombre_completo()
+                    # Obtener el departamento del jefe de departamento
+                    departamento = jefe_departamento.departamento
+                    # Agregar el nombre completo y el departamento del jefe de departamento al diccionario de la solicitud
+                    solicitud_dict['nombre_completo_jefe_departamento'] = nombre_completo
+                    solicitud_dict['departamento_jefe_departamento'] = departamento
+                elif solicitud.id_Subdirectora:
+                    # Obtener la instancia de la subdirectora asociada a la solicitud
+                    subdirectora = solicitud.id_Subdirectora
+                    # Obtener el nombre completo de la subdirectora utilizando el método nombre_completo del modelo Subdirectora
+                    nombre_completo = subdirectora.nombre_completo()
+                    # Obtener el departamento de la subdirectora
+                    departamento = subdirectora.departamento
+                    # Agregar el nombre completo y el departamento del jefe de departamento al diccionario de la solicitud
+                    solicitud_dict['nombre_completo_subdirectora'] = nombre_completo
+                    solicitud_dict['departamento_subdirectora'] = departamento
+                if solicitud.id_Empleado:
+                    # Obtener la instancia del empleado asociado a la solicitud
+                    empleado = solicitud.id_Empleado
+                    # Obtener el departamento del empleado
+                    departamento = empleado.departamento
+                    # Verificar si el departamento del empleado coincide con el departamento de mantenimiento
+                    if departamento == 'Mantenimiento de Equipo':
+                        # Si coincide, procede a agregar la información al diccionario de la solicitud
+                        nombre_completo = empleado.nombre_completo()
+                        solicitud_dict['nombre_completo_empleado'] = nombre_completo
+                        solicitud_dict['departamento_empleado'] = departamento
+                    
+                # Agregar el diccionario de la solicitud a la lista de solicitudes con información adicional
+                solicitudes_con_info_adicional.append(solicitud_dict)
+            
+            # Retornar las solicitudes en formato JSON
+            return JsonResponse({'solicitudes': solicitudes_con_info_adicional})
+        
+        except Solicitud_Mantenimiento.DoesNotExist:
+            # Si no se encuentran solicitudes, lanzar una excepción Http404
+            raise Http404("Las solicitudes del jefe de mantenimiento no existen")
+        
+
+
+    
     
 
 class Error404Views(TemplateView):

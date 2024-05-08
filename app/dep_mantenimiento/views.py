@@ -339,12 +339,26 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
 
         return render(request, 'dep_mantenimiento/layout/jDep/home.html', contexto)
     @staticmethod
-    def cargar_Formulario(request,id_Jefe_Departamento):
+    def cargar_Formulario(request, id_Jefe_Departamento):
         # Lógica para determinar el tipo de usuario
         es_Jeje_dep = True  # Por ejemplo, asumamos que el usuario es un docente
-        form = SolicitudMantenimientoForm()
+
+        # Obtener la fecha actual
+        fecha_actual = datetime.now().date()
+        trabajador = trabajadores.objects.get(id=id_Jefe_Departamento)
+        # Obtener el área solicitante y el responsable del área
+        departamento = trabajador.departamento
+        nombre_jefe_departamento = trabajador.nombre_completo()           
+               
+
+        # Crear una instancia del formulario con los valores iniciales
+        form = SolicitudMantenimientoForm(initial={
+            'fecha': fecha_actual,
+            'area_solicitante': departamento,
+            'responsable_Area': nombre_jefe_departamento,
+        })
+
         if es_Jeje_dep:
-            
             url_formulario = reverse('formulario_jefe_departamento', args=[id_Jefe_Departamento])  # Asegúrate de pasar el id adecuado aquí
         else:
             url_formulario = reverse('inicio')
@@ -354,7 +368,7 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
             'url_formulario': url_formulario,
             'form': form,  # Pasar el formulario al contexto
         }
-        return render(request, 'dep_mantenimiento/layout/jDep/formulario.html', contexto)
+        return render(request, 'dep_mantenimiento/layout/jdep/formulario.html', contexto)
 
     @staticmethod
     def obtener_solicitudes(request, id_Jefe):
@@ -405,6 +419,61 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
         except Solicitud_Mantenimiento.DoesNotExist:
             # Si no se encuentran solicitudes, lanzar una excepción Http404
             raise Http404("Las solicitudes del jefe de departamento no existen")
+
+        
+    @staticmethod   
+    def guardar_datos_Jdep(request, id_Jefe_Departamento):
+        if request.method == 'POST':
+            form = SolicitudMantenimientoForm(request.POST)
+            if form.is_valid():
+                id_fecha = datetime.now().date()
+                id_folio = form.cleaned_data['folio']
+                id_tipos_servicio = form.cleaned_data['tipos_servicio']
+                id_descripcion = form.cleaned_data['descripcion']
+                hora_actual = datetime.now().time()
+                # Obtener la instancia del trabajador correspondiente al ID
+                jefe_departamento = trabajadores.objects.get(id=id_Jefe_Departamento)
+                departamento = jefe_departamento.departamento
+                
+                
+                nombre_jefe_departamento = jefe_departamento.nombre_completo()
+               
+               
+                # Crea una instancia del modelo Solicitud y asigna los valores
+                datos_nuevos = Solicitud_Mantenimiento(
+                    fecha=id_fecha,
+                    folio=id_folio,
+                    area_solicitante=departamento,
+                    responsable_Area=nombre_jefe_departamento,  # Aquí asignamos el jefe del departamento como responsable del área
+                    tipo_servicio=id_tipos_servicio,
+                    descripcion=id_descripcion,
+                    hora=hora_actual,                  
+                    id_Jefe_Departamento=jefe_departamento,
+                    status='Enviado',
+                    firma_Jefe_Departamento=True,
+                
+                )
+                
+               # Guarda la imagen de firma si está presente en el formulario
+            if 'firma_Jefe_Departamento_img' in request.FILES:
+                datos_nuevos.firma_Jefe_Departamento_img = request.FILES['firma_Jefe_Departamento_img']
+                # Asegúrate de que 'datos_nuevos' sea el objeto que creaste para la solicitud de mantenimiento
+
+            datos_nuevos.save()  # Guarda los datos en la base de datos
+
+            # Redirige a la URL de la vista de inicio del jefe de departamento
+            return redirect('inicio_jefe_departamento', id=id_Jefe_Departamento)
+        else:
+            form = SolicitudMantenimientoForm()
+            
+        # Renderiza el formulario
+        return render(request, 'dep_mantenimiento/layout/jdep/formulario.html', {'form': form})
+
+
+
+
+
+
 
 # Vistas para la sección de Empleados
 class vistas_Empleados(View):

@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -87,6 +89,7 @@ class Solicitud_Mantenimiento(models.Model):
     status= models.CharField(choices=estatus,max_length=50,blank=True)
     fecha= models.DateField(null=False,blank=True)
     hora= models.TimeField(null=False,blank=True)
+
     material_asignado= models.CharField(null=True,max_length=3000,blank=True)
     material_utilizado= models.CharField(null=True,max_length=3000,blank=True)
     imagen= models.FileField(null=True,upload_to='dep_mantenimiento/img',blank=True)
@@ -113,14 +116,28 @@ class Solicitud_Mantenimiento(models.Model):
         db_table = 'solicitud_mantenimiento'
         verbose_name = 'Solicitud_de_mantenimiento'
         permissions = [
+            #Permisos para Solicitante
             ('view_Solicitud_Mantenimiento_Solicitantes', 'Usuarios Solicitantes pueden ver las solicitudes de mantenimiento'),
             ('change_Solicitud_Mantenimiento_Solicitantes', 'Usuarios Solicitantes pueden cambiar las solicitudes de mantenimiento'),
             ('add_Solicitud_Mantenimiento_Solicitantes', 'Usuarios Solicitantes pueden agregar las solicitudes de mantenimiento'),
             ('delete_Solicitud_Mantenimiento_Solicitantes', 'Usuarios Solicitantes pueden borrar las solicitudes de mantenimiento'),
-
+            
+            #Permisos para Mantenimiento
             ('view_Solicitud_Mantenimiento_Mantenimiento', 'Usuarios Mantenimiento pueden ver las solicitudes de mantenimiento'),
             ('change_Solicitud_Mantenimiento_Mantenimiento', 'Usuarios Mantenimiento pueden cambiar las solicitudes de mantenimiento'),
         ]# Modelo para los grupos personalizados
+        
+class HistorialSolicitud(models.Model):
+    solicitud = models.ForeignKey('Solicitud_Mantenimiento', on_delete=models.CASCADE, related_name='historial')
+    fecha_hora = models.DateTimeField(default=timezone.now)
+    nuevo_status = models.CharField(choices=Solicitud_Mantenimiento.estatus, max_length=50)
+
+    class Meta:
+        app_label = 'dep_mantenimiento'
+        db_table = 'historial_solicitud'
+        verbose_name = 'Historial de Solicitud'        
+        
+        
 class CustomGroup(models.Model):
     name = models.CharField(max_length=150, unique=True)
     class Meta:

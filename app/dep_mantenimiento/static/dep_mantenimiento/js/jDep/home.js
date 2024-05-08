@@ -87,20 +87,40 @@ const listSolicitudes = async () => {
             // Limitar la descripción a 10 palabras y agregar puntos suspensivos
             const descripcionLimitada = limitarDescripcion(solicitudes.descripcion, 10);
             // Botón o icono dependiendo del estado de la firma del jefe de departamento
+          
+            const nombreTrabajador = solicitudes.nombre_completo_trabajador ? `De: ${solicitudes.nombre_completo_trabajador}` : '';
             let actionElement;
-            if (solicitudes.firmado_jefe_departamento === true) {
+            if ( solicitudes.firmado_jefe_departamento === false && nombreTrabajador ) {
+                actionElement = `
+                <button class="btn btn-sm-2" style="background-color: #fca311 !important;">   
+                <i class="fa fa-exclamation-triangle" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
+                </button>`;
+                
+                
+              }
+              else if (solicitudes.firmado_jefe_departamento === true && nombreTrabajador ) {
                 actionElement = `
                 <button class="btn btn-sm-2" style="background-color: #6a994e !important;">   
                 <i class="fa fa-check-square" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
                 </button>`;
-            } else {
-                actionElement = `<button class="btn btn-sm-2" style="background-color: #118ab2 !important;" onclick="fimarSolicitud(${solicitudes.id}, event)">   
-                                    <i class="fa fa-pencil-square-o" style="color: #ffffff !important; font-size: 25px ;" aria-hidden="true"></i>
-                                 </button>`;
+              }
+              
+              
+              
+              else {
+                actionElement = !hideButtons ? `
+                    <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="#" role="button">
+                        <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
+                    </a>
+                    <button  class="btn  btn-sm-2" data-bs-toggle="modal" style="background-color: #d90429 !important;">
+                        <i class="fa fa-trash" aria-hidden="true" style=" color: #ffffff !important;" ></i>
+                    </button>
+                ` : `
+                    <button  class="btn  btn-sm-2"  style="background-color: #6c757d !important;" >
+                        <i class="fa fa-lock" style=" color: #ffffff !important;" aria-hidden="true"></i>
+                    </button>
+                `;
             }
-            // Chequeamos si hay un trabajador asociado a la solicitud
-            const nombreTrabajador = solicitudes.nombre_completo_trabajador ? `De: ${solicitudes.nombre_completo_trabajador}` : '';
-
 
             content += `
                 <tr onclick="openDetalle(${solicitudes.id})" class="${solicitudes.status}">
@@ -116,32 +136,6 @@ const listSolicitudes = async () => {
                     
                     
                     
-                    ${!hideButtons ? `
-                    <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="#" role="button">
-                    <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
-                    </a>
-                
-
-
-
-                        <button  class="btn  btn-sm-2" data-bs-toggle="modal" style="background-color: #d90429 !important;">
-                    
-                        <i class="fa fa-trash" aria-hidden="true" style=" color: #ffffff !important;" ></i>
-                        </button>
-
-
-
-                        
-                        </div>
-                    ` : ` 
-                    </button>
-                    <button  class="btn  btn-sm-2"  style="background-color: #6c757d !important;" >
-                
-                    <i class="fa fa-lock" style=" color: #ffffff !important;" aria-hidden="true"></i>
-                    </button>
-                    
-                    
-                    `}
                     </td>
                     <td class ="status">${icono}</td> <!-- Aquí se mostrará el icono correspondiente -->
                     <td class ="fecha">${solicitudes.fecha}</td>

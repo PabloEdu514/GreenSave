@@ -117,14 +117,31 @@ class Solicitud_Mantenimiento(models.Model):
         verbose_name = 'Solicitud_de_mantenimiento'
         permissions = [
             #Permisos para Solicitante
-            ('view_Solicitud_Mantenimiento_Solicitantes', 'Usuarios Solicitantes pueden ver las solicitudes de mantenimiento'),
-            ('change_Solicitud_Mantenimiento_Solicitantes', 'Usuarios Solicitantes pueden cambiar las solicitudes de mantenimiento'),
-            ('add_Solicitud_Mantenimiento_Solicitantes', 'Usuarios Solicitantes pueden agregar las solicitudes de mantenimiento'),
-            ('delete_Solicitud_Mantenimiento_Solicitantes', 'Usuarios Solicitantes pueden borrar las solicitudes de mantenimiento'),
+            ('view_Solicitud_Solicitante', 'Solicitante ver'),
+            ('change_Solicitud_Solicitante', 'Solicitante cambiar'),
+            ('add_Solicitud_Solicitante', 'Solicitante agregar'),
+            ('delete_Solicitud_Solicitante', 'Solicitante borrar'),
             
-            #Permisos para Mantenimiento
-            ('view_Solicitud_Mantenimiento_Mantenimiento', 'Usuarios Mantenimiento pueden ver las solicitudes de mantenimiento'),
-            ('change_Solicitud_Mantenimiento_Mantenimiento', 'Usuarios Mantenimiento pueden cambiar las solicitudes de mantenimiento'),
+            #Permisos para jefeDep
+            ('view_Solicitud_jefeDep', 'jefeDep ver'),
+            ('change_Solicitud_jefeDep', 'jefeDep cambiar'),
+            ('add_Solicitud_jefeDep', 'jefeDep agregar'),
+            ('delete_Solicitud_jefeDep', 'jefeDep borrar'),    
+            
+            #Permisos para subdirector
+            ('view_Solicitud_subdirector', 'subdirector ver'),
+            ('change_Solicitud_subdirector', 'subdirector cambiar'),
+            ('add_Solicitud_subdirector', 'subdirector agregar'),
+            ('delete_Solicitud_subdirector', 'subdirector borrar'),
+            
+            
+            #Permisos para jefe Mantenimiento
+            ('view_Solicitud_jefe_Mantenimiento', 'jefMantenimiento ver'),
+            ('change_Solicitud_jefe_Mantenimiento', 'jefMantenimiento cambiar'),
+            
+             #Permisos para empleado Mantenimiento
+            ('view_Solicitud_empleado_Mantenimiento', 'empMantenimiento ver'),
+            ('change_Solicitud_empleado_Mantenimiento', 'empMantenimiento cambiar'),
         ]# Modelo para los grupos personalizados
         
 class HistorialSolicitud(models.Model):
@@ -151,10 +168,28 @@ class CustomGroup(models.Model):
 @receiver(post_save, sender=trabajadores)
 def asignar_grupo(sender, instance, created, **kwargs):
     if created:
-        if instance.puesto == 'Jefe' or instance.puesto == 'Empleado' and  instance.departamento == 'Mantenimiento de Equipo':
-           
-                grupo, _ = CustomGroup.objects.get_or_create(name='Trabajadores de Mantenimiento')
-                instance.grupos.add(grupo)
+        if instance.puesto == 'Jefe':
+            # Verifica si el jefe es de cualquier departamento
+            if instance.departamento != 'Mantenimiento de Equipo':
+                # Asigna permisos para el jefe de cualquier departamento
+                grupo, _ = CustomGroup.objects.get_or_create(name='Jefe Departamento')
+                grupo.permisos = ['view_Solicitud_jefeDep', 'change_Solicitud_jefeDep', 'add_Solicitud_jefeDep', 'delete_Solicitud_jefeDep']
+            else:
+                # Asigna permisos para el jefe de Mantenimiento de Equipo
+                grupo, _ = CustomGroup.objects.get_or_create(name='Jefe de Mantenimiento de Equipo')
+                grupo.permisos = ['view_Solicitud_jefe_Mantenimiento', 'change_Solicitud_jefe_Mantenimiento']
+        elif instance.puesto == 'Empleado' and instance.departamento == 'Mantenimiento de Equipo':
+            # Asigna permisos para el empleado de Mantenimiento de Equipo
+            grupo, _ = CustomGroup.objects.get_or_create(name='Empleado de Mantenimiento de Equipo')
+            grupo.permisos = ['view_Solicitud_empleado_Mantenimiento', 'change_Solicitud_empleado_Mantenimiento']
+        elif instance.puesto == 'Subdirector' and instance.departamento == 'Servicios Administrativos':
+            # Asigna permisos para la Subdirectora del Departamento de Servicios Administrativos
+            grupo, _ = CustomGroup.objects.get_or_create(name='Subdirectora de Servicios Administrativos')
+            grupo.permisos = ['view_Solicitud_subdirector', 'change_Solicitud_subdirector', 'add_Solicitud_subdirector', 'delete_Solicitud_subdirector']
         else:
-            grupo, _ = CustomGroup.objects.get_or_create(name='Usuarios Solicitantes')
-            instance.grupos.add(grupo)
+            # Asigna permisos para el solicitante
+            grupo, _ = CustomGroup.objects.get_or_create(name='Solicitante')
+            grupo.permisos = ['view_Solicitud_Solicitante', 'change_Solicitud_Solicitante', 'add_Solicitud_Solicitante', 'delete_Solicitud_Solicitante']
+        # Agrega el grupo al trabajador
+        instance.grupos.add(grupo)
+

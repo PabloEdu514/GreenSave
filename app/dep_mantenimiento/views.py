@@ -25,12 +25,21 @@ def grupo_trabajador_requerido(user):
     if user.is_authenticated:
         try:
             trabajador = trabajadores.objects.get(user_id=user.id)
-            # Verificar si el trabajador pertenece al grupo "Trabajadores de Mantenimiento"
-            if trabajador.grupos.filter(name='Trabajadores de Mantenimiento').exists():
+            # Verificar si el trabajador pertenece al grupo "Jefe Departamento"
+            if trabajador.grupos.filter(name='Jefe Departamento').exists():
                 return True
-            # Verificar si el trabajador pertenece al grupo "Usuarios Solicitantes"
-            elif trabajador.grupos.filter(name='Usuarios Solicitantes').exists():
+            # Verificar si el trabajador pertenece al grupo "Jefe de Mantenimiento de Equipo"
+            elif trabajador.grupos.filter(name='Jefe de Mantenimiento de Equipo').exists():
                 return True
+             # Verificar si el trabajador pertenece al grupo "Empleado de Mantenimiento de Equipo"
+            elif trabajador.grupos.filter(name='Empleado de Mantenimiento de Equipo').exists():
+                return True
+            # Verificar si el trabajador pertenece al grupo "Servicios Administrativos"
+            elif trabajador.grupos.filter(name='Servicios Administrativos').exists():
+                return True
+            # Verificar si el trabajador pertenece al grupo "Solicitante"
+            elif trabajador.grupos.filter(name='Solicitante').exists():
+                return True            
             else:
                 # Si el usuario no pertenece a ninguno de los grupos requeridos, mostrar la página de error 403
                 raise PermissionDenied

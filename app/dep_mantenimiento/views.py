@@ -34,8 +34,8 @@ def grupo_trabajador_requerido(user):
              # Verificar si el trabajador pertenece al grupo "Empleado de Mantenimiento de Equipo"
             elif trabajador.grupos.filter(name='Empleado de Mantenimiento de Equipo').exists():
                 return True
-            # Verificar si el trabajador pertenece al grupo "Servicios Administrativos"
-            elif trabajador.grupos.filter(name='Servicios Administrativos').exists():
+            # Verificar si el trabajador pertenece al grupo "Subdirectora de Servicios Administrativos"
+            elif trabajador.grupos.filter(name='Subdirectora de Servicios Administrativos').exists():
                 return True
             # Verificar si el trabajador pertenece al grupo "Solicitante"
             elif trabajador.grupos.filter(name='Solicitante').exists():
@@ -82,7 +82,23 @@ def inicio(request):
             return redirect('login')  # Redireccionar al inicio de sesión si el usuario no está autenticado
     return redirect('login')  # Redireccionar al inicio de sesión si el usuario no está autenticado
 
+def Solicitante_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated:
+            # Obtener el objeto trabajador asociado al usuario actual
+            try:
+                trabajador = trabajadores.objects.get(user_id=request.user.id)
+            except trabajadores.DoesNotExist:
+                raise PermissionDenied  # Si no se encuentra el trabajador, denegar el acceso
 
+            # Verificar si el trabajador pertenece al grupo 'Solicitante'
+            if trabajador.grupos.filter(name='Solicitante').exists():
+                return view_func(request, *args, **kwargs)
+        
+        # Si el usuario no pertenece al grupo 'Solicitante', mostrar la página de error 403
+        raise PermissionDenied
+    
+    return wrapper
 
 #Vistas para el Docente
 class vistas_solicitantes_cargar_inicio(View):
@@ -170,7 +186,8 @@ class vistas_solicitantes_cargar_inicio(View):
                         'status': solicitud.status,
                         'fecha': solicitud.fecha.strftime("%d/%m/%Y"),  # Formatear la fecha como dd/mm/aaaa
                         'hora': solicitud.hora.strftime("%H:%M"),  # Formatear la hora como hh:mm
-                        'tiempo_transcurrido': tiempo_transcurrido_segundos  # Añadir el tiempo transcurrido en segundos
+                        'tiempo_transcurrido': tiempo_transcurrido_segundos, # Añadir el tiempo transcurrido en segundos
+                        'ocultar': solicitud.ocultar
                     }
                     # Agregar la solicitud con el tiempo transcurrido a la lista
                     solicitudes_con_tiempo.append(solicitud_dict)
@@ -220,7 +237,8 @@ class vistas_solicitantes_cargar_inicio(View):
                     id_Jefe_Departamento=jefe_departamento,
                     status='Enviado',
                 )
-                
+                bitacora(request.user, 'Solicitud_Mantenimiento', 'add', f'Folio: {id_folio}',Departamento='dep_mantenimiento')
+
                 # Guarda los datos en la base de datos
                 datos_nuevos.save()
 
@@ -311,11 +329,11 @@ def eliminar_solicitud(request, solicitud_id):
         solicitud = Solicitud_Mantenimiento.objects.get(id=solicitud_id)
         
         # Ocultar la solicitud en lugar de eliminarla permanentemente
-        solicitud.visible = False
+        solicitud.ocultar = True
         solicitud.save()
-
+     
         # Guardar en la bitácora
-        bitacora(request.user, 'Solicitud de Mantenimiento', 'Eliminar', solicitud_id, Departamento='Mantenimiento')
+        bitacora(request.user, 'Solicitud_Mantenimiento', 'delete', f'Solicitud eliminada: {solicitud_id}',Departamento='dep_mantenimiento')
 
         # Reiniciar la secuencia de las solicitudes
         # DELETE FROM solicitud_mantenimiento WHERE id = solicitud_id;
@@ -326,6 +344,25 @@ def eliminar_solicitud(request, solicitud_id):
         return JsonResponse({'error': 'La solicitud no existe'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+def JefeDep_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated:
+            # Obtener el objeto trabajador asociado al usuario actual
+            try:
+                trabajador = trabajadores.objects.get(user_id=request.user.id)
+            except trabajadores.DoesNotExist:
+                raise PermissionDenied  # Si no se encuentra el trabajador, denegar el acceso
+
+            # Verificar si el trabajador pertenece al grupo 'Jefe Departamento'
+            if trabajador.grupos.filter(name='Jefe Departamento').exists():
+                return view_func(request, *args, **kwargs)
+        
+        # Si el usuario no pertenece al grupo 'Jefe Departamento', mostrar la página de error 403
+        raise PermissionDenied
+    
+    return wrapper
+
     
  
 #vistas Jefe Departamento
@@ -480,7 +517,23 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
 
 
 
+def Empleado_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated:
+            # Obtener el objeto trabajador asociado al usuario actual
+            try:
+                trabajador = trabajadores.objects.get(user_id=request.user.id)
+            except trabajadores.DoesNotExist:
+                raise PermissionDenied  # Si no se encuentra el trabajador, denegar el acceso
 
+            # Verificar si el trabajador pertenece al grupo 'Empleado de Mantenimiento de Equipo'
+            if trabajador.grupos.filter(name='Empleado de Mantenimiento de Equipo').exists():
+                return view_func(request, *args, **kwargs)
+        
+        # Si el usuario no pertenece al grupo 'Empleado de Mantenimiento de Equipo', mostrar la página de error 403
+        raise PermissionDenied
+    
+    return wrapper
 
 
 
@@ -555,6 +608,25 @@ class vistas_Empleados(View):
             # Si no se encuentran solicitudes, lanzar una excepción Http404
             raise Http404("Las solicitudes del empleado no existen")
 
+def Sub_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated:
+            # Obtener el objeto trabajador asociado al usuario actual
+            try:
+                trabajador = trabajadores.objects.get(user_id=request.user.id)
+            except trabajadores.DoesNotExist:
+                raise PermissionDenied  # Si no se encuentra el trabajador, denegar el acceso
+
+            # Verificar si el trabajador pertenece al grupo 'Subdirectora de Servicios Administrativos'
+            if trabajador.grupos.filter(name='Subdirectora de Servicios Administrativos').exists():
+                return view_func(request, *args, **kwargs)
+        
+        # Si el usuario no pertenece al grupo 'Subdirectora de Servicios Administrativos', mostrar la página de error 403
+        raise PermissionDenied
+    
+    return wrapper
+
+
     
 # Vistas para la sección de Subdirectora    
 class vistas_Subdirectora(View):
@@ -621,6 +693,26 @@ class vistas_Subdirectora(View):
         except Solicitud_Mantenimiento.DoesNotExist:
             # Si no se encuentran solicitudes, lanzar una excepción Http404
             raise Http404("Las solicitudes del subdirectora no existen")
+
+def JefeMan_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated:
+            # Obtener el objeto trabajador asociado al usuario actual
+            try:
+                trabajador = trabajadores.objects.get(user_id=request.user.id)
+            except trabajadores.DoesNotExist:
+                raise PermissionDenied  # Si no se encuentra el trabajador, denegar el acceso
+
+            # Verificar si el trabajador pertenece al grupo 'Jefe de Mantenimiento de Equipos'
+            if trabajador.grupos.filter(name='Jefe de Mantenimiento de Equipo').exists():
+                return view_func(request, *args, **kwargs)
+        
+        # Si el usuario no pertenece al grupo 'Jefe de Mantenimiento de Equipos', mostrar la página de error 403
+        raise PermissionDenied
+    
+    return wrapper
+
+
 
 #vistas para el jefe de Mantenimiento
 class vistas_Jefe_Mantenimiento(View):

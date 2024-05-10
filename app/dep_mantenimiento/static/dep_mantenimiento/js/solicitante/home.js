@@ -80,52 +80,57 @@ const listSolicitudes = async () => {
                     break;
                 case 'Enviado':
                     icono = '<i id="Enviado" class="fa fa-envelope" aria-hidden="true" style="color: #1B396B;font-size: 30px; "></i> ';
-                    break;                
+                    break;
+                case 'Solicitud_Firmada':
+                    icono = '<i id="Firmado" class="fa fa-file-signature" aria-hidden="true" style="color: #1B396B;font-size: 30px; "></i> ';
+                    break;      
+                    
                 default:
                     icono = solicitudes.status; // Usa el texto del estado como icono por defecto
             }
             // limitar la descripción a 10 palabras y agregar puntos suspensivos
             const descripcionLimitada = limitarDescripcion(solicitudes.descripcion, 10);
 
+            if (solicitudes.ocultar==false) { // Verifica si la solicitud no está oculta
+                content += `
+                    <tr onclick="openDetalle(${solicitudes.id})" class="${solicitudes.status}">
+                        <td scope="row"  class ="index">${index + 1}</td>
+                        <td class ="servicio">${solicitudes.tipo_servicio}</td>
+                        <td class ="descripcion">${descripcionLimitada}</td>
+                        <td class ="botones">
+                            ${!hideButtons ? `
+                            <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="/dep_mantenimiento/Formulario/Docente/Solicitud/${solicitudes.id}" role="button">
+                            <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
+                            </a>
 
-            content += `
-                <tr onclick="openDetalle(${solicitudes.id})" class="${solicitudes.status}">
-                    <td scope="row"  class ="index">${index + 1}</td>
-                    <td class ="servicio">${solicitudes.tipo_servicio}</td>
-                    <td class ="descripcion">${descripcionLimitada}</td>
-                    <td class ="botones">
-                        ${!hideButtons ? `
-                        <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="/dep_mantenimiento/Formulario/Docente/Solicitud/${solicitudes.id}" role="button">
-                        <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
-                        </a>
-                        <button  class="btn  btn-sm-2"  style="background-color: #d90429 !important;" >
-                    
-                        <i class="fa fa-trash" aria-hidden="true" style=" color: #ffffff !important;" ></i>
+                            <a class="btn btn-sm-2" style="background-color: #d90429 !important;" href="/dep_mantenimiento/eliminar-solicitud/${solicitudes.id}" role="button">
+                            <i class="fa fa-trash" aria-hidden="true" style=" color: #ffffff !important;" ></i>
+                            </a>
+
+                            
+
+                            
+                            
+                        
+                        ` :  ` 
                         </button>
-
-
+                        <button  class="btn  btn-sm-2"  style="background-color: #6c757d !important;" >
+                    
+                        <i class="fa fa-lock" style=" color: #ffffff !important;" aria-hidden="true"></i>
+                        </button>
                         
                         
-                     
-                    ` :  ` 
-                    </button>
-                    <button  class="btn  btn-sm-2"  style="background-color: #6c757d !important;" >
-                
-                    <i class="fa fa-lock" style=" color: #ffffff !important;" aria-hidden="true"></i>
-                    </button>
+                        `}
+                        </td>
+                        <td class ="status">${icono}</td> <!-- Aquí se mostrará el icono correspondiente -->
+                        <td class ="fecha">${solicitudes.fecha}</td>
                     
-                    
-                    `}
-                    </td>
-                    <td class ="status">${icono}</td> <!-- Aquí se mostrará el icono correspondiente -->
-                    <td class ="fecha">${solicitudes.fecha}</td>
-                   
-                    <td class ="hora">${solicitudes.hora}</td>
-                </tr>
+                        <td class ="hora">${solicitudes.hora}</td>
+                    </tr>
 
 
-            `;
-
+                `;
+            }
         });
         tbodySolicitudes.innerHTML = content;
         

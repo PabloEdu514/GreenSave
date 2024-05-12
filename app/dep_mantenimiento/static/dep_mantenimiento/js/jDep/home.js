@@ -109,7 +109,7 @@ const listSolicitudes = async () => {
               
               else {
                 actionElement = !hideButtons ? `
-                    <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="#" role="button">
+                    <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="/dep_mantenimiento/Formulario/Jefe_Departamento/Solicitud/${solicitudes.id}" role="button">
                         <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
                     </a>
                     <a class="btn btn-sm-2" style="background-color: #d90429 !important;" href="/dep_mantenimiento/eliminar-solicitud/${solicitudes.id}" role="button">
@@ -121,33 +121,33 @@ const listSolicitudes = async () => {
                     </button>
                 `;
             }
-
-            content += `
-                <tr onclick="openDetalle(${solicitudes.id})" class="${solicitudes.status}">
-                    <td scope="row"  class ="index">${index + 1}</td>
-                    <td class ="servicio">${solicitudes.tipo_servicio}</td>
-                    <td class ="descripcion">${descripcionLimitada}</td>
-                  
-                    <td class ="Pertenece">   ${nombreTrabajador}</td>
-                    <td class ="botones">
-                  
-                    ${actionElement}
-                  
+            if (solicitudes.ocultar==false) { // Verifica si la solicitud no está oculta
+                content += `
+                    <tr onclick="openDetalle(${solicitudes.id})" class="${solicitudes.status}">
+                        <td scope="row"  class ="index">${index + 1}</td>
+                        <td class ="servicio">${solicitudes.tipo_servicio}</td>
+                        <td class ="descripcion">${descripcionLimitada}</td>
                     
+                        <td class ="Pertenece">   ${nombreTrabajador}</td>
+                        <td class ="botones">
                     
+                        ${actionElement}
                     
-                    </td>
-                    <td class ="status">${icono}</td> <!-- Aquí se mostrará el icono correspondiente -->
-                    <td class ="fecha">${solicitudes.fecha}</td>
-                   
-                    <td class ="hora">${solicitudes.hora}</td>
-
+                        
+                        
+                        
+                        </td>
+                        <td class ="status">${icono}</td> <!-- Aquí se mostrará el icono correspondiente -->
+                        <td class ="fecha">${solicitudes.fecha}</td>
                     
-                </tr>
+                        <td class ="hora">${solicitudes.hora}</td>
+
+                        
+                    </tr>
 
 
-            `;
-
+                `;
+            }
         });
         tbodySolicitudes.innerHTML = content;
         

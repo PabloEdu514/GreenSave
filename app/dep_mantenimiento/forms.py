@@ -25,9 +25,12 @@ class SolicitudMantenimientoForm(forms.Form):
     area_solicitante = forms.CharField(label='Área Solicitante', widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}))  # Campo de solo lectura para el área solicitante
     responsable_Area = forms.CharField(label='Responsable del Área', widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}))  # Campo de solo lectura para el responsable del área
 
-class Solicitud_Mantenimiento_Jefe(forms.Form):
+class JefeForm(forms.Form):
+    fecha = forms.DateField(label='Fecha', widget=forms.DateInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
     folio = forms.CharField(label='Folio', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el folio'}))
-    tipos_servicio = forms.ChoiceField(label='Tipo de Servicio', choices=[
+    area_solicitante = forms.CharField(label='Área Solicitante', widget=forms.TextInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
+    responsable_Area = forms.CharField(label='Responsable del Área', widget=forms.TextInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
+    tipo_servicio = forms.ChoiceField(label='Tipo de Servicio', choices=[
         ('', 'Seleccionar'),
         ('Electrica', 'Electrica'),
         ('Herrería', 'Herrería'),
@@ -38,15 +41,6 @@ class Solicitud_Mantenimiento_Jefe(forms.Form):
         ('Cerrajería', 'Cerrajería'),
         ('Otro', 'Otro'),
     ], widget=forms.Select(attrs={'class': 'form-select'}))
-    descripcion = forms.CharField(label='Descripción del Servicio o Falla a Reparar', widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese la descripción', 'rows': 2}))
-    fecha = forms.DateField(label='Fecha', widget=forms.DateInput(attrs={'class': 'form-control', 'readonly': True}))  # Campo de solo lectura para la fecha
-    area_solicitante = forms.CharField(label='Área Solicitante', widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}))  # Campo de solo lectura para el área solicitante
-    responsable_Area = forms.CharField(label='Responsable del Área', widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}))  # Campo de solo lectura para el responsable del área
-
-class sol_Man_Firma(forms.Form):
-    folio = forms.CharField(label='Folio', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el folio','readonly': True}))
-    tipos_servicio = forms.ChoiceField(label='Tipo de Servicio', widget=forms.Select(attrs={'class': 'form-select','readonly': True}))
-    descripcion = forms.CharField(label='Descripción del Servicio o Falla a Reparar', widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese la descripción', 'rows': 2,'readonly': True}))
-    fecha = forms.DateField(label='Fecha', widget=forms.DateInput(attrs={'class': 'form-control', 'readonly': True}))  # Campo de solo lectura para la fecha
-    area_solicitante = forms.CharField(label='Área Solicitante', widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}))  # Campo de solo lectura para el área solicitante
-    responsable_Area = forms.CharField(label='Responsable del Área', widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}))  # Campo de solo lectura para el responsable del área
+    descripcion = forms.CharField(label='Descripción del Servicio o Falla a Reparar', widget=forms.Textarea(attrs={'class': 'form-control'}))
+    firma_Jefe_Departamento_img = forms.FileField(label='Firma del Jefe de Departamento', widget=forms.FileInput(attrs={'class': 'form-control'}))
+            

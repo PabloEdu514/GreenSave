@@ -21,7 +21,8 @@ urlpatterns = [
     path('CargarSolicitudesJdep/<int:id_Jefe>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.obtener_solicitudes), name='obtener_solicitudes_jefe_departamento'),
     path('Inicio/Jefe_Departamento/<int:id>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.cargar_Inicio), name='inicio_jefe_departamento'),
     path('Formulario/Jefe_Departamento/<int:id_Jefe_Departamento>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.cargar_Formulario), name='formulario_jefe_departamento'),
-    path('guardar/<int:id_Jefe_Departamento>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.guardar_datos_Jdep), name='guardar_formulario_jefe_departamento'),
+    path('Formulario/Jefe_Departamento/Solicitud/<int:idSolocitud>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.editar_Formulario), name='editar_Formulario'),
+   
 
     # Enlaces del Empleados
     path('CargarSolicitudesEmpleados/<int:idEmpleado>/', Empleado_required(views.vistas_Empleados.obtener_solicitudes), name='obtener_solicitudes_empleados'),

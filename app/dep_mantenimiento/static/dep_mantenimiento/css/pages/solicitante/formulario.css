@@ -147,7 +147,14 @@
    font-size: 14px;
     color: #002E6D;
     background-color: #FFFFFF;
+    cursor: default; /* Desactiva la selección del cursor */
+    border: none; /* Quita los bordes */
+    outline: none; /* Quita el contorno de enfoque */
 }
+
+
+
+
 
 /* Estilos para el campo de área solicitante */
 #id_area_solicitante {
@@ -155,6 +162,9 @@
     font-size: 14px;
     color: #002E6D;
     background-color: #FFFFFF;
+    cursor: default; /* Desactiva la selección del cursor */
+    border: none; /* Quita los bordes */
+    outline: none; /* Quita el contorno de enfoque */
    
 }
 #id_fecha{
@@ -163,6 +173,9 @@
     width: 40%;
     color: #002E6D;
     background-color: #FFFFFF;
+    cursor: default; /* Desactiva la selección del cursor */
+   
+    outline: none; /* Quita el contorno de enfoque */
 }
 #id_folio{
     width: 50%;

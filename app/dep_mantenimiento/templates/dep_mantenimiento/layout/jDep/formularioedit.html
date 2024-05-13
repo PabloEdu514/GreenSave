@@ -62,7 +62,7 @@
         
 
 
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
             <div class="container-fluid" id="ContenedorFormuario">
@@ -96,7 +96,20 @@
                     <label for="G_departamento" class="form-label ">Descripción del Servicio o Falla a Reparar:</label>
                     {{ form.descripcion }}
                 </div>
-                
+                 <!-- Mostrar la imagen actual si existe -->
+                {% if solicitud.firma_Jefe_Departamento_img %}
+                <div>
+                   
+                    <img src="{{ solicitud.firma_Jefe_Departamento_img.url }}" alt="Firma Actual" width="200">
+                    <p class="nombre-firma">{{ form.responsable_Area }}</p>
+                </div>
+                {% endif %}
+
+
+
+
+
+
                 <div class="row justify-content-center">
                     <div class="col-auto">
                         <button type="submit" class="btn  fs-6" id="enviar">Guardar</button>
@@ -106,6 +119,10 @@
                 </div>
                 
             
+
+
+
+
             </div>
                </form>
 

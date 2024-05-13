@@ -92,9 +92,10 @@ const listSolicitudes = async () => {
             let actionElement;
             if ( solicitudes.firmado_jefe_departamento === false && nombreTrabajador ) {
                 actionElement = `
-                <button class="btn btn-sm-2" style="background-color: #9a8c98 !important;">   
+                <a class="btn btn-sm-2" style="background-color: #9a8c98 !important;" href="/dep_mantenimiento/Firmar_Formulario/Jefe_Departamento/Solicitud/${solicitudes.id}" role="button">
                 <i class="fa fa-pencil-square-o" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
-                </button>`;
+                </a>
+                `;
                 
                 
               }

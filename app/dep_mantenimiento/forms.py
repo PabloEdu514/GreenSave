@@ -43,4 +43,13 @@ class JefeForm(forms.Form):
     ], widget=forms.Select(attrs={'class': 'form-select'}))
     descripcion = forms.CharField(label='Descripción del Servicio o Falla a Reparar', widget=forms.Textarea(attrs={'class': 'form-control'}))
     firma_Jefe_Departamento_img = forms.FileField(label='Firma del Jefe de Departamento', widget=forms.FileInput(attrs={'class': 'form-control'}))
-            
+
+class firmar_Formulario(forms.Form):
+    firma_Jefe_Departamento_img = forms.FileField(label='Firma del Jefe de Departamento', widget=forms.FileInput(attrs={'class': 'form-control'}))     # Campo para cargar la firma para el responsable del área     
+    #Estos campos son para mostrar la información de la BD
+    fecha = forms.DateField(label='Fecha', widget=forms.DateInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
+    folio = forms.CharField(label='Folio', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
+    area_solicitante = forms.CharField(label='Área Solicitante', widget=forms.TextInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
+    responsable_Area = forms.CharField(label='Responsable del Área', widget=forms.TextInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
+    tipo_servicio = forms.ChoiceField(label='Tipo de Servicio',widget=forms.TextInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
+    descripcion = forms.CharField(label='Descripción del Servicio o Falla a Reparar', widget=forms.Textarea(attrs={'class': 'form-control-plaintext', ' readonly': True}))

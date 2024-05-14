@@ -1,0 +1,66 @@
+  <!--   Core JS Files   -->
+  {% load static %}
+  <script src="{% static 'plugins/softui/js/core/popper.min.js' %}"></script>
+  <script src="{% static 'plugins/softui/js/core/bootstrap.min.js' %}"></script>
+
+  <script src="{% static 'plugins/softui/js/plugins/perfect-scrollbar.min.js' %}"></script>
+  <script src="{% static 'plugins/softui/js/plugins/smooth-scrollbar.min.js' %}"></script>
+  <script src="{% static 'plugins/softui/js/soft-ui-dashboard.js' %}"></script>
+
+  <script src="{% static 'plugins/softui/js/dark-mode-handler.js' %}"></script>
+
+  <!-- <script async defer src="https://buttons.github.io/buttons.js"></script>  -->
+  <script src="{% static 'plugins/jquery/jquery-3.6.1.min.js' %}"></script>
+  <!--<script src="{% static 'plugins/jquery/jquery-3.6.1.slim.min.js' %}"></script>-->
+  <script src="{% static 'plugins/select2/js/select2.full.min.js' %}"></script>
+  
+  <!-- <script src="{% static 'sarh/js/adminlte.min.js' %}"></script> -->
+  <script src="{% static 'plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+  <script src="{% static 'plugins/DataTables/DataTables-1.12.1/js/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'plugins/DataTables/DataTables-1.12.1/js/dataTables.bootstrap5.min.js' %}"></script>
+  <script src="{% static 'plugins/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js' %}"></script>
+  <script src="{% static 'plugins/DataTables/Responsive-2.3.0/js/responsive.bootstrap5.min.js' %}"></script>
+  <script src="{% static 'plugins/DataTables/Buttons-2.2.3/js/dataTables.buttons.min.js' %}"></script>
+  <script src="{% static 'plugins/DataTables/Buttons-2.2.3/js/buttons.bootstrap5.min.js' %}"></script>
+  <script src="{% static 'plugins/DataTables/JSZip-2.5.0/jszip.min.js' %}"></script>
+  <script src="{% static 'plugins/DataTables/pdfmake-0.1.36/pdfmake.min.js' %}"></script>
+  <script src="{% static 'plugins/DataTables/pdfmake-0.1.36/vfs_fonts.js' %}"></script>
+  <script src="{% static 'plugins/DataTables/Buttons-2.2.3/js/buttons.html5.min.js' %}"></script>
+  <script src="{% static 'plugins/DataTables/Buttons-2.2.3/js/buttons.print.min.js' %}"></script>
+  <script src="{% static 'plugins/DataTables/Buttons-2.2.3/js/buttons.colVis.min.js' %}"></script>
+  <script src="{% static 'plugins/summernote/summernote-bs4.min.js' %}"></script>
+  <script src="{% static 'plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+  <script src="{% static 'plugins/bootstrap-multiselect/js/bootstrap-multiselect.js' %}"></script>
+  <script src="{% static 'plugins/timepicker-1.3.5/jquery.timepicker.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+  <script >
+     $.fn.datepicker.dates['es'] = {
+        days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+        daysShort: ["Dom", "Lu", "Ma", "Mi", "Ju", "Vi", "Sáb"],
+        daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+        months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+        monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sept", "Oct", "Nov", "Dic"],
+        format: "yyyy-mm-dd",
+        weekStart: 1,
+        today: "Today",
+        clear: "Clear",
+        daysOfWeekHighlighted: "6,0",
+        autoclose: true,
+        todayHighlight: true,
+     };
+      $('.date').datepicker({
+           language: 'es',
+      });
+      $('.date').datepicker("setDate", new Date());
+      $('.timepicker').timepicker({
+        timeFormat: 'HH:mm',
+        interval: 1,
+        minTime: '6:00',
+        maxTime: '10:00',
+        startTime: '6:00',
+        dynamic: false,
+        dropdown: true,
+        scrollbar: true
+    });
+  </script>
+  <script src="{% static 'sarh/js/search.js' %}"></script>

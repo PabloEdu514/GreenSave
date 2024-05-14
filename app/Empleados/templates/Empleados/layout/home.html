@@ -1,0 +1,216 @@
+{% extends "Empleados/layout/layout.html" %}
+{% load static %}
+{% block title %}<title>SARH | I.T. Morelia</title>{% endblock %}
+{% block navpath %}
+   <li class="breadcrumb-item"><a href="{% url 'home' %}">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid-3x3-gap-fill" viewBox="0 0 16 16">
+         <path d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V7zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z"/>
+      </svg>
+   </a></li>
+   <li class="breadcrumb-item"><a href="{% url 'home.Empleados' %}">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+         <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+         <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+      </svg>
+   </a></li>
+   <li class="breadcrumb-item"> Navegación </li>
+   <li class="breadcrumb-item"> directorio </li>
+
+{% endblock %}
+{% block content %}
+
+<span class="align-middle">
+
+
+   <!DOCTYPE html>
+   <html>
+   <head>
+       <title>Formulario de Solicitud</title>
+       <link rel="stylesheet" type="text/css" href="{% static 'Empleados/styles/styles.css' %}">
+   </head>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-VF43PqFHZBCZh4ysadDxE2NVWvwuCFVcRY+2Yv29O2hXPIghXJfVQfRYHA3wEY0tDpgmSRThyM9jT+GjRQtrNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+   <body>
+    <div class="top-bar">
+        <button class="top-button"><i class="fas fa-arrow-left"></i> </button>
+        <button class="top-button"><i class="fas fa-sign-out-alt"></i> </button>
+    </div>
+    
+     
+      <div class="logo-container">
+         <img src="{% static 'Solicitudes/img/TecMexico.png' %}" alt="Logo Izquierdo" class="logo" style="width: 100px; height: auto;">
+         <h1 class="titulo">Instituto Tecnológico de Morelia</h1>
+         
+         <img src="{% static 'Solicitudes/img/TecMor.png' %}" alt="Logo Izquierdo" class="logo" style="width: 100px; height: auto;">
+      </div>
+
+     <!-- Agrega la clase 'subtitle' a este elemento -->
+     <h2 class="subtitle">Solicitud de mantenimiento</h2>
+     
+     <!-- Resto del formulario -->
+     <form method="post">
+         {% csrf_token %}
+         <div class="input-container">
+             <label for="id_fecha">Fecha:</label>
+             <input type="date" id="id_fecha" name="fecha">
+             <label class="label-text" for="id_folio">Folio:</label>
+             <input type="text" id="id_folio" name="folio">
+         </div>
+         <div class="input-container">
+          <label for="id_area_solicitante">Área Solicitante:</label>
+          <div class="input-field">
+              <input type="text" id="id_area_solicitante" name="area_solicitante">
+          </div>
+      </div>
+      
+      <div class="input-container">
+       <label for="id_responsable_area">Responsable del Área:</label>
+       <div class="input-field">
+           <input type="text" id="id_responsable_area" name="responsable_area">
+       </div>
+   </div>
+   
+   <div class="input-container">
+       <label for="id_tipos_servicio">Tipo de Servicio:</label>
+       <div class="input-field">
+           <select id="id_tipos_servicio" name="tipos_servicio">
+               <option value="tipo1">Electrica</option>
+               <option value="tipo2">Herrería</option>
+               <option value="tipo3">Plomería</option>
+               <option value="tipo1">Pintura</option>
+               <option value="tipo2">Cañones</option>
+               <option value="tipo3">Pintarrón</option>
+               <option value="tipo2">Cerrajería</option>
+               <option value="tipo3">Otro</option>
+           </select>
+       </div>
+   </div>
+   
+
+        <div class="description-container">
+            <label for="id_descripcion" class="description-label">Descripción del Servicio o Falla a Reparar:</label>
+            <textarea id="id_descripcion" name="descripcion" class="description-text" placeholder="Ingresa hasta 500 caracteres"></textarea>
+        </div>
+
+<!--
+        <div class="description-container">
+            <label for="id_descripcion" class="description-label">Trabajo o servicio realizado:</label>
+            <textarea id="id_descripcion" name="descripcion" class="description-text" placeholder="Ingresa hasta 500 caracteres"></textarea>
+        </div>
+
+        <input type="file" id="input-imagen" style="display: none;">
+
+        <div style="text-align: center;">
+            <button type="submit" id="btn-adjuntar-imagen" class="btn-adjuntar-imagen">Adjuntar imagen</button>
+        </div>
+
+        <script>/*JS para el funcionamiento de adjuntar imagen */
+            document.getElementById('btn-adjuntar-imagen').addEventListener('click', function() {
+                document.getElementById('input-imagen').click();
+            });
+        </script>
+-->
+
+
+
+
+        <label for="id_descripcion" class="description-label">Trabajo o servicio realizado:</label>
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        <div id="editor-container"></div>
+        <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+        <script>
+            var editor = new Quill('#editor-container', {
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline', 'strike'],
+                        ['link', 'image']
+                    ]
+                },
+                theme: 'snow'
+            });
+        </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="description-container">
+            <label for="id_descripcion" class="description-label">Material utilizado:</label>
+            <textarea id="id_descripcion" name="descripcion" class="description-text" placeholder="Indica todo el material utilizado para la realización del trabajo"></textarea>
+        </div> 
+
+
+                <!-- Agrega la referencia a la biblioteca Signature Pad -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
+
+        <div id="signature-pad">
+            <canvas></canvas>
+        </div>
+
+        <button type="button" id="clear-signature">Borrar firma</button>
+
+        <button type="button" id="save-signature">Firmar</button>
+
+        <script>
+            // Inicializa Signature Pad en el canvas
+            var canvas = document.querySelector("canvas");
+            var signaturePad = new SignaturePad(canvas);
+
+            // Maneja el clic en el botón "Borrar firma"
+            document.getElementById("clear-signature").addEventListener("click", function() {
+                signaturePad.clear();
+            });
+
+            // Maneja el clic en el botón "Firmar"
+            document.getElementById("save-signature").addEventListener("click", function() {
+                // Obtén la imagen de la firma en formato base64
+                var signatureImage = signaturePad.toDataURL();
+                // Aquí puedes enviar la imagen al servidor o hacer cualquier otra cosa con ella
+                console.log(signatureImage);
+
+                // Oculta los botones después de firmar
+                document.getElementById("clear-signature").style.display = "none";
+                document.getElementById("save-signature").style.display = "none";
+
+                // Deshabilita la capacidad de dibujar en el recuadro de firma
+                signaturePad.off(); // Esto deshabilita el manejo de eventos de dibujo
+            });
+        </script>
+
+
+        <div style="text-align: center;">
+            <button type="submit">Enviar</button>
+        </div>
+
+          
+
+            
+
+     </form>
+ </body>
+ </html>
+   
+
+   
+   
+
+
+
+<!-- <img src="{% static 'sarh/img/ITMORELIA-Logo.png' %}" class="rounded mx-auto d-block" alt="Logo TecNM" width="50%"> -->
+
+
+</span>
+<!-- <P> nuevo DEP </P> -->
+
+      
+
+{% endblock %}

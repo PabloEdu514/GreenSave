@@ -1,243 +1,256 @@
-/*estilos de home.css*/
+#Contenido {
+  background-color: white !important;
+  font-family: "Inter", sans-serif !important;
+}
+/* Estilos para el encabezado de la tabla */
 
-/*Contenedor */
-
-.GestiondeCorreos {
-  background-color: #1b396b;
+/* Estilos para el Buscador */
+#Buscador {
+  padding-top: 10px !important;
+  background-color: #1b396b !important;
+}
+.input-group-text {
+  color: #1b396b !important;
+  background-color: white !important;
 }
 
-/*Estilos de la barra de busqueda  */
-.busqueda {
-  padding-right: 5px;
-  padding-left: 5px;
-  margin-left: 5px;
+#searchInput {
+  color: #1b396b !important;
+  background-color: white !important;
+}
+/* Estilos para el Filtro */
+.container-fluid {
+  background-color: #ffffff !important;
+  padding-top: 10px !important;
 }
 
-#Buscar {
-  margin-top: 20px;
-  background-color: #ffffff;
-  width: 50px; /* Cambia el ancho del botón */
-  height: 50px; /* Cambia la altura del botón */
-  padding: 5px;
-  border: none; /* Elimina el borde */
-  outline: none; /* Elimina el resaltado cuando está enfocado */
-}
-
-#Buscar svg {
-  color: #1b396b;
-}
-
-#Tbuscar {
-  border-top-right-radius: 10px; /* Redondea la esquina superior izquierda */
-  border-bottom-right-radius: 10px; /* Redondea la esquina inferior izquierda */
-  margin-top: 20px;
-  height: 50px; /* Cambia la altura del botón */
-  width: 70%;
-  font-family: "Inter", sans-serif;
-  color: #1b396b;
-  padding-right: 10px;
-  padding-left: 10px;
-  border: none; /* Elimina el borde */
-  outline: none; /* Elimina el resaltado cuando está enfocado */
-}
-#Tbuscar::placeholder {
-  color: #1b396b; /* Cambia el color del texto del placeholder */
-}
-/*Fin de estilos de la barra de busqueda   */
-
-.correo {
-  background-color: #ffffff;
-}
-
+/* Botones de Filtrado, Recargar Tabla y Solicitar-formulario */
 #Filtro {
-  margin-top: 5px;
-  height: 40px;
-  width: 120px;
-  color: #1b396b;
-  margin-left: 5px;
-}
-#recargar {
-  background-color: #ffffff;
-  border-radius: 5px;
-  margin-top: 5px;
-  margin-left: 5px;
-  height: 40px;
-  width: 40px;
-  border: none;
+  background-color: #ffffff !important;
+  color: #1b396b !important;
 }
 
-#recargar svg {
-  color: #1b396b;
+#Recargar {
+  border: none !important; /* Elimina el borde */
+  background-color: #ffffff !important;
+  color: #1b396b !important;
 }
-
-#Solicitar {
-  font-family: "Inter", sans-serif;
-  background-color: #ffffff;
-  border-radius: 5px;
-  height: 40px;
-  width: 200px;
-  margin-top: 5px;
-  border-color: #1b396b;
-  color: #1b396b;
-  margin-right: 5px;
+#Solicitar-formulario {
+  background-color: #ffffff !important;
+  color: #1b396b !important;
 }
-#Solicitar svg {
-  color: #1b396b;
+/* Estilos para el encabezado de la tabla */
+#Tabla-Solicitudes {
+  width: 100%; /* Ancho completo de la tabla */
+  height: 50px !important; /* Establece la altura deseada para las filas */
+  border-collapse: collapse; /* Fusionar los bordes de las celdas */
+  max-height: 50px !important;
 }
 
 
 
+/* Agrega estilos al pasar el mouse sobre las filas de la tabla */
 
-
-/*Tabla de correos*/
-.table {
-  margin-top: 20px;
-  font-family: "Inter", sans-serif;
-  color: #1b396b;
-  border-collapse: collapse; /* Colapsa los bordes de las celdas */
+#Tabla-Solicitudes tbody tr:hover td {
+  background-color: #a2d2ff !important;
+  color: white !important;
+  cursor: pointer !important;
 }
 
-.table th,
-.table td {
-  border: none; /* Elimina el borde de las celdas */
-  padding: 8px; /* Añade un relleno opcional */
+/* Estilos de las filas de la tabla dependiendo del progreso de la solicitud */
+.Pendiente td{
+  background-color: rgba(217, 217, 217, 1) !important;
 }
+.Realizado td{
+  background-color: rgba(37, 189, 13, 0.53) !important;
+}
+.En_espera td{
+  background-color: rgba(241, 195, 77, 0.53) !important;
+  color: rgb(0, 0, 0) !important;
 
-.table-bordered {
-  border-collapse: collapse; /* Colapsa los bordes de las celdas */
 }
+.Rechazado td{
+  background-color: rgba(255, 46, 0, 0.53) !important;
+  color: white !important;
 
-.table-bordered th,
-.table-bordered td {
-  border: none; /* Elimina el borde de las celdas */
-  padding: 8px; /* Añade un relleno opcional */
-}
-
-.fila-1 {
-  text-align: left;
-  background-color: #d9d9d9;
-  border: none;
-}
-.fila-1:hover {
-  cursor: pointer;
-  background-color: rgba(
-    128,
-    128,
-    128,
-    0.5
-  ); /* Cambiar el color de fondo al pasar el cursor */
 }
 
 
 
-.fila-2 {
-  text-align: center;
-  background-color: rgba(37, 189, 13, 0.53);
-  border: none;
-}
-.fila-2:hover {
-  cursor: pointer;
-  background-color: rgba(
-    128,
-    128,
-    128,
-    0.5
-  ); /* Cambiar el color de fondo al pasar el cursor */
-}
-.fila-3 {
-  text-align: center;
-  background-color: rgba(241, 195, 77, 0.53);
-  border: none;
-}
-.fila-3:hover {
-  cursor: pointer;
-  background-color: rgba(
-    128,
-    128,
-    128,
-    0.5
-  ); /* Cambiar el color de fondo al pasar el cursor */
-}
-.fila-4 {
-  text-align: left;
-  background-color: #d9d9d9;
-  border: none;
-}
-.fila-4:hover {
-  cursor: pointer;
-  background-color: rgba(
-    128,
-    128,
-    128,
-    0.5
-  ); /* Cambiar el color de fondo al pasar el cursor */
+/* Estilos de las columnas de la tabla */
+.Colindex {
+  font-size: 16px;
+  text-align: center !important;
+  color: #1b396b !important;
+  font-weight: bold !important;
+
+  width: 20px !important;
+  height: 50px !important;
+  max-height: 50px !important;
+  max-width: 20px !important;
 }
 
-.boton-editar {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  text-decoration: none;
-  border-radius: 5px;
-  cursor: pointer;
-  border: none;
+.Colservicio {
+  font-size: 16px;
+  text-align: center !important;
+  color: #1b396b !important;
+  font-weight: bold !important;
+
+  width: 80px !important;
+  height: 50px !important;
+  max-height: 50px !important;
+  max-width: 80px !important;
 }
 
-.boton-editar svg {
-  width: 100%;
-  height: 100%;
-  color: #1b396b;
+.ColDesc {
+  font-size: 16px;
+  text-align: left !important;
+  color: #1b396b !important;
+  font-weight: bold !important;
+  width: 250px !important;
+  height: 50px !important;
+  max-height: 50px !important;
+  max-width: 250px !important;
+}
+.ColPertenece {
+  font-size: 16px;
+  text-align: center !important;
+  color: #1b396b !important;
+  font-weight: bold !important;
+  width: 150px !important;
+  height: 50px !important;
+  max-height: 50px !important;
+  max-width: 150px !important;
 }
 
-.button {
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  background: none;
-  border: none;
-  cursor: pointer;
+.Colbotones {
+  font-size: 16px;
+  text-align: center !important;
+  color: #1b396b !important;
+  font-weight: bold !important;
+  width: 150px !important;
+  height: 50px !important;
+  max-width: 150px !important;
+  max-height: 50px !important;
 }
 
-.button svg {
-  width: 100%;
-  height: 100%;
-  color: #1b396b;
+.Colstatus {
+  font-size: 16px;
+  text-align: center !important;
+  align-items: center !important;
+  color: #1b396b !important;
+  font-weight: bold !important;
+  width: 80px !important;
+  height: 50px !important;
+  max-width: 80px !important; /* Para evitar que el contenido se desborde */
+  max-height: 50px !important;
 }
 
-
-
-
-
-
-.icono-status {
-  width: 80px; /* Tamaño deseado para la celda */
-  height: 30px; /* Tamaño deseado para la celda */
+.Colfecha {
+  font-size: 16px;
+  color: #1b396b !important;
+  text-align: center !important;
+  height: 50px !important;
+  width: 100px !important;
+  font-weight: bold !important;
+  max-width: 100px !important;
+  max-height: 50px !important;
+}
+.Colhora {
+  font-size: 16px;
+  color: #1b396b !important;
+  text-align: center !important;
+  align-items: center !important;
+  height: 50px !important;
+  width: 60px !important;
+  font-weight: bold !important;
+  max-height: 50px !important;
+  max-width: 60px !important;
 }
 
-.icono-status svg {
-  width: 30px;
-  height: 30px;
-  color: #1b396b;
+/* Estilos para las filas de la tabla */
+.index {
+  font-size: 16px;
+  color: #0b0b0b !important;
+  text-align: center !important;
+  align-items: center !important;
+  width: 20px !important;
+  height: 50px !important;
+  max-height: 50px !important;
+  max-width: 20px !important;
 }
-.hora .fecha {
-  width: 30px;
-  height: 30px;
+.servicio {
+  font-size: 16px;
+  color: #0b0b0b !important;
+  text-align: center !important;
+  width: 50px !important;
+  height: 50px !important;
+  max-height: 50px !important;
+  max-width: 50px !important;
 }
 
-.BotFirmar {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  text-decoration: none;
-  border-radius: 5px;
-  cursor: pointer;
-  border: none;
+.descripcion {
+  font-size: 16px;
+  color: #0b0b0b;
+  text-align: left !important;
+  max-width: 250px !important; /* Para evitar que el contenido se desborde */
+  max-height: 50px !important;
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+  overflow: hidden; /* Oculta el texto que se desborde */
+  text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al texto que se desborde */
 }
-.BotFirmar svg {
-  width: 30px;
-  height: 30px;
-  color: #1b396b;
+.Pertenece {
+  font-size: 16px;
+  color: #0b0b0b !important;
+  text-align: center !important;
+  max-width: 250px !important; /* Para evitar que el contenido se desborde */
+  max-height: 50px !important;
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+  overflow: hidden; /* Oculta el texto que se desborde */
+  text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al texto que se desborde */
 }
+
+.botones {
+  text-align: center !important;
+  align-items: center !important;
+  width: 150px !important;
+  height: 50px !important;
+  max-width: 150px !important; /* Para evitar que el contenido se desborde */
+  max-height: 50px !important;
+}
+
+.status {
+  max-height: 50px !important;
+  text-align: center !important;
+  width: 50px !important;
+  height: 50px !important;
+  max-width: 50px !important; /* Para evitar que el contenido se desborde */
+  max-height: 50px !important;
+}
+.hora {
+  font-size: 16px;
+  color: #0b0b0b !important;
+  text-align: center !important;
+  width: 60px !important;
+  height: 50px !important;
+  max-width: 60px !important; /* Para evitar que el contenido se desborde */
+  max-height: 50px !important;
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+  overflow: hidden; /* Oculta el texto que se desborde */
+  text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al texto que se desborde */
+}
+
+.fecha {
+  font-size: 16px;
+  color: #0b0b0b !important;
+  text-align: center !important;
+  width: 100px !important;
+  max-width: 100px !important; /* Para evitar que el contenido se desborde */
+  max-height: 50px !important;
+  height: 50px !important;
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+  overflow: hidden; /* Oculta el texto que se desborde */
+  text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al texto que se desborde */
+}
+
 

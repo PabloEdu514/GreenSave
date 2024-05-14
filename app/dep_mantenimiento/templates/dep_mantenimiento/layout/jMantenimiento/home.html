@@ -1,13 +1,15 @@
 {% extends "dep_mantenimiento/layout/layout.html" %}
 {% load static %}
 {% block title %}<title>SARH | I.T. Morelia</title>{% endblock %}
-{% block navpath %}
+{% block navpath %} 
    <li class="breadcrumb-item"><a href="{% url 'home' %}">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid-3x3-gap-fill" viewBox="0 0 16 16">
          <path d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V7zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z"/>
       </svg>
    </a></li>
-   <li class="breadcrumb-item"><a href="{% url 'home.dep_mantenimiento' %}">
+   <li class="breadcrumb-item"><a href="{% url 'inicio_jefe_mantenimiento' id=id %}">
+
+
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
          <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
          <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
@@ -18,146 +20,147 @@
 
 {% endblock %}
 {% block content %}
-<link rel="stylesheet" href="{% static "dep_mantenimiento/css/pages/jMantenimiento/home.css" %}">
-<script src="{% static 'dep_mantenimiento/js/acciones.js' %}"></script>
+
 <span class="align-middle">
-   <!--Aqui se aventara codigo --> 
-<div id ="Area"class="GestiondeCorreos">
+
+   <!DOCTYPE html>
+   
+   <html>
+      <head>
+         <script id="user-data" data-user-id="{{ id }}"></script>
+
+         <!--bootstrap5 v5.2.3-->
+         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+         <!-- DataTable-->
+         <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+         <!-- Iconos-->
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+         <!--Mi css-->
+         <link rel="stylesheet" href="{% static "dep_mantenimiento/css/pages/jMantenimiento/home.css" %}">
+      </head>
+      <body>
+         <div class="container-fluid" Id="Contenido">
+            
+            <div class="row" id="Buscador">
+               <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-2">
+                  
+                  <div class="input-group">
+                     <span class="input-group-text"><i class="fa fa-search" aria-hidden="true"></i></span>
+                     <input type="search" class="form-control" id="searchInput" placeholder="Buscar Solicitud">
+                 </div>
+               </div>
+           </div>
+           <!-- Botones de Filtrado, Recargar Tabla y Solicitar-formulario -->
+            <div class="container-fluid" id="FilySolcititar">
+               <div class="row" id="Fila-Botones">
+                  <div class="col-auto me-auto">
+                     <select id="Filtro" class="form-select">
+                        <option value="todos">Todos</option>
+                        <optgroup label="Estatus">
+                              <option value="Enviado">Enviado</option>
+                              <option value="Pendiente">Pendiente</option>
+                              <option value="Realizado">Realizado</option>
+                              <option value="Rechazado">Rechazado</option>
+                              <option value="En proceso">En proceso</option>
+                              <option value="En espera">En espera</option>
+                        </optgroup>
+                        <optgroup label="Servicios">
+                              <option value="Electrica">Electrica</option>
+                              <option value="Herrería">Herrería</option>
+                              <option value="Plomería">Plomería</option>
+                              <option value="Pintura">Pintura</option>
+                              <option value="Cañones">Cañones</option>
+                              <option value="Pintarrón">Pintarrón</option>
+                              <option value="Cerrajería">Cerrajería</option>
+                              <option value="Otro">Otro</option>
+                        </optgroup>
+                        <optgroup label="Tiempos">
+                           <option value="Recientes">Recientes</option>
+                           <option value="Pasadas">Pasadas</option>
+                        </optgroup>
+
+
+                      </select>
+                  </div>
+                  
+                  <div class="col">
+                     <button class="btn btn-light" id="Recargar"  onclick="reloadDataTable()" >
+                        <i class="fa-solid fa-arrow-rotate-right"></i>
+
+                     </button>
+                   </div>
+
+
+                 
+
+                  
+
+
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                  <div class="table-responsive">
+                     <table class="table" id="Tabla-Solicitudes">
+                        <thead>
+                        <tr>
+                           <th scope="col" class ="Colindex">#</th>
+                           <th scope="col" class ="Colservicio">Servicio</th>
+                           <th scope="col" class ="ColDesc">Descripción</th>
+                           <th scope="col" class ="ColPertenece">Pertenece</th>
+                           <th scope="col" class ="ColDepartamento">Departamento</th>
+                           <th scope="col" class="ColAsignados">Asignados</th>
+                           <th scope="col" class ="Colstatus">Proceso</th>
+                           <th scope="col" class ="Colfecha">Fecha</th>
+                           <th scope="col" class ="Colhora">Hora</th>
+                           
+
+
+                        </tr>
+                        </thead>
+                        <tbody class="table-group-divider" id="tbodySolicitudes" ></tbody>
+                        
+                     </table>
+                  </div>
+                  
+                </div>
+             </div>
+
+          </div>
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         <!--bootstrap5 v5.2.3-->
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+         <!--jquery-->
+         <script src="https://code.jquery.com/jquery-3.7.1.js" ></script>
+         <!--DataTable.js-->
+         <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
+         <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js" ></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js" ></script>
+         <!--Mi js-->
+         <script src="{% static "dep_mantenimiento/js/jMantenimiento/home.js" %}" ></script>
+      </body>
+   </html>
+    
    
 
-   <div id ="Buscador" class="busqueda">
-           
-      <div class="input-group mb-1">
-         <button class="btn btn-outline-secondary" type="button" id="Buscar">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class="w-200 h-200">
-               <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-            </svg>
-         </button>
-                        
-                        
-         <input id="Tbuscar" type="text"  placeholder="Buscar solicitud" ></input>
-
-      </div>   
-              
-           
-   </div>
 
 
 
-   <div id ="Correos" class= "correo">
-      <!-- Botones como filtradro y el boton de solicitud-->
-      <div id="Botones" class ="container-fluid">
-         <div class="row">
-            <div  id ="BFyR" class="col">
-                <div class="row align-items-start">
-                    <div class="col-auto">
-                        <select id="Filtro" class="form-select" aria-label="Default select example">
-                            <option selected></option>
-                            <option value="1">Recientes</option>
-                            <option value="2">Pasadas</option>
-                            <option value="3">Realizadas</option>
-                            <option value="4">En proceso</option>
-                            <option value="5">Rechazados</option>
-                            <option value="6">Pausados</option>
-                            <option value="7">Firmadas</option>
-                            <option value="8">Sin firmar</option>
-                            <option value="9">P. Alta</option>
-                            <option value="10">P. Baja</option>
-                           
-                        </select>
-                    </div>
-                    <div class="col-auto">
-                     <button id="recargar" type="button" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Recargar tabla de solicitudes">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-200 h-200 ">
-                            <path  stroke-linejoin="round" stroke-width="1.5" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-                        </svg>
-                        
-                    </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-      </div>
-      <!--Tabla de los correos-->
-      <table class ="table table-bordered" id="TCorreos"> 
-         <tr class="fila-1" onclick="window.location.href = '{% url 'estatus.dep_mantenimiento' %}';">
-            <td class="Solicitud" style="width: 800px; text-align: left;">solicitud 1</td>
-
-            
-
-            <td class ="Sol.De." style="width: 800px; text-align: left;">solicitud de: aa</td>
-            <td class="BotFirmar" style="width: 30px; height: 30px;"data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="<em>Firmar el </em> <b>Visto Bueno al Servicio</b>">
-               <a href="{% url 'firma_form_VoBo.dep_mantenimiento' %}">
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-250 h-250">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                </svg>
-               </a>
-            </td>
-            <td class="icono-status" style="width: 30px; height: 30px;"  >
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-200 h-200">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
-               </svg>
-            </td>
-            <td class="fecha" style="width: 80px; text-align: right;">Hoy</td>
-            <td class="hora" style="width: 80px; text-align: right;">13:10</td>
-        </tr>
-        
-        <tr class="fila-2">
-         <td class="Solicitud" style="width: 800px; text-align: left;">solicitud 1</td>
-
-         
-
-         <td class ="Sol.De." style="width: 800px; text-align: left;">Solicitud de:</td>
-         
-         <td class="BotFirmar" style="width: 50px; height: 30px;" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="<em>Firmado </em> <b>la solicitud</b>">
-            <a href="">
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-250 h-250">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                </svg>
-            </a>
-        </td>
-         <td class="icono-status" style="width: 30px; height: 30px;">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-250 h-250">
-               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-           </svg>
-         </td>
-         <td class="fecha" style="width: 80px; text-align: right;">17 Marzo</td>
-         <td class="hora" style="width: 80px; text-align: right;">12:10</td>
-     </tr>
-     
-     <tr class="fila-3">
-      <td class="Solicitud" style="width: 800px; text-align: left;">solicitud 1</td>
-
-      
-
-      <td class ="Sol.De." style="width: 800px; text-align: left;">Solicitud de:</td>
-      <td class="BotFirmar" style="width: 50px; height: 30px;" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="<em>Firmado </em> <b>la solicitud</b>">
-         <a href="">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-250 h-250">
-               <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-             </svg>
-         </a>
-     </td>
-      <td class="icono-status" style="width: 30px; height: 30px;">
-         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-250 h-250">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 9v6m-4.5 0V9M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-        </svg>
-      </td>
-      <td class="fecha" style="width: 80px; text-align: right;">2 Febrero</td>
-      <td class="hora" style="width: 80px; text-align: right;">13:10</td>
-  </tr>
-      
-      
-      </table>
-   </div>
-
-</div>
 
 
-      
 
+</span>     
 {% endblock %}
-
-

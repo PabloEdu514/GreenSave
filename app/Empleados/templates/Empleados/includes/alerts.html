@@ -1,0 +1,99 @@
+<li class="mb-2">
+   {% if caducos > 0 %}
+   <a class="dropdown-item border-radius-md" href="{% url 'pasados' %}">
+     <div class="d-flex py-1">
+       <div class="avatar avatar-sm bg-gradient-secondary  me-3  my-auto">
+         <i class="fas fa-user-minus mr-2"></i>
+       </div>
+       <div class="d-flex flex-column justify-content-center">
+         <h6 class="text-sm font-weight-normal mb-1">
+           <span class="font-weight-bold">Movimientos pendientes de baja</span>
+         </h6>
+         <p class="text-xs text-secondary mb-0 ">
+           <span class="badge text-bg-light">{{caducos}}</span>
+         </p>
+       </div>
+     </div>
+   </a>
+   {% endif %}
+ </li>
+ 
+ <li class="mb-2">
+   {% if docentes > 0 %}
+   <a class="dropdown-item border-radius-md" href="{% url 'estimulo_doc' %}">
+     <div class="d-flex py-1">
+       <div class="avatar avatar-sm bg-gradient-secondary  me-3  my-auto">
+         <i class="fas fa-user-tag mr-2"></i>
+       </div>
+       <div class="d-flex flex-column justify-content-center">
+         <h6 class="text-sm font-weight-normal mb-1">
+           <span class="font-weight-bold"> Estímulos docentes</span>
+         </h6>
+         <p class="text-xs text-secondary mb-0 ">
+           <span class="badge text-bg-light">{{docentes}}</span>
+         </p>
+       </div>
+     </div>
+   </a>
+   {% endif %}
+ </li>
+
+ <li class="mb-2">
+   {% if nodocentes > 0 %}
+   <a class="dropdown-item border-radius-md" href="{% url 'estimulo_nodoc' %}">
+     <div class="d-flex py-1">
+       <div class="avatar avatar-sm bg-gradient-secondary  me-3  my-auto">
+         <i class="fas fa-user-tag mr-2"></i>
+       </div>
+       <div class="d-flex flex-column justify-content-center">
+         <h6 class="text-sm font-weight-normal mb-1">
+           <span class="font-weight-bold"> Estímulos no docentes</span>
+         </h6>
+         <p class="text-xs text-secondary mb-0 ">
+           <span class="badge text-bg-light">{{nodocentes}}</span>
+         </p>
+       </div>
+     </div>
+   </a>
+   {% endif %}
+ </li>
+
+ <li class="mb-2">
+   {% if psinseg > 0 %}
+   <a class="dropdown-item border-radius-md" href="{% url 'sinseg' %}">
+     <div class="d-flex py-1">
+       <div class="avatar avatar-sm bg-gradient-secondary  me-3  my-auto">
+         <i class="fas fa-user-injured mr-2"></i>
+       </div>
+       <div class="d-flex flex-column justify-content-center">
+         <h6 class="text-sm font-weight-normal mb-1">
+           <span class="font-weight-bold"> Sin asignación de seguro institucional</span>
+         </h6>
+         <p class="text-xs text-secondary mb-0 ">
+           <span class="badge text-bg-light">{{psinseg}}</span>
+         </p>
+       </div>
+     </div>
+   </a>
+   {% endif %}
+ </li>
+
+ <li class="mb-2">
+   {% if psinbenef > 0 %}
+   <a class="dropdown-item border-radius-md" href="{% url 'sinbenef' %}">
+     <div class="d-flex py-1">
+       <div class="avatar avatar-sm bg-gradient-secondary  me-3  my-auto">
+         <i class="fas fa-user-shield mr-2"></i>
+       </div>
+       <div class="d-flex flex-column justify-content-center">
+         <h6 class="text-sm font-weight-normal mb-1">
+           <span class="font-weight-bold"> Sin asignación de beneficiarios</span>
+         </h6>
+         <p class="text-xs text-secondary mb-0 ">
+           <span class="badge text-bg-light">{{psinbenef}}</span>
+         </p>
+       </div>
+     </div>
+   </a>
+   {% endif %}
+ </li>

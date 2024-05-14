@@ -453,6 +453,7 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
             return render(request, 'dep_mantenimiento/layout/jDep/formulario.html', context)
 
     @staticmethod
+<<<<<<< HEAD
     def firmarFormulario(request, idSolicitud):
         try:
             solicitud = Solicitud_Mantenimiento.objects.get(id=idSolicitud)
@@ -505,6 +506,8 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
         
         
     @staticmethod
+=======
+>>>>>>> d5518231734f49df7f87160edbb378931c21da50
     def editar_Formulario(request, idSolocitud):
         try:
             solicitud = Solicitud_Mantenimiento.objects.get(id=idSolocitud)

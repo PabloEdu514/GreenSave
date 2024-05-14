@@ -22,7 +22,11 @@ urlpatterns = [
     path('Inicio/Jefe_Departamento/<int:id>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.cargar_Inicio), name='inicio_jefe_departamento'),
     path('Formulario/Jefe_Departamento/<int:id_JefeDepartamento>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.cargar_Formulario), name='formulario_jefe_departamento'),
     path('Formulario/Jefe_Departamento/Solicitud/<int:idSolocitud>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.editar_Formulario), name='editar_Formulario'),
+<<<<<<< HEAD
     path('Firmar_Formulario/Jefe_Departamento/Solicitud/<int:idSolicitud>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.firmarFormulario), name='firmar_Formulario'),
+=======
+   path('Firmar_Formulario/Jefe_Departamento/Solicitud/<int:idSolocitud>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.firmar_Formulario), name='firmar_Formulario'),
+>>>>>>> d5518231734f49df7f87160edbb378931c21da50
    
 
     # Enlaces del Empleados

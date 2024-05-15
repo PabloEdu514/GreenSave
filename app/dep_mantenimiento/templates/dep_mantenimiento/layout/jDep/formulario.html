@@ -164,7 +164,7 @@
                 const minutes = String(now.getMinutes()).padStart(2, '0');
                 const seconds = String(now.getSeconds()).padStart(2, '0');
                 // Construir el nombre del archivo
-                const fileName = '{{ form.responsable_Area.value }}_' + year +'/'+ month +'/'+ day + '_' + hours+':' + minutes+':' + seconds + '.png';
+                const fileName = '{{ form.responsable_Area.value }}' + year +'/'+ month +'/'+ day + '' + hours+':' + minutes+':' + seconds + '.png';
                 // Obtener la firma como datos URL en formato PNG
                 const dataURL = signaturePad.toDataURL('image/png');
                 // Crear un enlace de descarga y activarlo para descargar la firma

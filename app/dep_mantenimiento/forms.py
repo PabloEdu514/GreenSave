@@ -2,6 +2,7 @@ from django import forms
 from dep_alumnos.models import tokens
 from .models import Solicitud_Mantenimiento, trabajadores
 
+
 class SolicitudMantenimientoForm(forms.Form):
    
     folio = forms.CharField(label='Folio', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el folio'}))

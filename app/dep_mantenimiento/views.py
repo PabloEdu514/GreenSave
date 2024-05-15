@@ -453,6 +453,67 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
             }
             return render(request, 'dep_mantenimiento/layout/jDep/formulario.html', context)
 
+
+
+
+    
+
+
+
+
+
+    @staticmethod
+    def firmarFormulario(request, idSolicitud):
+        try:
+            solicitud = Solicitud_Mantenimiento.objects.get(id=idSolicitud)
+        except Solicitud_Mantenimiento.DoesNotExist:
+            return HttpResponse("La solicitud no existe", status=404)
+        
+        
+        
+        if request.method == 'POST':
+            form = JefeForm(request.POST, request.FILES)  # Pasar la instancia de la solicitud existente al formulario
+            if form.is_valid():
+                 # Guarda la imagen en el campo firma_Jefe_Departamento_img del modelo Solicitud_Mantenimiento
+                id_firma_jefe_departamentoimg = form.cleaned_data['firma_Jefe_Departamento_img']
+                # Obtener solo el ID del jefe del departamento de Mantenimiento de Equipo
+                jefe_departamentoMAnt = trabajadores.objects.filter(departamento='Mantenimiento de Equipo', puesto='Jefe').values('id').first()
+
+                # Verificar si se encontró un jefe de Mantenimiento de Equipo
+                if jefe_departamentoMAnt:
+                    # Obtener el id del jefe del departamento de Mantenimiento de Equipo
+                    id_jefe_Mantenimiento = jefe_departamentoMAnt['id']
+                else:
+                    # Manejar el caso en el que no se encuentre ningún jefe para el departamento
+                    id_jefe_Mantenimiento = "No asignado"
+                        
+                # Obtener la instancia del jefe del departamento de Mantenimiento de Equipo
+                jefe_departamento_instance = trabajadores.objects.get(id=jefe_departamentoMAnt['id'])
+                solicitud.firma_Jefe_Departamento_img=id_firma_jefe_departamentoimg
+                solicitud.firma_Jefe_Departamento=True
+                solicitud.id_Jefe_Mantenimiento=jefe_departamento_instance
+                solicitud.save() # Guardar los cambios en la solicitud existente
+                bitacora(request.user, 'Solicitud_Mantenimiento', 'Post', f'Solicitud: {idSolicitud}', Departamento='dep_mantenimiento')
+                return redirect('inicio')
+        else:
+            # Pre-rellenar el formulario con los datos existentes
+            form = JefeForm(initial={
+                'area_solicitante': solicitud.area_solicitante,
+                'responsable_Area': solicitud.responsable_Area,
+                'fecha': solicitud.fecha,
+                'tipo_servicio': solicitud.tipo_servicio,
+                'descripcion': solicitud.descripcion,
+                'folio': solicitud.folio,
+            })
+        
+        context = {
+            'form': form,
+            'id': idSolicitud,
+            'solicitud': solicitud,  # Incluir la solicitud en el contexto para acceso en la plantilla
+        }
+        return render(request, 'dep_mantenimiento/layout/jDep/firma_form.html', context)
+        
+        
     @staticmethod
     def firmarFormulario(request, idSolicitud):
         try:
@@ -759,7 +820,78 @@ def Sub_required(view_func):
 class vistas_Subdirectora(View):
     @staticmethod
     def cargar_Inicio(request, id):
-        return render(request, 'dep_mantenimiento/layout/subdirectora/home.html', {'id': id})   
+        return render(request, 'dep_mantenimiento/layout/subdirectora/home.html', {'id': id})
+       
+    @staticmethod
+    def cargar_Formulario(request, idSubdirectora):
+        if request.method == 'POST':
+            form = JefeForm(request.POST, request.FILES)
+            if form.is_valid():
+                # Guardar los datos del formulario
+                id_fecha = datetime.now().date()
+                id_hora= datetime.now().time()
+                id_folio = form.cleaned_data['folio']
+                id_tipos_servicio = form.cleaned_data['tipo_servicio']
+                id_descripcion = form.cleaned_data['descripcion']
+                # Obtener la instancia del trabajador correspondiente al ID
+                trabajador = trabajadores.objects.get(id=idSubdirectora)
+                id_departamento = trabajador.departamento
+                id_nombre = trabajador.nombre_completo()
+                # Guarda la imagen en el campo firma_Jefe_Departamento_img del modelo Solicitud_Mantenimiento
+                id_firma_jefe_departamentoimg = form.cleaned_data['firma_Jefe_Departamento_img']
+                # Obtener solo el ID del jefe del departamento de Mantenimiento de Equipo
+                jefe_departamentoMAnt = trabajadores.objects.filter(departamento='Mantenimiento de Equipo', puesto='Jefe').values('id').first()
+
+                # Verificar si se encontró un jefe de Mantenimiento de Equipo
+                if jefe_departamentoMAnt:
+                    # Obtener el id del jefe del departamento de Mantenimiento de Equipo
+                    id_jefe_Mantenimiento = jefe_departamentoMAnt['id']
+                else:
+                    # Manejar el caso en el que no se encuentre ningún jefe para el departamento
+                    id_jefe_Mantenimiento = "No asignado"
+                        
+                # Obtener la instancia del jefe del departamento de Mantenimiento de Equipo
+                jefe_departamento_instance = trabajadores.objects.get(id=jefe_departamentoMAnt['id'])
+        
+                        
+                datos_nuevos = Solicitud_Mantenimiento(
+                    fecha=id_fecha,
+                    folio=id_folio,
+                    area_solicitante=id_departamento,
+                    responsable_Area=id_nombre,  # Aquí asignamos el jefe del departamento como responsable del área
+                    tipo_servicio=id_tipos_servicio,
+                    descripcion=id_descripcion,
+                    hora=id_hora,
+                    id_Subdirectora=trabajador,
+                    status='Enviado',
+                    firma_Jefe_Departamento_img=id_firma_jefe_departamentoimg,
+                    id_Jefe_Mantenimiento=jefe_departamento_instance,
+                    firma_Jefe_Departamento=True
+                )
+                bitacora(request.user, 'Solicitud_Mantenimiento', 'add', f'Folio: {id_folio}', Departamento='dep_mantenimiento')
+                datos_nuevos.save()
+                return redirect('inicio_subdirector_servicios', id=idSubdirectora)
+        else:
+            # La solicitud no es un POST, renderiza el formulario vacío
+            trabajador = trabajadores.objects.get(id=idSubdirectora)
+            departamento = trabajador.departamento
+            Nombre = trabajador.nombre_completo()
+            fecha = datetime.now().date()
+            # Crear un formulario con los datos de la solicitud
+            form = JefeForm(initial={
+                'area_solicitante': departamento,
+                'responsable_Area': Nombre,
+                'fecha': fecha,
+            })
+            # Pasar idFormulario al contexto de la plantilla
+            context = {
+                'form': form,
+                'id': idSubdirectora,  # Pasar el ID de la solicitud al contexto
+            }
+            return render(request, 'dep_mantenimiento/layout/subdirectora/formulario.html', context)
+       
+       
+       
     @staticmethod
     def obtener_solicitudes(request, idSubdirectora):
         try:

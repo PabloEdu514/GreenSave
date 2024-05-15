@@ -1,0 +1,38 @@
+/* styles.css */
+
+/* Estilos para el formulario */
+form {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para los campos de entrada */
+input[type="text"],
+input[type="date"],
+select,
+textarea {
+    width: calc(50% - 5px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Estilos para el botón */
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Estilos adicionales para el botón al pasar el cursor */
+button[type="submit"]:hover {
+    background-color: #45a049;
+}

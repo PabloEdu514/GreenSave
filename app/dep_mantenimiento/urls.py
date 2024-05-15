@@ -16,13 +16,14 @@ urlpatterns = [
     path('guardar/<int:id_Docente>/', Solicitante_required(views.vistas_solicitantes_cargar_inicio.guardar_datos_Docente), name='guardar_formulario_Docente'),
     #Enlaces del para Editar el formulario
     path('Formulario/Docente/Solicitud/<int:idFormulario>/', Solicitante_required(views.vistas_solicitantes_cargar_inicio.cargar_Formulario_Editar), name='formulario_editar'),
-    path('editar/<int:idFormulario>/', Solicitante_required(views.vistas_solicitantes_cargar_inicio.edtiarFormulario), name='edtiarFormulario'),
+    path('editar/<int:idFormulario>/', Solicitante_required(views.vistas_solicitantes_cargar_inicio.editarFormulario), name='editarFormulario'),
     # Enlaces del jefe de Departamento
     path('CargarSolicitudesJdep/<int:id_Jefe>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.obtener_solicitudes), name='obtener_solicitudes_jefe_departamento'),
     path('Inicio/Jefe_Departamento/<int:id>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.cargar_Inicio), name='inicio_jefe_departamento'),
     path('Formulario/Jefe_Departamento/<int:id_JefeDepartamento>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.cargar_Formulario), name='formulario_jefe_departamento'),
-    path('Formulario/Jefe_Departamento/Solicitud/<int:idSolocitud>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.editar_Formulario), name='editar_Formulario'),
-   path('Firmar_Formulario/Jefe_Departamento/Solicitud/<int:idSolocitud>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.firmar_Formulario), name='firmar_Formulario'),
+    path('Formulario/Jefe_Departamento/Solicitud/<int:idSolicitud>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.editar_Formulario), name='editar_Formulario'),
+    path('Firmar_Formulario/Jefe_Departamento/Solicitud/<int:idSolicitud>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.firmarFormulario), name='firmar_Formulario'),
+
    
 
     # Enlaces del Empleados

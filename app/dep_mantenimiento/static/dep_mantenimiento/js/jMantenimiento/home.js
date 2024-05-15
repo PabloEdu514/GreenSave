@@ -72,6 +72,9 @@ const listSolicitudes = async () => {
                 case 'Enviado':
                     icono = '<i id="Enviado" class="fa fa-envelope" aria-hidden="true" style="color: #1B396B;font-size: 30px; "></i> ';
                     break;                
+                case 'Solicitud_Firmada':
+                    icono = '<i id="Firmado" class="fa fa-file-signature" aria-hidden="true" style="color: #1B396B;font-size: 30px; "></i> ';
+                    break;     
                 default:
                     icono = solicitudes.status; // Usa el texto del estado como icono por defecto
             }
@@ -101,7 +104,7 @@ const listSolicitudes = async () => {
                 solicitudes.departamento_jefe_departamento;
 
              // Chequeamos si hay un trabajador asociado a la solicitud
-             const nombre_Empleado = solicitudes.nombre_completo_empleado ? `De: ${solicitudes.nombre_completo_empleado}` : 'Sin Empleado Aignado';
+             const nombre_Empleado = solicitudes.nombre_completo_empleado ? ` ${solicitudes.nombre_completo_empleado}` : 'Sin Empleado Asignado';
            
 
             content += `

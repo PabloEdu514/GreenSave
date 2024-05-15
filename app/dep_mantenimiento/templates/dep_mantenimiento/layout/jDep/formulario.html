@@ -94,20 +94,29 @@
                      <label for="id_descripcion" class="form-label ">Descripción del Servicio o Falla a Reparar:</label>
                      {{ form.descripcion }}
                  </div>
-                 
+                 <div class="container-fluid" id="CampoFirma">
                  {{ form.firma_Jefe_Departamento_img }}
-              
-                 <div class="container-fluid" id="pizarraFirma">
+                 <br>
+                 <button type="button" class="btn  fs-6" id="BotGenerar" onclick="aparecerPizarra()">Generar Firma</button>
+
+
+                 <br>
+                 <div class="container-fluid" id="pizarraFirma" >
                     <!-- Lienzo para dibujar con Signature Pad -->
-                    <canvas id="pizarra" width="400" height="200" style="border:1px solid black;"></canvas>
-                    <p class="nombre-firma">{{ form.responsable_Area }}</p>
+                    <canvas id="pizarra" width="400" height="200" ></canvas>
+                    <p class="nombre-firma" >{{ form.responsable_Area.value }}</p>
                     
-                    <br>
+                  
                     <!-- Botones para borrar y guardar la firma -->
-                    <button type="button" id="BotBorrar" onclick="borrarFirmar()">Borrar</button>
-                    <button type="button" id="BotGuardarF" onclick="guardarFirmar()">Guardar Firmar</button>
+                    <div class="row justify-content-center">
+                    <button type="button" class="btn  fs-6" id="BotBorrar" onclick="borrarFirmar()">Borrar Firmar</button>
+                    
+                    <button type="button" class="btn  fs-6" id="BotGuardarF" onclick="guardarFirmar()">Descargar Firmar</button>
+                     </div>
+
                 </div>
- 
+            </div>
+            <br>
                 <div class="row justify-content-center">
                     <div class="col-auto">
                         <button type="submit" class="btn  fs-6" id="enviar">Enviar</button>
@@ -128,7 +137,15 @@
         // Inicializar Signature Pad y asociarlo con el lienzo
         const canvas = document.getElementById('pizarra');
         const signaturePad = new SignaturePad(canvas);
-    
+        
+        function aparecerPizarra() {
+            // Mostrar el elemento con id="pizarraFirma"
+            document.getElementById("pizarraFirma").style.display = "flex";
+            // Ocultar el botón con id="BotGenerar"
+            document.getElementById("BotGenerar").style.display = "none";
+        }
+
+
         // Función para borrar la firma
         function borrarFirmar() {
             signaturePad.clear();

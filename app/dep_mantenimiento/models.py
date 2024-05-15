@@ -75,6 +75,10 @@ class Solicitud_Mantenimiento(models.Model):
     descripcion= models.CharField(max_length=3000,null=False,blank=True)
     des_Serv_Realizado= models.CharField(max_length=3000,null=True,blank=True)
     des_Serv_no_Realizado= models.CharField(max_length=3000,null=True,blank=True)
+    motv_rechazo= models.CharField(null=True,max_length=3000,blank=True)# cuando el jefe de mantenimiento rechaza la solicitud
+    des_Peticion_Mat= models.CharField(max_length=3000,null=True,blank=True)# cuando se solicita material
+    Mat_Rechazo= models.CharField(max_length=3000,null=True,blank=True) # cuando el material es rechazado por parte de la subsecretaria
+    Mat_Resuelto= models.CharField(max_length=3000,null=True,blank=True) # cuando el material es resuelto por parte de la subsecretaria
     estatus={
         ('Enviado','Enviado'),#Solicitud enviada
         ('Pendiente','Pendiente'),#Solcitud sin asignar Empleados
@@ -95,7 +99,7 @@ class Solicitud_Mantenimiento(models.Model):
     #Se va subir varios archivos
     imagen= models.FileField(null=True,upload_to='dep_mantenimiento/img',blank=True)
     
-    motv_rechazo= models.CharField(null=True,max_length=3000,blank=True)
+    
    # Relaciones con los trabajadores
     id_Trabajador = models.ForeignKey('trabajadores', on_delete=models.CASCADE, related_name='solicitudes_trabajador', null=True,blank=True)
     id_Jefe_Departamento = models.ForeignKey('trabajadores', on_delete=models.CASCADE, related_name='solicitudes_jefe_departamento', null=True,blank=True)

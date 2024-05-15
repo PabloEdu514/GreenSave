@@ -137,10 +137,13 @@ const listSolicitudes = async () => {
             }
 
            
-
+        if (solicitudes.ocultar==false) { // Verifica si la solicitud no está oculta
+                 // Incrementa el contador
+                
+            contador++;
             content += `
                 <tr onclick="openDetalle(${solicitudes.id})" class="${solicitudes.status}">
-                    <td scope="row"  class ="index">${index + 1}</td>
+                    <td scope="row"  class="index">${contador}</td>
                     <td class ="servicio">${solicitudes.tipo_servicio}</td>
                     <td class ="descripcion">${descripcionLimitada}</td>
                   
@@ -159,7 +162,7 @@ const listSolicitudes = async () => {
 
 
             `;
-
+        }
         });
         tbodySolicitudes.innerHTML = content;
         

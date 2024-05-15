@@ -3,13 +3,13 @@ const userId = userDataScript.dataset.userId;
 
 let dataTable;
 let dataTableInitialized=false;
-
+let contador = 0;
 const dataTableOptions = {
     searching: false,
     paging: true, // Habilita la paginación
     pagingType: "full_numbers", // Utiliza la paginación completa
     lengthChange: false, // Desactiva la opción de cambiar la cantidad de entradas por página
-    pageLength: 5, // Define la cantidad de datos por página
+    pageLength: 30, // Define la cantidad de datos por página
     ordering: false,
     info: false,
     destroy: true,
@@ -80,7 +80,10 @@ const listSolicitudes = async () => {
                     break;
                 case 'Enviado':
                     icono = '<i id="Enviado" class="fa fa-envelope" aria-hidden="true" style="color: #1B396B;font-size: 30px; "></i> ';
-                    break;                
+                    break;
+                case 'Solicitud_Firmada':
+                    icono = '<i id="Firmado" class="fa fa-file-signature" aria-hidden="true" style="color: #1B396B;font-size: 30px; "></i> ';
+                    break;                    
                 default:
                     icono = solicitudes.status; // Usa el texto del estado como icono por defecto
             }
@@ -123,9 +126,11 @@ const listSolicitudes = async () => {
                 `;
             }
             if (solicitudes.ocultar==false) { // Verifica si la solicitud no está oculta
+                   // Incrementa el contador
+                   contador++;
                 content += `
                     <tr onclick="openDetalle(${solicitudes.id})" class="${solicitudes.status}">
-                        <td scope="row"  class ="index">${index + 1}</td>
+                    <td scope="row"  class="index">${contador}</td>
                         <td class ="servicio">${solicitudes.tipo_servicio}</td>
                         <td class ="descripcion">${descripcionLimitada}</td>
                     

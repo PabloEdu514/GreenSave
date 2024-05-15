@@ -3,7 +3,7 @@ const userId = userDataScript.dataset.userId;
 
 let dataTable;
 let dataTableInitialized=false;
-
+let contador = 0;
 const dataTableOptions = {
     searching: false,
     paging: true, // Habilita la paginación
@@ -92,9 +92,11 @@ const listSolicitudes = async () => {
             const descripcionLimitada = limitarDescripcion(solicitudes.descripcion, 10);
 
             if (solicitudes.ocultar==false) { // Verifica si la solicitud no está oculta
+                 // Incrementa el contador
+                contador++;
                 content += `
                     <tr onclick="openDetalle(${solicitudes.id})" class="${solicitudes.status}">
-                        <td scope="row"  class ="index">${index + 1}</td>
+                        <td scope="row"  class="index">${contador}</td>
                         <td class ="servicio">${solicitudes.tipo_servicio}</td>
                         <td class ="descripcion">${descripcionLimitada}</td>
                         <td class ="botones">

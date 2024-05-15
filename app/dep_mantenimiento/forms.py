@@ -53,3 +53,9 @@ class firmar_Formulario(forms.Form):
     responsable_Area = forms.CharField(label='Responsable del Área', widget=forms.TextInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
     tipo_servicio = forms.ChoiceField(label='Tipo de Servicio',widget=forms.TextInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
     descripcion = forms.CharField(label='Descripción del Servicio o Falla a Reparar', widget=forms.Textarea(attrs={'class': 'form-control-plaintext', ' readonly': True}))
+    
+    
+class firma_Formulario_Empleado(forms.Form):
+    firma_Empleado_img = forms.FileField( widget=forms.FileInput(attrs={'class': 'form-control'}))
+    material_utilizado =forms.CharField( widget=forms.TextInput(attrs={'class': 'form-control'}))
+    des_Serv_Realizado=forms.CharField( widget=forms.TextInput(attrs={'class': 'form-control'}))

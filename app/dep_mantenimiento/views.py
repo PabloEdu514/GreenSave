@@ -286,7 +286,7 @@ class vistas_solicitantes_cargar_inicio(View):
     
     
     
-    def edtiarFormulario(request, idFormulario):
+    def editarFormulario(request, idFormulario):
         # Obtener la solicitud correspondiente al idFormulario
         try:
             solicitud = Solicitud_Mantenimiento.objects.get(id=idFormulario)
@@ -448,24 +448,43 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
             # Pasar idFormulario al contexto de la plantilla
             context = {
                 'form': form,
-                'id': id_JefeDepartamento,  # Pasar el ID de la solicitud al contexto
+                'id': id_JefeDepartamento,
+                    # Pasar el ID de la solicitud al contexto
             }
             return render(request, 'dep_mantenimiento/layout/jDep/formulario.html', context)
 
     @staticmethod
-    def editar_Formulario(request, idSolocitud):
+    def firmarFormulario(request, idSolicitud):
         try:
-            solicitud = Solicitud_Mantenimiento.objects.get(id=idSolocitud)
+            solicitud = Solicitud_Mantenimiento.objects.get(id=idSolicitud)
         except Solicitud_Mantenimiento.DoesNotExist:
             return HttpResponse("La solicitud no existe", status=404)
+        
+        
         
         if request.method == 'POST':
             form = JefeForm(request.POST, request.FILES)  # Pasar la instancia de la solicitud existente al formulario
             if form.is_valid():
-                solicitud.tipo_servicio = form.cleaned_data['tipo_servicio']
-                solicitud.descripcion = form.cleaned_data['descripcion']
+                 # Guarda la imagen en el campo firma_Jefe_Departamento_img del modelo Solicitud_Mantenimiento
+                id_firma_jefe_departamentoimg = form.cleaned_data['firma_Jefe_Departamento_img']
+                # Obtener solo el ID del jefe del departamento de Mantenimiento de Equipo
+                jefe_departamentoMAnt = trabajadores.objects.filter(departamento='Mantenimiento de Equipo', puesto='Jefe').values('id').first()
+
+                # Verificar si se encontró un jefe de Mantenimiento de Equipo
+                if jefe_departamentoMAnt:
+                    # Obtener el id del jefe del departamento de Mantenimiento de Equipo
+                    id_jefe_Mantenimiento = jefe_departamentoMAnt['id']
+                else:
+                    # Manejar el caso en el que no se encuentre ningún jefe para el departamento
+                    id_jefe_Mantenimiento = "No asignado"
+                        
+                # Obtener la instancia del jefe del departamento de Mantenimiento de Equipo
+                jefe_departamento_instance = trabajadores.objects.get(id=jefe_departamentoMAnt['id'])
+                solicitud.firma_Jefe_Departamento_img=id_firma_jefe_departamentoimg
+                solicitud.firma_Jefe_Departamento=True
+                solicitud.id_Jefe_Mantenimiento=jefe_departamento_instance
                 solicitud.save() # Guardar los cambios en la solicitud existente
-                bitacora(request.user, 'Solicitud_Mantenimiento', 'Post', f'Solicitud: {idSolocitud}', Departamento='dep_mantenimiento')
+                bitacora(request.user, 'Solicitud_Mantenimiento', 'Post', f'Solicitud: {idSolicitud}', Departamento='dep_mantenimiento')
                 return redirect('inicio')
         else:
             # Pre-rellenar el formulario con los datos existentes
@@ -480,10 +499,44 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
         
         context = {
             'form': form,
-            'id': idSolocitud,
+            'id': idSolicitud,
             'solicitud': solicitud,  # Incluir la solicitud en el contexto para acceso en la plantilla
         }
-        return render(request, 'dep_mantenimiento/layout/jDep/formularioEdit.html', context)
+        return render(request, 'dep_mantenimiento/layout/jDep/firma_form.html', context)
+        
+        
+    @staticmethod
+    def editar_Formulario(request, idSolicitud):
+        try:
+            solicitud = Solicitud_Mantenimiento.objects.get(id=idSolicitud)
+        except Solicitud_Mantenimiento.DoesNotExist:
+            return HttpResponse("La solicitud no existe", status=404)      
+        if request.method == 'POST':
+            form = JefeForm(request.POST)
+            
+            solicitud.descripcion = request.POST.get('descripcion')
+            solicitud.tipo_servicio = request.POST.get('tipo_servicio')
+            solicitud.save()
+            return redirect('inicio')
+        else:
+            form= JefeForm(initial={
+                'area_solicitante': solicitud.area_solicitante,
+                'responsable_Area': solicitud.responsable_Area,
+                'fecha': solicitud.fecha,
+                'tipo_servicio': solicitud.tipo_servicio,
+                'descripcion': solicitud.descripcion,
+                'folio': solicitud.folio,
+            })
+            
+            context = {
+                'solicitud': solicitud,
+                'id': idSolicitud,
+                'form':form
+            }
+            return render(request, 'dep_mantenimiento/layout/jDep/formularioedit.html', context)
+               
+        
+       
             
             
     @staticmethod

@@ -85,9 +85,9 @@ const listSolicitudes = async () => {
                 <i class="fa fa-check-square" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
                 </button>`;
             } else {
-                actionElement = `<button class="btn btn-sm-2" style="background-color: #118ab2 !important;" onclick="fimarSolicitud(${solicitudes.id}, event)">   
+                actionElement = `<a class="btn btn-sm-2" style="background-color: #118ab2 !important;" href="/dep_mantenimiento/Firmar_Formulario/Empleado/Solicitud/${solicitudes.id}"role="button">   
                                     <i class="fa fa-pencil-square-o" style="color: #ffffff !important; font-size: 25px ;" aria-hidden="true"></i>
-                                 </button>`;
+                                 </a>`;
             }
             
             // Agregamos la información de pertenencia y departamento
@@ -133,13 +133,11 @@ const listSolicitudes = async () => {
     }
 };
 
-function editSolicitud(solicitudId, event) {
-    event.stopPropagation();
-    // Lógica para editar la solicitud
-}
+
 
 function fimarSolicitud(solicitudId, event) {
-    event.stopPropagation();
+    // Construye la URL con el ID de la solicitud
+    const url = `/dep_mantenimiento/Firmar_Formulario/Empleado/Solicitud/${solicitudId}/`;
     // Lógica para editar la solicitud
 }
 

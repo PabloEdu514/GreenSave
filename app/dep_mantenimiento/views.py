@@ -15,7 +15,7 @@ from django.db import transaction
 from .models import Solicitud_Mantenimiento,trabajadores
 from django.shortcuts import redirect
 from datetime import datetime
-from .forms import JefeForm, SolicitudMantenimientoForm, firmar_Formulario
+from .forms import JefeForm, SolicitudMantenimientoForm, firma_Formulario_Empleado, firmar_Formulario
 from django.db import transaction,connection
 from dep.views import bitacora
 from django.core.exceptions import PermissionDenied
@@ -544,6 +544,7 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
                 solicitud.firma_Jefe_Departamento_img=id_firma_jefe_departamentoimg
                 solicitud.firma_Jefe_Departamento=True
                 solicitud.id_Jefe_Mantenimiento=jefe_departamento_instance
+                solicitud.status='Solicitud_Firmada'
                 solicitud.save() # Guardar los cambios en la solicitud existente
                 bitacora(request.user, 'Solicitud_Mantenimiento', 'Post', f'Solicitud: {idSolicitud}', Departamento='dep_mantenimiento')
                 return redirect('inicio')
@@ -730,6 +731,34 @@ class vistas_Empleados(View):
     @staticmethod
     def cargar_Inicio(request, id):
         return render(request, 'dep_mantenimiento/layout/empleado/home.html', {'id': id})
+
+    @staticmethod
+    def firmarFormulario(request, idSolicitud):
+        try:
+            solicitud = Solicitud_Mantenimiento.objects.get(id=idSolicitud)
+        except Solicitud_Mantenimiento.DoesNotExist:
+            return HttpResponse("La solicitud no existe", status=404)
+
+        if request.method == 'POST':
+            form = firma_Formulario_Empleado(request.POST, request.FILES)
+            if form.is_valid():
+                solicitud.firma_Empleado_img = request.FILES['firma_Empleado_img']  # Obtener lista de archivos
+                solicitud.material_utilizado = form.cleaned_data['material_utilizado']
+                solicitud.des_Serv_Realizado = form.cleaned_data['des_Serv_Realizado']
+                solicitud.status = 'Enviado'
+                solicitud.save()
+                return redirect('inicio')
+        else:
+            form = firma_Formulario_Empleado()
+        
+        context = {
+            'solicitud': solicitud,
+            'id': idSolicitud,
+            'form': form
+        }
+        return render(request, 'dep_mantenimiento/layout/empleado/firma_form.html', context)
+                
+                
 
     @staticmethod
     def obtener_solicitudes(request, idEmpleado):

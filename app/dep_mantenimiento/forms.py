@@ -57,6 +57,6 @@ class firmar_Formulario(forms.Form):
     
     
 class firma_Formulario_Empleado(forms.Form):
-    firma_Empleado_img = forms.FileField( widget=forms.FileInput(attrs={'class': 'form-control'}))
-    material_utilizado =forms.CharField( widget=forms.TextInput(attrs={'class': 'form-control'}))
-    des_Serv_Realizado=forms.CharField( widget=forms.TextInput(attrs={'class': 'form-control'}))
+    firma_Empleado_img = forms.FileField(label='Firma del Jefe de Departamento', widget=forms.FileInput(attrs={'class': 'form-control'}))
+    material_utilizado = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    des_Serv_Realizado = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))

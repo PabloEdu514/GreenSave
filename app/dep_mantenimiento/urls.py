@@ -29,13 +29,14 @@ urlpatterns = [
     # Enlaces del Empleados
     path('CargarSolicitudesEmpleados/<int:idEmpleado>/', Empleado_required(views.vistas_Empleados.obtener_solicitudes), name='obtener_solicitudes_empleados'),
     path('Inicio/Empleado/<int:id>/', Empleado_required(views.vistas_Empleados.cargar_Inicio), name='inicio_empleado'),
+    path('Firmar_Formulario/Empleado/Solicitud/<int:idSolicitud>/',Empleado_required( views.vistas_Empleados.firmarFormulario), name='firmar_Formulario_Empleado'),
    # Enlaces del Subdirectora
     path('CargarSolicitudesSubdirectora/<int:idSubdirectora>/', Sub_required(views.vistas_Subdirectora.obtener_solicitudes), name='obtener_solicitudes_subdirectora'),
     path('Inicio/Subdirectora/<int:id>/', Sub_required(views.vistas_Subdirectora.cargar_Inicio), name='inicio_subdirector_servicios'),
    # Enlaces del Jefe de Mantenimiento
     path('CargarSolicitudesJefeMantenimiento/<int:idJefeMantenimiento>/', JefeMan_required(views.vistas_Jefe_Mantenimiento.obtener_solicitudes), name='obtener_solicitudes_jefe_mantenimiento'),
     path('Inicio/Jefe_Mantenimiento/<int:id>/', JefeMan_required(views.vistas_Jefe_Mantenimiento.cargar_Inicio), name='inicio_jefe_mantenimiento'),
-   
+    
     
     # Eliminar solicitud
      path('eliminar-solicitud/<int:solicitud_id>/', views.eliminar_solicitud, name='eliminar_solicitud'),

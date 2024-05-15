@@ -97,7 +97,7 @@ class Solicitud_Mantenimiento(models.Model):
     material_asignado= models.CharField(null=True,max_length=3000,blank=True)
     material_utilizado= models.CharField(null=True,max_length=3000,blank=True)
     #Se va subir varios archivos
-    imagen= models.FileField(null=True,upload_to='dep_mantenimiento/img',blank=True)
+    evidenciasIMG= models.ImageField(null=True,upload_to='dep_mantenimiento/img/Evidencias',blank=True)
     
     
    # Relaciones con los trabajadores
@@ -113,9 +113,9 @@ class Solicitud_Mantenimiento(models.Model):
     firma_Jefe_VoBo = models.BooleanField(default=False,blank=True)
     resolvio = models.BooleanField(default=False,blank=True)
     # Imagenes de las firmas
-    firma_Jefe_Departamento_img= models.ImageField(null=True,upload_to='dep_mantenimiento/img',blank=True)
-    firma_Empleado_img= models.ImageField(null=True,upload_to='dep_mantenimiento/img',blank=True)
-    firma_Jefe_VoBo_img= models.ImageField(null=True,upload_to='dep_mantenimiento/img',blank=True)
+    firma_Jefe_Departamento_img= models.ImageField(null=True,upload_to='dep_mantenimiento/img/Firmas/Jefe',blank=True)
+    firma_Empleado_img= models.ImageField(null=True,upload_to='dep_mantenimiento/img/Firmas/Jefe/Empleado',blank=True)
+    firma_Jefe_VoBo_img= models.ImageField(null=True,upload_to='dep_mantenimiento/img/Firmas/VoBo',blank=True)
     
     #Funcion para ocultar la solicitud en vez de eliminarlo
     ocultar=models.BooleanField(default=False,blank=True,verbose_name='Ocultar_Solicitud')
@@ -167,14 +167,30 @@ class HistorialSolicitud(models.Model):
         
 @receiver(post_save, sender=Solicitud_Mantenimiento)
 def crear_registro_historial(sender, instance, created, **kwargs):
-    if not created:
+    if created:
+        # Si se ha creado una nueva solicitud, registrarla en el historial
         nuevo_historial = HistorialSolicitud.objects.create(
             solicitud=instance,
             nuevo_status=instance.status,
             fecha=timezone.now().date(),
             hora=timezone.now().time()
         )
+        nuevo_historial.save()
         
+    else:
+        # Si la solicitud existente ha sido actualizada, registrar el cambio en el historial
+        if instance.status != instance.historial.last().nuevo_status:
+            nuevo_historial = HistorialSolicitud.objects.create(
+                solicitud=instance,
+                nuevo_status=instance.status,
+                fecha=timezone.now().date(),
+                hora=timezone.now().time()
+            )
+            nuevo_historial.save()
+    
+    
+     
+         
 class CustomGroup(models.Model):
     name = models.CharField(max_length=150, unique=True)
     class Meta:
@@ -194,27 +210,35 @@ def asignar_grupo(sender, instance, created, **kwargs):
                 # Asigna permisos para el jefe de cualquier departamento
                 grupo, _ = CustomGroup.objects.get_or_create(name='Jefe Departamento')
                 grupo.permisos = ['view_Solicitud_jefeDep', 'change_Solicitud_jefeDep', 'add_Solicitud_jefeDep', 'delete_Solicitud_jefeDep']
-                #id del trabajador
+                # Agrega el grupo al trabajador
+                instance.grupos.add(grupo)
+                
             else:
                 # Asigna permisos para el jefe de Mantenimiento de Equipo
                 grupo, _ = CustomGroup.objects.get_or_create(name='Jefe de Mantenimiento de Equipo')
                 grupo.permisos = ['view_Solicitud_jefe_Mantenimiento', 'change_Solicitud_jefe_Mantenimiento']
-                 #id del trabajador
+                # Agrega el grupo al trabajador
+                instance.grupos.add(grupo)
+                 
         elif instance.puesto == 'Empleado' and instance.departamento == 'Mantenimiento de Equipo':
             # Asigna permisos para el empleado de Mantenimiento de Equipo
             grupo, _ = CustomGroup.objects.get_or_create(name='Empleado de Mantenimiento de Equipo')
             grupo.permisos = ['view_Solicitud_empleado_Mantenimiento', 'change_Solicitud_empleado_Mantenimiento']
-             #id del trabajador
+            # Agrega el grupo al trabajador
+            instance.grupos.add(grupo)
+             
         elif instance.puesto == 'Subdirector' and instance.departamento == 'Servicios Administrativos':
             # Asigna permisos para la Subdirectora del Departamento de Servicios Administrativos
             grupo, _ = CustomGroup.objects.get_or_create(name='Subdirectora de Servicios Administrativos')
             grupo.permisos = ['view_Solicitud_subdirector', 'change_Solicitud_subdirector', 'add_Solicitud_subdirector', 'delete_Solicitud_subdirector']
-             #id del trabajador
+               # Agrega el grupo al trabajador
+            instance.grupos.add(grupo)
+             
         else:
             # Asigna permisos para el solicitante
             grupo, _ = CustomGroup.objects.get_or_create(name='Solicitante')
             grupo.permisos = ['view_Solicitud_Solicitante', 'change_Solicitud_Solicitante', 'add_Solicitud_Solicitante', 'delete_Solicitud_Solicitante']
-             #id del trabajador
-        # Agrega el grupo al trabajador
-        instance.grupos.add(grupo)
-    
+             
+            # Agrega el grupo al trabajador
+            instance.grupos.add(grupo)
+        

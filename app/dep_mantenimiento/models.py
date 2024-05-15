@@ -75,6 +75,10 @@ class Solicitud_Mantenimiento(models.Model):
     descripcion= models.CharField(max_length=3000,null=False,blank=True)
     des_Serv_Realizado= models.CharField(max_length=3000,null=True,blank=True)
     des_Serv_no_Realizado= models.CharField(max_length=3000,null=True,blank=True)
+    des_Peticion_Mat= models.CharField(max_length=3000,null=True,blank=True)
+    Mat_Rechazo= models.CharField(max_length=3000,null=True,blank=True)
+    Mat_Resuelto= models.CharField(max_length=3000,null=True,blank=True)
+    
     estatus={
         ('Enviado','Enviado'),#Solicitud enviada
         ('Pendiente','Pendiente'),#Solcitud sin asignar Empleados

@@ -101,7 +101,7 @@ const listSolicitudes = async () => {
                 solicitudes.departamento_jefe_departamento;
 
              // Chequeamos si hay un trabajador asociado a la solicitud
-             const nombre_Empleado = solicitudes.nombre_completo_empleado ? `De: ${solicitudes.nombre_completo_empleado}` : 'Sin Empleado Aignado';
+             const nombre_Empleado = solicitudes.nombre_completo_empleado ? `De: ${solicitudes.nombre_completo_empleado}` : 'Sin Empleado Asignado';
            
 
             content += `

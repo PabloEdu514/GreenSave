@@ -216,3 +216,36 @@
     width: 160px; 
 
 }
+
+#BotGenerar,#BotBorrar,#BotGuardarF{
+    background-color: #012557;
+    color: #ffffff;
+    border-radius :50px;
+    width: 200px;  
+}
+
+#BotGenerar:hover,#BotBorrar:hover,#BotGuardarF:hover{
+    background-color: #00002D;
+    
+    color: #FFFFFF;
+    border-radius :50px;
+    width: 230px;  
+}
+
+#CampoFirma{
+    
+    display: flex; /* Utilizamos flexbox para alinear el contenido */
+    justify-content: center; /* Centramos horizontalmente */
+    align-items: center; /* Centramos verticalmente */
+    flex-direction: column; /* Alineamos los elementos en columna */
+}
+
+#pizarraFirma {
+    display: flex; /* Utilizamos flexbox para alinear el contenido */
+    justify-content: center; /* Centramos horizontalmente */
+    align-items: center; /* Centramos verticalmente */
+    flex-direction: column; /* Alineamos los elementos en columna */
+    display: none; /* Por defecto ocultamos el contenedor */
+}
+
+#pizarra {border:1px solid black;}

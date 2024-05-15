@@ -22,11 +22,7 @@ urlpatterns = [
     path('Inicio/Jefe_Departamento/<int:id>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.cargar_Inicio), name='inicio_jefe_departamento'),
     path('Formulario/Jefe_Departamento/<int:id_JefeDepartamento>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.cargar_Formulario), name='formulario_jefe_departamento'),
     path('Formulario/Jefe_Departamento/Solicitud/<int:idSolocitud>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.editar_Formulario), name='editar_Formulario'),
-<<<<<<< HEAD
     path('Firmar_Formulario/Jefe_Departamento/Solicitud/<int:idSolicitud>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.firmarFormulario), name='firmar_Formulario'),
-=======
-   path('Firmar_Formulario/Jefe_Departamento/Solicitud/<int:idSolocitud>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.firmar_Formulario), name='firmar_Formulario'),
->>>>>>> d5518231734f49df7f87160edbb378931c21da50
    
 
     # Enlaces del Empleados
@@ -35,6 +31,8 @@ urlpatterns = [
    # Enlaces del Subdirectora
     path('CargarSolicitudesSubdirectora/<int:idSubdirectora>/', Sub_required(views.vistas_Subdirectora.obtener_solicitudes), name='obtener_solicitudes_subdirectora'),
     path('Inicio/Subdirectora/<int:id>/', Sub_required(views.vistas_Subdirectora.cargar_Inicio), name='inicio_subdirector_servicios'),
+    path('Formulario/Subdirectora/<int:idSubdirectora>/',Sub_required( views.vistas_Subdirectora.cargar_Formulario), name='formulario_Subdirectora'),
+
    # Enlaces del Jefe de Mantenimiento
     path('CargarSolicitudesJefeMantenimiento/<int:idJefeMantenimiento>/', JefeMan_required(views.vistas_Jefe_Mantenimiento.obtener_solicitudes), name='obtener_solicitudes_jefe_mantenimiento'),
     path('Inicio/Jefe_Mantenimiento/<int:id>/', JefeMan_required(views.vistas_Jefe_Mantenimiento.cargar_Inicio), name='inicio_jefe_mantenimiento'),

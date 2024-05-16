@@ -24,6 +24,7 @@ urlpatterns = [
     path('mfa/', include('mfa.urls')),
     path('dep_mantenimiento/', include('dep_mantenimiento.urls')),
     path('admin/', admin.site.urls),
+    
   
      #login
    

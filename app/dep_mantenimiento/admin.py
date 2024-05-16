@@ -1,5 +1,5 @@
 from django.contrib import admin
-from dep_mantenimiento.models import trabajadores,Solicitud_Mantenimiento,CustomGroup,HistorialSolicitud
+from dep_mantenimiento.models import trabajadores,Solicitud_Mantenimiento,CustomGroup,HistorialSolicitud,imagenesEvidencias
 
 #from .models import Usuario
 
@@ -26,3 +26,4 @@ admin.site.register(HistorialSolicitud, HistorialSolicitudAdmin)
 admin.site.register(trabajadores, TrabajadoresAdmin)
 admin.site.register(Solicitud_Mantenimiento, SolicitudMantenimientoAdmin)
 admin.site.register(CustomGroup )
+admin.site.register(imagenesEvidencias )

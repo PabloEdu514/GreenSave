@@ -138,27 +138,14 @@ const listSolicitudes = async () => {
     }
 };
 
-function editSolicitud(solicitudId, event) {
-    event.stopPropagation();
-    // Lógica para editar la solicitud
-}
 
-function fimarSolicitud(solicitudId, event) {
-    event.stopPropagation();
-    // Lógica para editar la solicitud
-}
 
-// Función para obtener el valor de la cookie CSRF
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-}
 
 function openDetalle(solicitudId) {
-    // Mostrar una alerta con los detalles de la solicitud
-    alert(`Le diste clic a la solicitud: ${solicitudId}`);
-    console.log('Detalles de la solicitud:', solicitudId);
+    // Redirige a la página HTML deseada con el ID de la solicitud
+    //window.location.href = `/detalle_solicitud.html?id=${solicitudId}`;
+    window.location.href = `/dep_mantenimiento/Solicitud/Jefe_Mantenimiento/${solicitudId}/` ;
+    //alert("El ID de la solicitud es: " + solicitudId);
 }
 
 const reloadDataTable = async () => {

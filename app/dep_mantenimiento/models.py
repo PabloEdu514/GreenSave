@@ -53,6 +53,8 @@ class trabajadores(models.Model):
     
     def __str__(self):
         return self.nombre_completo()
+
+
     
 class Solicitud_Mantenimiento(models.Model):
     id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
@@ -96,8 +98,7 @@ class Solicitud_Mantenimiento(models.Model):
 
     material_asignado= models.CharField(null=True,max_length=3000,blank=True)
     material_utilizado= models.CharField(null=True,max_length=3000,blank=True)
-    #Se va subir varios archivos
-    evidenciasIMG= models.ImageField(null=True,upload_to='dep_mantenimiento/img/Evidencias',blank=True)
+   
     
     
    # Relaciones con los trabajadores
@@ -152,6 +153,19 @@ class Solicitud_Mantenimiento(models.Model):
             ('view_Solicitud_empleado_Mantenimiento', 'empMantenimiento ver'),
             ('change_Solicitud_empleado_Mantenimiento', 'empMantenimiento cambiar'),
         ]# Modelo para los grupos personalizados
+
+
+
+#Clase para imagenes
+class imagenesEvidencias(models.Model):
+    id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
+    solicitud = models.ForeignKey('Solicitud_Mantenimiento', on_delete=models.CASCADE, related_name='solicitud')
+    #Se va subir varios archivos
+    evidenciasIMG= models.ImageField(null=True,upload_to='dep_mantenimiento/img/Evidencias',blank=True)
+    class Meta:
+        app_label = 'dep_mantenimiento'
+        db_table = 'Evidencias'
+        verbose_name = 'Evidencias'      
         
 class HistorialSolicitud(models.Model):
     id = models.AutoField(primary_key=True)

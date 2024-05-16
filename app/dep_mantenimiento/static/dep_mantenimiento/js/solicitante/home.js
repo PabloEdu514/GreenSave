@@ -105,9 +105,10 @@ const listSolicitudes = async () => {
                             <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
                             </a>
 
-                            <a class="btn btn-sm-2" style="background-color: #d90429 !important;" href="/dep_mantenimiento/eliminar-solicitud/${solicitudes.id}" role="button">
-                            <i class="fa fa-trash" aria-hidden="true" style=" color: #ffffff !important;" ></i>
-                            </a>
+                            <button class="btn btn-sm-2" style="background-color: #d90429 !important;" onclick="showDeleteAlert(${solicitudes.id})">
+                            <i class="fa fa-trash" aria-hidden="true" style="color: #ffffff !important;"></i>
+                        </button>
+
 
                             
 
@@ -116,7 +117,7 @@ const listSolicitudes = async () => {
                         
                         ` :  ` 
                         </button>
-                        <button  class="btn  btn-sm-2"  style="background-color: #6c757d !important;" >
+                        <button  class="btn  btn-sm-2"  style="background-color: #6c757d !important;" onclick="showTimeLimitAlert()" >
                     
                         <i class="fa fa-lock" style=" color: #ffffff !important;" aria-hidden="true"></i>
                         </button>
@@ -143,28 +144,40 @@ const listSolicitudes = async () => {
     }
 };
 
-function editSolicitud(solicitudId, event) {
-    event.stopPropagation();
-    // Lógica para editar la solicitud
+
+// Función para mostrar la alerta
+function showTimeLimitAlert() {
+    Swal.fire({
+        icon: 'info',
+        title: '¡Alerta!',
+        text: 'Has superado el tiempo límite para editar esta solicitud.',
+        confirmButtonText: 'Aceptar'
+    });
+}
+
+function showDeleteAlert() {
+// Mostrar un toast de confirmación
+Swal.fire({
+    icon: 'warning',
+    title: '¿Estás seguro de que quieres borrar esta Solicitud?',
+    showCancelButton: true,
+    confirmButtonText: 'Aceptar',
+    cancelButtonText: 'Cancelar'
+}).then((result) => {
+    // Si el usuario hace clic en "Aceptar", redirige a la URL con el ID de la solicitud
+    if (result.isConfirmed) {
+        window.location.href = `/dep_mantenimiento/eliminar-solicitud/${solicitudId}`;
+    }
+});
+
+
 }
 
 
-
-// Función para obtener el valor de la cookie CSRF
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-}
 
 function openDetalle(solicitudId) {
    
-    // Redirige a la página HTML deseada con el ID de la solicitud
-    //window.location.href = `/detalle_solicitud.html?id=${solicitudId}`;
-     // Mostrar una alerta con los detalles de la solicitud
-     alert(`Le diste clic a la solicitud: ${solicitudId}
-     `);
-     console.log('Detalles de la solicitud:', solicitudId);
+    
 
 }
 

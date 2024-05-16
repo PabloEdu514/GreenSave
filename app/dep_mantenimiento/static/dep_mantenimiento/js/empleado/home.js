@@ -71,7 +71,10 @@ const listSolicitudes = async () => {
                     break;
                 case 'Enviado':
                     icono = '<i id="Enviado" class="fa fa-envelope" aria-hidden="true" style="color: #1B396B;font-size: 30px; "></i> ';
-                    break;                
+                    break; 
+                case 'Solicitud_Firmada':
+                    icono = '<i id="Firmado" class="fa fa-file-signature" aria-hidden="true" style="color: #1B396B;font-size: 30px; "></i> ';
+                    break;                     
                 default:
                     icono = solicitudes.status; // Usa el texto del estado como icono por defecto
             }
@@ -79,7 +82,7 @@ const listSolicitudes = async () => {
             const descripcionLimitada = limitarDescripcion(solicitudes.descripcion, 10);
             // Botón o icono dependiendo del estado de la firma del empleado
             let actionElement;
-            if (solicitudes.firmado_empleado === true) {
+            if (solicitudes.fimrado_empleado === true) {
                 actionElement = `
                 <button class="btn btn-sm-2" style="background-color: #6a994e !important;">   
                 <i class="fa fa-check-square" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>

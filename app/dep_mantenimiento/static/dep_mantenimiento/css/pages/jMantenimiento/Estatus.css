@@ -1,0 +1,156 @@
+
+/* Estilos para la barra superior */
+.top-bar {
+    background-color: #1B396B; /* Color de fondo azul */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px; /* Espacio interno */
+}
+
+/* Estilos para los botones en la barra superior */
+.boton-con-icono {
+    width: 150px;
+    height: 30px;
+    background-color: #ffffff;
+    color:#08326d;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.fondo-base {
+    background-color: white;
+}
+
+.boton-con-icono svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    margin-right: 5px;
+}
+
+.boton-con-icono:hover {
+    background-color: #08326d;
+    color: rgb(255, 255, 255);
+}
+
+/* Estilos para la sección de contenido */
+#content {
+    overflow-y: auto;
+    height: 100vh;
+    padding-bottom: 5rem;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+/* Estilos para el título */
+.subtitle {
+    text-align: center;
+    font-size: 190%;
+    color: #1B396B; /* Color subtitulo */
+}
+
+.logo-container {
+    text-align: center;
+    color:red;
+}
+
+.user {
+
+    display: flex;
+    align-items: flex-start;
+}
+
+.user-info{
+    margin-left: 10px;
+}
+
+.tec {
+    margin-left: 10px;
+    margin-block-end: 35px;
+}
+
+.logo {
+    width: 70px; 
+    height: auto; 
+    position: absolute;
+    left: 5%;
+
+}
+
+.center {
+    text-align: center;
+}
+
+.barra-n {
+    background-color: #050506; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 20px; 
+    border-radius: 10px; /* Ajusta el valor según la curvatura que desees */
+    max-width: calc(100% - 20%); /* 20px de espacio a la izquierda y 20px a la derecha */
+    margin: 0 auto; /* Centra horizontalmente */
+}
+
+.boton-firma {
+    background-color: #041756; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 0 auto; display: block;
+}
+
+.zoom {
+    border: none; background: none;width: 100px;
+}
+
+.pdf-cont {
+    overflow-y: scroll; direction: rtl; width: 100%; height: 50vh;
+}
+.seguimiento {
+    max-width: 800px;
+     margin: 0 auto;
+}
+
+.nueva-etapa {
+    margin-left: 200px;
+    display: flex;
+    align-items:flex-start;
+    margin-bottom: 20px;
+}
+
+.etapa-nombre {
+    margin-left: 20px;
+    color: red; 
+    margin-inline-end: 0;
+}
+
+.etapa-fecha {
+    margin-left: 20px;
+    margin-top: 0;
+
+}
+
+.asignar-prioridad {
+    display: flex; align-items: center;
+}
+
+.asignar {
+    height: 20px; margin-right: 10px;
+}
+
+.asignar-lista {
+    width: 30%3; height: 20px; align-items: center;
+}
+
+.area-material {
+    width: 70%;
+}
+
+.area-boton {
+    display: flex; justify-content: space-between; align-items: center; height: 20px;
+}
+
+.boton-area {
+    background-color: #041756; color: white; padding: .5px 40px; border: none; border-radius: 15px; cursor: pointer;
+}

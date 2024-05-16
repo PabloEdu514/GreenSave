@@ -23,7 +23,7 @@ urlpatterns = [
     path('Formulario/Jefe_Departamento/<int:id_JefeDepartamento>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.cargar_Formulario), name='formulario_jefe_departamento'),
     path('Formulario/Jefe_Departamento/Solicitud/<int:idSolicitud>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.editar_Formulario), name='editar_Formulario'),
     path('Firmar_Formulario/Jefe_Departamento/Solicitud/<int:idSolicitud>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.firmarFormulario), name='firmar_Formulario'),
-
+    path('Firmar_Formulario_VoBo/Jefe_Departamento/Solicitud/<int:idSolicitud>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.firmarFormularioVoBo), name='firmar_Formulario_VoBo'),
    
 
     # Enlaces del Empleados
@@ -36,10 +36,11 @@ urlpatterns = [
    # Enlaces del Jefe de Mantenimiento
     path('CargarSolicitudesJefeMantenimiento/<int:idJefeMantenimiento>/', JefeMan_required(views.vistas_Jefe_Mantenimiento.obtener_solicitudes), name='obtener_solicitudes_jefe_mantenimiento'),
     path('Inicio/Jefe_Mantenimiento/<int:id>/', JefeMan_required(views.vistas_Jefe_Mantenimiento.cargar_Inicio), name='inicio_jefe_mantenimiento'),
-    
+    path('Solicitud/Jefe_Mantenimiento/<int:solicitud_id>/', JefeMan_required(views.vistas_Jefe_Mantenimiento.guardar_Asignacion), name='detalle_solicitud'),
     
     # Eliminar solicitud
      path('eliminar-solicitud/<int:solicitud_id>/', views.eliminar_solicitud, name='eliminar_solicitud'),
+     
    
 ]
 

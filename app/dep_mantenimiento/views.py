@@ -15,7 +15,7 @@ from django.db import transaction
 from .models import Solicitud_Mantenimiento, imagenesEvidencias,trabajadores
 from django.shortcuts import redirect
 from datetime import datetime
-from .forms import Evidencias, JefeForm, SolicitudAsignar, SolicitudMantenimientoForm, firma_Formulario_Empleado, firmaVoBoForm, firmar_Formulario
+from .forms import Evidencias, Solcitud_confirmacion, SolicitudAsignar, SolicitudMantenimientoForm, SolicitudPeticion, firma_Formulario_Empleado, firmaVoBoForm, firmar_Formulario
 from django.db import transaction,connection
 from dep.views import bitacora
 from django.core.exceptions import PermissionDenied
@@ -187,7 +187,8 @@ class vistas_solicitantes_cargar_inicio(View):
                         'fecha': solicitud.fecha.strftime("%d/%m/%Y"),  # Formatear la fecha como dd/mm/aaaa
                         'hora': solicitud.hora.strftime("%H:%M"),  # Formatear la hora como hh:mm
                         'tiempo_transcurrido': tiempo_transcurrido_segundos, # Añadir el tiempo transcurrido en segundos
-                        'ocultar': solicitud.ocultar
+                        'ocultar': solicitud.ocultar,
+                        'firma_Jefe_Departamento': solicitud.firma_Jefe_Departamento,  # Agregar la firma del jefe de departamento
                     }
                     # Agregar la solicitud con el tiempo transcurrido a la lista
                     solicitudes_con_tiempo.append(solicitud_dict)
@@ -387,7 +388,7 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
     @staticmethod
     def cargar_Formulario(request, id_JefeDepartamento):
         if request.method == 'POST':
-            form = JefeForm(request.POST, request.FILES)
+            form = Solcitud_confirmacion(request.POST, request.FILES)
             if form.is_valid():
                 # Guardar los datos del formulario
                 id_fecha = datetime.now().date()
@@ -403,14 +404,6 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
                 id_firma_jefe_departamentoimg = form.cleaned_data['firma_Jefe_Departamento_img']
                 # Obtener solo el ID del jefe del departamento de Mantenimiento de Equipo
                 jefe_departamentoMAnt = trabajadores.objects.filter(departamento='Mantenimiento de Equipo', puesto='Jefe').values('id').first()
-
-                # Verificar si se encontró un jefe de Mantenimiento de Equipo
-                if jefe_departamentoMAnt:
-                    # Obtener el id del jefe del departamento de Mantenimiento de Equipo
-                    id_jefe_Mantenimiento = jefe_departamentoMAnt['id']
-                else:
-                    # Manejar el caso en el que no se encuentre ningún jefe para el departamento
-                    id_jefe_Mantenimiento = "No asignado"
                         
                 # Obtener la instancia del jefe del departamento de Mantenimiento de Equipo
                 jefe_departamento_instance = trabajadores.objects.get(id=jefe_departamentoMAnt['id'])
@@ -440,10 +433,10 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
             Nombre = trabajador.nombre_completo()
             fecha = datetime.now().date()
             # Crear un formulario con los datos de la solicitud
-            form = JefeForm(initial={
+            form = Solcitud_confirmacion(initial={
                 'area_solicitante': departamento,
                 'responsable_Area': Nombre,
-                'fecha': fecha,
+                'fecha': fecha.strftime("%d/%m/%Y"),  # Formatear la fecha como dd/mm/aaaa
             })
             # Pasar idFormulario al contexto de la plantilla
             context = {
@@ -472,21 +465,12 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
         
         
         if request.method == 'POST':
-            form = JefeForm(request.POST, request.FILES)  # Pasar la instancia de la solicitud existente al formulario
+            form = firmar_Formulario(request.POST, request.FILES)  # Pasar la instancia de la solicitud existente al formulario
             if form.is_valid():
                  # Guarda la imagen en el campo firma_Jefe_Departamento_img del modelo Solicitud_Mantenimiento
                 id_firma_jefe_departamentoimg = form.cleaned_data['firma_Jefe_Departamento_img']
                 # Obtener solo el ID del jefe del departamento de Mantenimiento de Equipo
-                jefe_departamentoMAnt = trabajadores.objects.filter(departamento='Mantenimiento de Equipo', puesto='Jefe').values('id').first()
-
-                # Verificar si se encontró un jefe de Mantenimiento de Equipo
-                if jefe_departamentoMAnt:
-                    # Obtener el id del jefe del departamento de Mantenimiento de Equipo
-                    id_jefe_Mantenimiento = jefe_departamentoMAnt['id']
-                else:
-                    # Manejar el caso en el que no se encuentre ningún jefe para el departamento
-                    id_jefe_Mantenimiento = "No asignado"
-                        
+                jefe_departamentoMAnt = trabajadores.objects.filter(departamento='Mantenimiento de Equipo', puesto='Jefe').values('id').first()                        
                 # Obtener la instancia del jefe del departamento de Mantenimiento de Equipo
                 jefe_departamento_instance = trabajadores.objects.get(id=jefe_departamentoMAnt['id'])
                 solicitud.firma_Jefe_Departamento_img=id_firma_jefe_departamentoimg
@@ -497,10 +481,11 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
                 return redirect('inicio')
         else:
             # Pre-rellenar el formulario con los datos existentes
-            form = JefeForm(initial={
+            form = firmar_Formulario(initial={
                 'area_solicitante': solicitud.area_solicitante,
                 'responsable_Area': solicitud.responsable_Area,
-                'fecha': solicitud.fecha,
+                'fecha': solicitud.fecha.strftime("%d/%m/%Y"),  # Formatear la fecha como dd/mm/aaaa
+                
                 'tipo_servicio': solicitud.tipo_servicio,
                 'descripcion': solicitud.descripcion,
                 'folio': solicitud.folio,
@@ -562,17 +547,17 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
         except Solicitud_Mantenimiento.DoesNotExist:
             return HttpResponse("La solicitud no existe", status=404)      
         if request.method == 'POST':
-            form = JefeForm(request.POST)
+            form = Solcitud_confirmacion(request.POST)
             
             solicitud.descripcion = request.POST.get('descripcion')
             solicitud.tipo_servicio = request.POST.get('tipo_servicio')
             solicitud.save()
             return redirect('inicio')
         else:
-            form= JefeForm(initial={
+            form= Solcitud_confirmacion(initial={
                 'area_solicitante': solicitud.area_solicitante,
                 'responsable_Area': solicitud.responsable_Area,
-                'fecha': solicitud.fecha,
+                 'fecha': solicitud.fecha.strftime("%d/%m/%Y"),  # Formatear la fecha como dd/mm/aaaa
                 'tipo_servicio': solicitud.tipo_servicio,
                 'descripcion': solicitud.descripcion,
                 'folio': solicitud.folio,
@@ -817,7 +802,7 @@ class vistas_Subdirectora(View):
     @staticmethod
     def cargar_Formulario(request, idSubdirectora):
         if request.method == 'POST':
-            form = JefeForm(request.POST, request.FILES)
+            form = Solcitud_confirmacion(request.POST, request.FILES)
             if form.is_valid():
                 # Guardar los datos del formulario
                 id_fecha = datetime.now().date()
@@ -832,16 +817,7 @@ class vistas_Subdirectora(View):
                 # Guarda la imagen en el campo firma_Jefe_Departamento_img del modelo Solicitud_Mantenimiento
                 id_firma_jefe_departamentoimg = form.cleaned_data['firma_Jefe_Departamento_img']
                 # Obtener solo el ID del jefe del departamento de Mantenimiento de Equipo
-                jefe_departamentoMAnt = trabajadores.objects.filter(departamento='Mantenimiento de Equipo', puesto='Jefe').values('id').first()
-
-                # Verificar si se encontró un jefe de Mantenimiento de Equipo
-                if jefe_departamentoMAnt:
-                    # Obtener el id del jefe del departamento de Mantenimiento de Equipo
-                    id_jefe_Mantenimiento = jefe_departamentoMAnt['id']
-                else:
-                    # Manejar el caso en el que no se encuentre ningún jefe para el departamento
-                    id_jefe_Mantenimiento = "No asignado"
-                        
+                jefe_departamentoMAnt = trabajadores.objects.filter(departamento='Mantenimiento de Equipo', puesto='Jefe').values('id').first()                        
                 # Obtener la instancia del jefe del departamento de Mantenimiento de Equipo
                 jefe_departamento_instance = trabajadores.objects.get(id=jefe_departamentoMAnt['id'])
         
@@ -870,19 +846,137 @@ class vistas_Subdirectora(View):
             Nombre = trabajador.nombre_completo()
             fecha = datetime.now().date()
             # Crear un formulario con los datos de la solicitud
-            form = JefeForm(initial={
+            form = Solcitud_confirmacion(initial={
                 'area_solicitante': departamento,
                 'responsable_Area': Nombre,
-                'fecha': fecha,
+                'fecha': fecha.strftime("%d/%m/%Y"),  # Formatear la fecha como dd/mm/aaaa
             })
             # Pasar idFormulario al contexto de la plantilla
             context = {
                 'form': form,
-                'id': idSubdirectora,  # Pasar el ID de la solicitud al contexto
+                'id': idSubdirectora,
+                    # Pasar el ID de la solicitud al contexto
             }
             return render(request, 'dep_mantenimiento/layout/subdirectora/formulario.html', context)
        
        
+    @staticmethod
+    def editar_Formulario(request, idSolicitud):
+        try:
+            solicitud = Solicitud_Mantenimiento.objects.get(id=idSolicitud)
+        except Solicitud_Mantenimiento.DoesNotExist:
+            return HttpResponse("La solicitud no existe", status=404)      
+        if request.method == 'POST':
+            form = Solcitud_confirmacion(request.POST)
+            
+            solicitud.descripcion = request.POST.get('descripcion')
+            solicitud.tipo_servicio = request.POST.get('tipo_servicio')
+            solicitud.save()
+            return redirect('inicio')
+        else:
+            form= Solcitud_confirmacion(initial={
+                'area_solicitante': solicitud.area_solicitante,
+                'responsable_Area': solicitud.responsable_Area,
+                 'fecha': solicitud.fecha.strftime("%d/%m/%Y"),  # Formatear la fecha como dd/mm/aaaa
+                'tipo_servicio': solicitud.tipo_servicio,
+                'descripcion': solicitud.descripcion,
+                'folio': solicitud.folio,
+            })
+            
+            context = {
+                'solicitud': solicitud,
+                'id': idSolicitud,
+                'form':form
+            }
+            return render(request, 'dep_mantenimiento/layout/subdirectora/formularioedit.html', context)
+
+
+
+    @staticmethod
+    def peticion_formulario(request, idSolicitud):
+        try:
+            solicitud = Solicitud_Mantenimiento.objects.get(id=idSolicitud)
+        except Solicitud_Mantenimiento.DoesNotExist:
+            return HttpResponse("La solicitud no existe", status=404)      
+        if request.method == 'POST':
+            form = SolicitudPeticion(request.POST)
+            
+            # Si hay una descripción de rechazo, cambiar el estatus a rechazado
+            if request.POST.get('Mat_Rechazo'):
+                    solicitud.Mat_Rechazo = request.POST.get('Mat_Rechazo')
+                    solicitud.status = 'Rechazado'
+                    solicitud.resolvio = False
+                # Si hay una descripción de resuelto, cambiar el estatus a Enviado
+            elif request.POST.get('Mat_Resuelto'):
+                    solicitud.Mat_Resuelto = request.POST.get('Mat_Resuelto')
+                    solicitud.status = 'Enviado'
+                    solicitud.resolvio = True
+              
+              
+            solicitud.save()
+            return redirect('inicio')
+        else:
+            form= SolicitudPeticion()
+            
+            context = {
+                'solicitud': solicitud,
+                'id': idSolicitud,
+                'form':form
+            }
+            return render(request, 'dep_mantenimiento/layout/subdirectora/peticion_form.html', context)
+
+
+
+    @staticmethod
+    def firmarFormularioVoBo(request, idSolicitud):
+        try:
+            solicitud = Solicitud_Mantenimiento.objects.get(id=idSolicitud)
+        except Solicitud_Mantenimiento.DoesNotExist:
+            return HttpResponse("La solicitud no existe", status=404)
+        
+        
+        
+        if request.method == 'POST':
+            form = firmaVoBoForm(request.POST, request.FILES)  # Pasar la instancia de la solicitud existente al formulario
+            if form.is_valid():
+                 # Guarda la imagen en el campo firma_Jefe_Departamento_img del modelo Solicitud_Mantenimiento
+                id_firma_jefe_departamentoVoBoimg = form.cleaned_data['firma_Jefe_VoBo_img']
+                
+                        
+                # Obtener la instancia del jefe del departamento de Mantenimiento de Equipo
+                
+                solicitud.firma_Jefe_VoBo_img=id_firma_jefe_departamentoVoBoimg
+                solicitud.firma_Jefe_VoBo=True
+                solicitud.status = 'Realizado'
+                solicitud.save() # Guardar los cambios en la solicitud existente
+                bitacora(request.user, 'Solicitud_Mantenimiento', 'Post', f'Solicitud: {idSolicitud}', Departamento='dep_mantenimiento')
+                return redirect('inicio')
+        else:
+            # Pre-rellenar el formulario con los datos existentes
+            form = firmaVoBoForm()
+            empleado = trabajadores.objects.get(id=solicitud.id_Empleado.id)
+            # Obtener el empleado asociado a la solicitud
+            empleado = trabajadores.objects.get(id=solicitud.id_Empleado.id)
+            # Obtener el nombre completo del empleado
+            nombre_completo_empleado = empleado.nombre_completo()
+        context = {
+            'form': form,
+            'id': idSolicitud,
+            'solicitud': solicitud,  # Incluir la solicitud en el contexto para acceso en la plantilla
+            'empleado': nombre_completo_empleado
+        }
+        return render(request, 'dep_mantenimiento/layout/subdirectora/firma_form_VoBo.html', context)
+
+
+
+
+
+
+
+
+
+
+
        
     @staticmethod
     def obtener_solicitudes(request, idSubdirectora):
@@ -901,16 +995,20 @@ class vistas_Subdirectora(View):
                     # Convertir el tiempo transcurrido a segundos
                 tiempo_transcurrido_segundos = tiempo_transcurrido.total_seconds()
                 # Crear un diccionario para almacenar la información de la solicitud
-                solicitud_dict = {
-                    'id': solicitud.id,
+                solicitud_dict = {'id': solicitud.id,
                     'tipo_servicio': solicitud.tipo_servicio,
                     'descripcion': solicitud.descripcion,
                     'status': solicitud.status,
                     'fecha': solicitud.fecha.strftime("%d/%m/%Y"),  # Formatear la fecha como dd/mm/aaaa
                     'hora': solicitud.hora.strftime("%H:%M"),  # Formatear la hora como hh:mm
-                    'firmado_jefe_departamento': solicitud.firma_Jefe_Departamento,  # Firma del jefe de departamento
+                    'tiempo_transcurrido': tiempo_transcurrido_segundos, # Añadir el tiempo transcurrido en segundos
+                    'firmado_jefe_departamento': solicitud.firma_Jefe_Departamento,  # Agregar la firma del jefe de departamento
+                    'ocultar': solicitud.ocultar,
+                    'firmaEmpleados': solicitud.firma_Empleado,
+                    'firmaVobo':solicitud.firma_Jefe_VoBo,
                     'resolvio':solicitud.resolvio,
-                    'tiempo_transcurrido': tiempo_transcurrido
+                    'peticcion':solicitud.des_Peticion_Mat
+                    
                 }
                  # Verificar si la solicitud tiene un trabajador asociado
                 if solicitud.id_Trabajador:

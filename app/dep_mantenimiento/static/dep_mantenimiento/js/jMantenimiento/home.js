@@ -95,18 +95,42 @@ const listSolicitudes = async () => {
             
           
            // Agregamos la información de pertenencia y departamento
-            const perteneceInfo = solicitudes.nombre_completo_trabajador ? 
-                `De: ${solicitudes.nombre_completo_trabajador}` : 
-                `De: ${solicitudes.nombre_completo_jefe_departamento}`;
+           let perteneceInfo = '';
 
-            const departamentoInfo = solicitudes.nombre_completo_trabajador ? 
-                solicitudes.departamento_trabajador : 
-                solicitudes.departamento_jefe_departamento;
+           // Verificamos si cada propiedad existe y agregamos la información correspondiente
+           if (solicitudes.nombre_completo_trabajador) {
+               perteneceInfo += `De: ${solicitudes.nombre_completo_trabajador}`;
+           } else if (solicitudes.nombre_completo_subdirectora) {
+               perteneceInfo += `De: ${solicitudes.nombre_completo_subdirectora}`;
+           } else if (solicitudes.nombre_completo_jefe_departamento) {
+               perteneceInfo += `De: ${solicitudes.nombre_completo_jefe_departamento}`;
+           }
+           // Si no se encuentra ninguna de las propiedades, puedes definir un valor por defecto
+            if (!perteneceInfo) {
+                perteneceInfo = 'Información no disponible';
+            }
+           
+           
 
+           let departamentoInfo = '';
+
+           // Verificamos si cada propiedad existe y agregamos la información correspondiente
+           if (solicitudes.nombre_completo_trabajador) {
+               departamentoInfo += `De: ${solicitudes.departamento_trabajador}`;
+           } else if (solicitudes.departamento_jefe_departamento) {
+               departamentoInfo += `De: ${solicitudes.departamento_jefe_departamento}`;
+           } else if (solicitudes.departamento_subdirectora) {
+               departamentoInfo += `De: ${solicitudes.departamento_subdirectora}`;
+           }
+
+
+
+
+          
              // Chequeamos si hay un trabajador asociado a la solicitud
             
              
-             const nombre_Empleado = solicitudes.nombre_completo_empleado ? `De: ${solicitudes.nombre_completo_empleado}` : 'Sin Empleado Asignado';
+             const nombre_Empleado = solicitudes.nombre_completo_empleado ? ` ${solicitudes.nombre_completo_empleado}` : 'Sin Empleado Asignado';
 
            
 

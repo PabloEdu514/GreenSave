@@ -99,13 +99,13 @@
    
 }
 
-#fecha{
+.Fecha-solicitud{
     font-size: 16px;
     color: #0b0b0b !important;
     text-align: center !important;
-    width: 50px !important;
+    width: 150px !important;
 }
-#folio{
+.Folio-solicitud{
     font-size: 16px;
     color: #0b0b0b !important;
     text-align: center !important;
@@ -119,70 +119,36 @@
 }
 
 
-#Area,#RespArea,#Tipo{
-    width: 200px;
-}
 
-/* Estilos para los campos de entrada */
+
 /* Estilos para el campo de descripción */
-#id_descripcion {
+.Descripcion-solicitud {
     width: 100%;
     height: 100px;
-    font-size: 14px;
     color: #002E6D;
-}
-
-/* Estilos para el campo de tipo de servicio */
-#id_tipo_servicio {
-   width: 200px;
-   color: #002E6D;
+    border-radius:5px;
+    background-color:#F6F6F6;
 }
 
 
 
 
-/* Estilos para el campo de responsable de área */
-#id_responsable_Area {
-   width: 25%; 
-   font-size: 14px;
+
+
+
+.Departamento-solicitud,
+.Jefe-solicitud,
+.Servicio-solicitud {
+    font-size: 16px;
     color: #002E6D;
-    background-color: #FFFFFF;
-    cursor: default; /* Desactiva la selección del cursor */
-    border: none; /* Quita los bordes */
-    outline: none; /* Quita el contorno de enfoque */
+    border-radius:5px;
+    background-color:#F6F6F6;
 }
 
 
 
 
 
-/* Estilos para el campo de área solicitante */
-#id_area_solicitante {
-    width: 25%; 
-    font-size: 14px;
-    color: #002E6D;
-    background-color: #FFFFFF;
-    cursor: default; /* Desactiva la selección del cursor */
-    border: none; /* Quita los bordes */
-    outline: none; /* Quita el contorno de enfoque */
-   
-}
-#id_fecha{
-    
-    font-size: 14px;
-    width: 40%;
-    color: #002E6D;
-    background-color: #FFFFFF;
-    cursor: default; /* Desactiva la selección del cursor */
-   
-    outline: none; /* Quita el contorno de enfoque */
-}
-#id_folio{
-    width: 50%;
-    font-size: 14px;
-    color: #002E6D;
-    background-color: #FFFFFF;
-}
 
 #enviar{
     background-color: #012557;
@@ -232,25 +198,17 @@
     width: 230px;  
 }
 
-/* Estilos para el campo de firma */
-#CampoFirma{
-    background-color: #1B396B;
-    border-radius :10px;
-    width: 500px;
+#CampoFirma,#CampoFirmaJefe{
    
-   color: #FFFFFF;
+    color: #012557;
+    font-size: 16px;
     display: flex; /* Utilizamos flexbox para alinear el contenido */
     justify-content: center; /* Centramos horizontalmente */
     align-items: center; /* Centramos verticalmente */
     flex-direction: column; /* Alineamos los elementos en columna */
 }
-#CampoFirma .form-label{
-    color: #FFFFFF;
-
-}
 
 #pizarraFirma {
-    
     display: flex; /* Utilizamos flexbox para alinear el contenido */
     justify-content: center; /* Centramos horizontalmente */
     align-items: center; /* Centramos verticalmente */
@@ -258,8 +216,4 @@
     display: none; /* Por defecto ocultamos el contenedor */
 }
 
-#pizarra {
-    background-color: #FFFFFF;
-    border-radius :10px;
-    border:1px solid black;}
 #pizarra {border:1px solid black;}

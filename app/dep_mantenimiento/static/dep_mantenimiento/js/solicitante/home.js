@@ -90,7 +90,31 @@ const listSolicitudes = async () => {
             }
             // limitar la descripción a 10 palabras y agregar puntos suspensivos
             const descripcionLimitada = limitarDescripcion(solicitudes.descripcion, 10);
+            let botones;
+            if (solicitudes.firma_Jefe_Departamento == false) {
+                botones = !hideButtons ? `
+                <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="/dep_mantenimiento/Formulario/Jefe_Departamento/Solicitud/${solicitudes.id}" role="button">
+                    <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
+                </a>
+                <a class="btn btn-sm-2" style="background-color: #d90429 !important;" href="/dep_mantenimiento/eliminar-solicitud/${solicitudes.id}" role="button">
+                <i class="fa fa-trash" aria-hidden="true" style=" color: #ffffff !important;" ></i>
+                </a>
+            ` : `
+                <button  class="btn  btn-sm-2"  style="background-color: #6c757d !important;" onclick="showTimeLimitAlert()" >
+                    <i class="fa fa-lock" style=" color: #ffffff !important;" aria-hidden="true"></i>
+                </button>
+            `;
+                
+            }
+            else {
+                botones = `
+                <button  class="btn  btn-sm-2"  style="background-color: #6c757d !important;" onclick="showTimeLimitAlert()" >
+                    <i class="fa fa-lock" style=" color: #ffffff !important;" aria-hidden="true"></i>
+                </button>
+            `;
+            }
 
+            
             if (solicitudes.ocultar==false) { // Verifica si la solicitud no está oculta
                  // Incrementa el contador
                 contador++;
@@ -100,30 +124,7 @@ const listSolicitudes = async () => {
                         <td class ="servicio">${solicitudes.tipo_servicio}</td>
                         <td class ="descripcion">${descripcionLimitada}</td>
                         <td class ="botones">
-                            ${!hideButtons ? `
-                            <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="/dep_mantenimiento/Formulario/Docente/Solicitud/${solicitudes.id}" role="button">
-                            <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
-                            </a>
-
-                            <button class="btn btn-sm-2" style="background-color: #d90429 !important;" onclick="showDeleteAlert(${solicitudes.id})">
-                            <i class="fa fa-trash" aria-hidden="true" style="color: #ffffff !important;"></i>
-                        </button>
-
-
-                            
-
-                            
-                            
-                        
-                        ` :  ` 
-                        </button>
-                        <button  class="btn  btn-sm-2"  style="background-color: #6c757d !important;" onclick="showTimeLimitAlert()" >
-                    
-                        <i class="fa fa-lock" style=" color: #ffffff !important;" aria-hidden="true"></i>
-                        </button>
-                        
-                        
-                        `}
+                           ${botones}
                         </td>
                         <td class ="status">${icono}</td> <!-- Aquí se mostrará el icono correspondiente -->
                         <td class ="fecha">${solicitudes.fecha}</td>

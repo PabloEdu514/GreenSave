@@ -78,6 +78,7 @@ class Solicitud_Mantenimiento(models.Model):
     des_Serv_Realizado= models.CharField(max_length=3000,null=True,blank=True)
     des_Serv_no_Realizado= models.CharField(max_length=3000,null=True,blank=True)
     motv_rechazo= models.CharField(null=True,max_length=3000,blank=True)# cuando el jefe de mantenimiento rechaza la solicitud
+    # cuando el jefe de mantenimiento pide algo a la subdirectora
     des_Peticion_Mat= models.CharField(max_length=3000,null=True,blank=True)# cuando se solicita material
     Mat_Rechazo= models.CharField(max_length=3000,null=True,blank=True) # cuando el material es rechazado por parte de la subsecretaria
     Mat_Resuelto= models.CharField(max_length=3000,null=True,blank=True) # cuando el material es resuelto por parte de la subsecretaria
@@ -190,17 +191,88 @@ def crear_registro_historial(sender, instance, created, **kwargs):
             hora=timezone.now().time()
         )
         nuevo_historial.save()
-        
     else:
-        # Si la solicitud existente ha sido actualizada, registrar el cambio en el historial
-        if instance.status != instance.historial.last().nuevo_status:
+        # Si la solicitud ya existe, actualizar el historial con el estado actual
+        nuevo_historial = HistorialSolicitud.objects.create(
+            solicitud=instance,
+            nuevo_status=instance.status,
+            fecha=timezone.now().date(),
+            hora=timezone.now().time()
+        )
+        nuevo_historial.save()
+
+        # Registrar en el historial cuando se firme la solicitud por el jefe de departamento
+        if instance.firma_Jefe_Departamento and instance.status == 'Enviado' and not instance.resolvio and instance.firma_Empleado:
             nuevo_historial = HistorialSolicitud.objects.create(
                 solicitud=instance,
-                nuevo_status=instance.status,
+                nuevo_status='Solicitud_firmada',
                 fecha=timezone.now().date(),
                 hora=timezone.now().time()
             )
             nuevo_historial.save()
+
+        # Registrar en el historial cuando se asigna un empleado por el jefe de mantenimiento    
+        elif instance.id_Jefe_Mantenimiento and instance.id_Empleado and instance.status == 'En_proceso':
+            nuevo_historial = HistorialSolicitud.objects.create(
+                solicitud=instance,
+                nuevo_status='Empleado_asignado',
+                fecha=timezone.now().date(),
+                hora=timezone.now().time()
+            )
+            nuevo_historial.save()
+
+         # Registrar en el historial cuando el empleado firma la solicitud   
+        elif  instance.id_Empleado and instance.status == 'Solicitud_Firmada' and instance.firma_Empleado:
+            nuevo_historial = HistorialSolicitud.objects.create(
+                solicitud=instance,
+                nuevo_status='Firmado por el Empleado',
+                fecha=timezone.now().date(),
+                hora=timezone.now().time()
+            )
+            nuevo_historial.save()
+
+        # Registrar en el historial cuando el jefe de mantenimiento manda una petición a la subdirectora para que la resuelva    
+        elif instance.id_Jefe_Departamento and not instance.resolvio and instance.id_Subdirectora and instance.id_Jefe_Mantenimiento and instance.status == 'En_espera':
+            nuevo_historial = HistorialSolicitud.objects.create(
+                solicitud=instance,
+                nuevo_status='En espera de solucion',
+                fecha=timezone.now().date(),
+                hora=timezone.now().time()
+            )
+            nuevo_historial.save()
+
+        # Registrar en el historial cuando la subdirectora resuelve la petición    
+        elif instance.id_Jefe_Departamento and instance.resolvio and instance.id_Subdirectora and instance.id_Jefe_Mantenimiento and (instance.status == 'Enviado' or instance.status == 'En_proceso'):
+            nuevo_historial = HistorialSolicitud.objects.create(
+                solicitud=instance,
+                nuevo_status='Resuelto',
+                fecha=timezone.now().date(),
+                hora=timezone.now().time()
+            )
+            nuevo_historial.save()    
+            
+         # Registrar en el historial cuando el jefe de mantenimiento manda una petición a la subdirectora para que la resuelva    
+        elif instance.id_Jefe_Departamento and not instance.resolvio and instance.id_Subdirectora and instance.id_Jefe_Mantenimiento and instance.status == 'Rechazado':
+            nuevo_historial = HistorialSolicitud.objects.create(
+                solicitud=instance,
+                nuevo_status='Se rechazo la peticion',
+                fecha=timezone.now().date(),
+                hora=timezone.now().time()
+            )
+            nuevo_historial.save()                 
+
+        
+      # Registrar en el historial cuando el servicio es realizado   
+        elif instance.firma_Jefe_Departamento and instance.firma_Jefe_VoBo and instance.status == 'Realizado' and instance.firma_Empleado:
+            nuevo_historial = HistorialSolicitud.objects.create(
+                solicitud=instance,
+                nuevo_status='Servicio Realizado',
+                fecha=timezone.now().date(),
+                hora=timezone.now().time()
+            )
+            nuevo_historial.save()       
+                               
+
     
     
      

@@ -33,6 +33,12 @@ urlpatterns = [
    # Enlaces del Subdirectora
     path('CargarSolicitudesSubdirectora/<int:idSubdirectora>/', Sub_required(views.vistas_Subdirectora.obtener_solicitudes), name='obtener_solicitudes_subdirectora'),
     path('Inicio/Subdirectora/<int:id>/', Sub_required(views.vistas_Subdirectora.cargar_Inicio), name='inicio_subdirector_servicios'),
+    path('Formulario/Subdirectora/<int:idSubdirectora>/',Sub_required( views.vistas_Subdirectora.cargar_Formulario), name='formulario_Subdirectora'),
+    path('Formulario/Subdirectora/Solicitud/<int:idSolicitud>/',Sub_required( views.vistas_Subdirectora.editar_Formulario), name='editarformulario'),
+    path('Formulario_Peticion/Subdirectora/Solicitud/<int:idSolicitud>/',Sub_required( views.vistas_Subdirectora.peticion_formulario), name='peticion_formulario'),
+    path('Firmar_Formulario_VoBo/Subdirectora/Solicitud/<int:idSolicitud>/',Sub_required( views.vistas_Subdirectora.firmarFormularioVoBo), name='firmarFormulario_VoBo'),
+   
+
    # Enlaces del Jefe de Mantenimiento
     path('CargarSolicitudesJefeMantenimiento/<int:idJefeMantenimiento>/', JefeMan_required(views.vistas_Jefe_Mantenimiento.obtener_solicitudes), name='obtener_solicitudes_jefe_mantenimiento'),
     path('Inicio/Jefe_Mantenimiento/<int:id>/', JefeMan_required(views.vistas_Jefe_Mantenimiento.cargar_Inicio), name='inicio_jefe_mantenimiento'),

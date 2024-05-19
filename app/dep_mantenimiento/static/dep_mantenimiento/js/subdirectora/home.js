@@ -3,7 +3,7 @@ const userId = userDataScript.dataset.userId;
 
 let dataTable;
 let dataTableInitialized=false;
-
+let contador=0;
 const dataTableOptions = {
     searching: false,
     paging: true, // Habilita la paginación
@@ -74,26 +74,32 @@ const listSolicitudes = async () => {
             solicitudes.departamento_jefe_departamento : '';
               // Botón o icono dependiendo del estado de la firma del empleado
               let actionElement;
-              if ( solicitudes.resolvio === false && perteneceInfo && departamentoInfo) {
+              if ( solicitudes.resolvio === false && perteneceInfo && departamentoInfo && solicitudes.status === 'En_espera' ) {
                 actionElement = `
-                <button class="btn btn-sm-2" style="background-color: #fca311 !important;">   
+                <button class="btn btn-sm-2" style="background-color: #fca311 !important;"    onclick="peticionSolicitud(${solicitudes.id})"    >   
                 <i class="fa fa-exclamation-triangle" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
                 </button>`;
                 
                 
               }
-              else if (solicitudes.resolvio === true && perteneceInfo && departamentoInfo) {
+              else if (solicitudes.resolvio === true && perteneceInfo && departamentoInfo && solicitudes.status === 'Enviado' ) {
                 actionElement = `
                 <button class="btn btn-sm-2" style="background-color: #6a994e !important;">   
                 <i class="fa fa-check-square" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
                 </button>`;
               }
               
+              else if (solicitudes.resolvio === false && perteneceInfo && departamentoInfo && solicitudes.status === 'Rechazado' ) {
+                actionElement = `
+                <button class="btn btn-sm-2" style="background-color: rgba(255, 46, 0, 0.83) !important;">   
+                <i class="fa fa-times-circle" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
+                </button>`;
+              }
               
               
               else {
                 actionElement = !hideButtons ? `
-                    <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="#" role="button">
+                    <a class="btn btn-sm-2" style="background-color: #1a759f !important;" onclick="editSolicitud(${solicitudes.id})" role="button">
                         <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
                     </a>
                     <a class="btn btn-sm-2" style="background-color: #d90429 !important;" href="/dep_mantenimiento/eliminar-solicitud/${solicitudes.id}" role="button">
@@ -107,9 +113,15 @@ const listSolicitudes = async () => {
             }
             
             // Si ambos perteneceInfo y departamentoInfo están presentes, mostrar el icono de alerta
-            if (perteneceInfo && departamentoInfo && solicitudes.resolvio === false ) {
+            if (perteneceInfo && departamentoInfo && solicitudes.resolvio === false && solicitudes.status === 'En_espera' ) {
                 icono = '<i id="Alerta" class="fa fa-exclamation-triangle" style="color: #fca311; font-size: 30px;"></i>';
             }
+            else if (perteneceInfo && departamentoInfo && solicitudes.resolvio === false && solicitudes.status === 'Rechazado' ) {
+                icono = '<i id="Rechazado" class="fa-solid fa-circle-xmark" style="color: #1B396B;font-size: 30px; "></i>';
+            
+            }
+
+
             else{
                 switch (solicitudes.status) {
                     case 'En_proceso':
@@ -136,13 +148,49 @@ const listSolicitudes = async () => {
 
             }
 
+            let BotonVobo;
+            if ( solicitudes.firmado_jefe_departamento === true  && solicitudes.firmaEmpleados === true && solicitudes.firmaVobo === false) {
+                BotonVobo = `
+                <a class="btn btn-sm-2" style="background-color: #9a8c98 !important;" href="/dep_mantenimiento/Firmar_Formulario_VoBo/Subdirectora/Solicitud/${solicitudes.id}" role="button">
+                <i class="fa fa-pencil-square-o" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
+                </a>
+                `;
+                
+              }
+            else if (solicitudes.firmado_jefe_departamento === true  && solicitudes.firmaEmpleados === true && solicitudes.firmaVobo === true) {
+                BotonVobo = `
+                <button class="btn btn-sm-2" style="background-color: #6a994e !important;">   
+                <i class="fa fa-check-square" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
+                </button>`;
+              }
+            else if (solicitudes.firmado_jefe_departamento === true  && solicitudes.firmaEmpleados === true && solicitudes.firmaVobo === false) {
+                BotonVobo = `
+                <a class="btn btn-sm-2" style="background-color: #9a8c98 !important;" href="/dep_mantenimiento/Firmar_Formulario_VoBo/Jefe_Departamento/Solicitud/${solicitudes.id}" role="button">
+                <i class="fa fa-pencil-square-o" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
+                </a>
+                `;
+            }
+            else if (solicitudes.firmado_jefe_departamento === true  && solicitudes.firmaEmpleados === true && solicitudes.firmaVobo === true) {
+                BotonVobo = `
+                <button class="btn btn-sm-2" style="background-color: #6a994e !important;">   
+                <i class="fa fa-check-square" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
+                </button>`;
+            }
+            else {
+                BotonVobo = `
+
+                `;
+            }  
+             
+
+
            
         if (solicitudes.ocultar==false) { // Verifica si la solicitud no está oculta
                  // Incrementa el contador
                 
             contador++;
             content += `
-                <tr onclick="openDetalle(${solicitudes.id})" class="${solicitudes.status}">
+                <tr onclick="openDetalle(${solicitudes.id})" class="${solicitudes.status}" >
                     <td scope="row"  class="index">${contador}</td>
                     <td class ="servicio">${solicitudes.tipo_servicio}</td>
                     <td class ="descripcion">${descripcionLimitada}</td>
@@ -151,6 +199,7 @@ const listSolicitudes = async () => {
                     <td class ="Departamento">${departamentoInfo}</td>
                     <td class ="botones">
                     ${actionElement}
+                    ${BotonVobo}
                     </td>
                     <td class ="status">${icono}</td> <!-- Aquí se mostrará el icono correspondiente -->
                     <td class ="fecha">${solicitudes.fecha}</td>
@@ -172,26 +221,16 @@ const listSolicitudes = async () => {
 };
 
 function editSolicitud(solicitudId, event) {
-    event.stopPropagation();
-    // Lógica para editar la solicitud
+    window.location.href = `/dep_mantenimiento/Formulario/Subdirectora/Solicitud/${solicitudId}/` ;
 }
 
-function fimarSolicitud(solicitudId, event) {
-    event.stopPropagation();
-    // Lógica para editar la solicitud
+function peticionSolicitud(solicitudId, event) {
+    window.location.href = `/dep_mantenimiento/Formulario_Peticion/Subdirectora/Solicitud/${solicitudId}/` ;
 }
 
-// Función para obtener el valor de la cookie CSRF
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-}
 
 function openDetalle(solicitudId) {
-    // Mostrar una alerta con los detalles de la solicitud
-    alert(`Le diste clic a la solicitud: ${solicitudId}`);
-    console.log('Detalles de la solicitud:', solicitudId);
+   
 }
 
 const reloadDataTable = async () => {

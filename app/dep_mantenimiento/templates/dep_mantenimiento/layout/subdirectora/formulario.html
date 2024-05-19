@@ -7,7 +7,7 @@
          <path d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V7zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z"/>
       </svg>
    </a></li>
-   <li class="breadcrumb-item"><a href="{% url 'formulario_jefe_departamento' id_JefeDepartamento=id %}">
+   <li class="breadcrumb-item"><a href="{% url 'formulario_Subdirectora' idSubdirectora=id %}">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
          <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
          <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
@@ -24,7 +24,7 @@
     <html>
     <head>
        
-        <link rel="stylesheet" href="{% static "dep_mantenimiento/css/pages/jDep/formulario.css" %}">
+        <link rel="stylesheet" href="{% static "dep_mantenimiento/css/pages/subdirectora/formulario.css" %}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-VF43PqFHZBCZh4ysadDxE2NVWvwuCFVcRY+2Yv29O2hXPIghXJfVQfRYHA3wEY0tDpgmSRThyM9jT+GjRQtrNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
          <!--bootstrap5 v5.2.3-->
          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -94,29 +94,31 @@
                      <label for="id_descripcion" class="form-label ">Descripción del Servicio o Falla a Reparar:</label>
                      {{ form.descripcion }}
                  </div>
-                 
                  <div class="container-fluid" id="CampoFirma">
-                    {{ form.firma_Jefe_Departamento_img }}
-                    <br>
-                    <button type="button" class="btn  fs-6" id="BotGenerar" onclick="aparecerPizarra()">Generar Firma</button>
-   
-   
-                    <br>
-                    <div class="container-fluid" id="pizarraFirma" >
-                       <!-- Lienzo para dibujar con Signature Pad -->
-                       <canvas id="pizarra" width="400" height="200" ></canvas>
-                       <p class="nombre-firma" >{{ form.responsable_Area.value }}</p>
-                       
-                     
-                       <!-- Botones para borrar y guardar la firma -->
-                       <div class="row justify-content-center">
-                       <button type="button" class="btn  fs-6" id="BotBorrar" onclick="borrarFirmar()">Borrar Firmar</button>
-                       
-                       <button type="button" class="btn  fs-6" id="BotGuardarF" onclick="guardarFirmar()">Descargar Firmar</button>
-                        </div>
-   
-                   </div>
- 
+                    <label class="form-label ">Solicita</label>
+                 {{ form.firma_Jefe_Departamento_img }}
+                 <br>
+                 <button type="button" class="btn  fs-6" id="BotGenerar" onclick="aparecerPizarra()">Generar Firma</button>
+
+
+                 <br>
+                 <div class="container-fluid" id="pizarraFirma" >
+                    
+                    <!-- Lienzo para dibujar con Signature Pad -->
+                    <canvas id="pizarra" width="400" height="200" ></canvas>
+                    <p class="nombre-firma" >{{ form.responsable_Area.value }}</p>
+                    
+                  
+                    <!-- Botones para borrar y guardar la firma -->
+                    <div class="row justify-content-center">
+                    <button type="button" class="btn  fs-6" id="BotBorrar" onclick="borrarFirmar()">Borrar Firmar</button>
+                    
+                    <button type="button" class="btn  fs-6" id="BotGuardarF" onclick="guardarFirmar()">Descargar Firmar</button>
+                     </div>
+
+                </div>
+            </div>
+            <br>
                 <div class="row justify-content-center">
                     <div class="col-auto">
                         <button type="submit" class="btn  fs-6" id="enviar">Enviar</button>
@@ -183,6 +185,7 @@
             }
         }
     </script>
+    
     
     </body>
 

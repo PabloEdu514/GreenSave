@@ -93,7 +93,7 @@ const listSolicitudes = async () => {
             let botones;
             if (solicitudes.firma_Jefe_Departamento == false) {
                 botones = !hideButtons ? `
-                <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="/dep_mantenimiento/Formulario/Jefe_Departamento/Solicitud/${solicitudes.id}" role="button">
+                <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="/dep_mantenimiento/Formulario/Docente/Solicitud/${solicitudes.id}" role="button">
                     <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
                 </a>
                 <a class="btn btn-sm-2" style="background-color: #d90429 !important;" href="/dep_mantenimiento/eliminar-solicitud/${solicitudes.id}" role="button">
@@ -178,7 +178,7 @@ Swal.fire({
 
 function openDetalle(solicitudId) {
    
-    
+    window.location.href = `/dep_mantenimiento/Docente/Ver_Solicitud/${solicitudId}/` ;
 
 }
 

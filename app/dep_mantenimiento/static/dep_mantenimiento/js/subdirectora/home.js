@@ -141,7 +141,10 @@ const listSolicitudes = async () => {
                         break;
                     case 'Enviado':
                         icono = '<i id="Enviado" class="fa fa-envelope" aria-hidden="true" style="color: #1B396B;font-size: 30px; "></i> ';
-                        break;                
+                        break; 
+                    case 'Solicitud_Firmada':
+                        icono = '<i id="Firmado" class="fa fa-file-signature" aria-hidden="true" style="color: #1B396B;font-size: 30px; "></i> ';
+                        break;                    
                     default:
                         icono = solicitudes.status; // Usa el texto del estado como icono por defecto
                 }
@@ -231,6 +234,8 @@ function peticionSolicitud(solicitudId, event) {
 
 function openDetalle(solicitudId) {
    
+    window.location.href = `/dep_mantenimiento/Subdirectora/Ver_Solicitud/${solicitudId}/` ;
+
 }
 
 const reloadDataTable = async () => {

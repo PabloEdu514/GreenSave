@@ -2,7 +2,7 @@
 const canvas = document.getElementById('pizarra');
 const signaturePad = new SignaturePad(canvas);
 const nombreEmpleado = empleado;
-function aparecerCampo() {
+function aparecerPizarra() {
     // Mostrar el elemento con id="pizarraFirma"
     document.getElementById("pizarraFirma").style.display = "flex";
     // Ocultar el botón con id="BotGenerar"
@@ -15,7 +15,7 @@ function borrarFirmar() {
 }
 
 // Función para guardar la firma como PNG
-function guardar() {
+function guardarFirmar() {
     // Comprobar si hay algo dibujado en el lienzo
     if (!signaturePad.isEmpty()) {
         // Obtener la fecha y hora actual

@@ -166,10 +166,9 @@ const listSolicitudes = async () => {
 
 
 function openDetalle(solicitudId) {
-    // Redirige a la página HTML deseada con el ID de la solicitud
-    //window.location.href = `/detalle_solicitud.html?id=${solicitudId}`;
-    window.location.href = `/dep_mantenimiento/Solicitud/Jefe_Mantenimiento/${solicitudId}/` ;
-    //alert("El ID de la solicitud es: " + solicitudId);
+   
+    window.location.href = `/dep_mantenimiento/Jefe_Mantenimiento/Ver_Solicitud/${solicitudId}/` ;
+
 }
 
 const reloadDataTable = async () => {

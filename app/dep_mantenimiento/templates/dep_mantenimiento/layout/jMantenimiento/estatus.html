@@ -39,9 +39,9 @@
    <body>
     
         <div class="top-bar">
-            <a>
+            <a href="{% url 'inicio' %}">
             
-                <button class="boton-con-icono" style="width: 150px; height: 30px;">
+                <button  class="boton-con-icono" style="width: 150px; height: 30px;">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-20 h-20">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
                     </svg>   
@@ -146,80 +146,10 @@
 
 
 
-
-<div style="background-color: #050506; 
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 3px 20px; 
-border-radius: 10px; /* Ajusta el valor según la curvatura que desees */
-max-width: calc(100% - 20%); /* 20px de espacio a la izquierda y 20px a la derecha */
-margin: 0 auto; /* Centra horizontalmente */">
-<!-- Tu contenido aquí -->
+<div id="historial-container">
+    <!-- Aquí se mostrará el historial de solicitudes -->
 </div>
 
-
-
-<h2 class="subtitle">Estado de la solicitud</h2>
-
-
-<div class="seguimiento" style="max-width: 800px; margin: 0 auto;">
-    <div class="etapa" style="margin-left: 200px; display: flex; align-items: flex-start; margin-bottom: 20px;">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="margin-right: 10px;">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-        </svg>
-        <div style="margin-left: 10px;">
-            <p style="color: red; margin: 0;">Solicitud enviada al jefe de departamento</p>
-            <p style=" margin: 0;">Fecha y hora: XX/XX/XXXX XX:XX</p>
-        </div>
-    </div>
-    <div style="margin-left: 230px;
-    width: 2px;
-    background-color: #007bff;height: 100%;">
-    </div>
-
-    <div class="etapa" style="margin-left: 200px; display: flex; align-items: flex-start; margin-bottom: 20px;">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="margin-right: 10px;">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-        </svg> 
-        <div style="margin-left: 10px;">
-            <p style="color: red; margin: 0;">Solicitud firmada por el jefe de departamento de mantenimiento</p>
-            <p style=" margin: 0;">Fecha y hora: XX/XX/XXXX XX:XX</p>
-        </div>
-    </div>
-    
-    <div class="etapa" style="margin-left: 200px; display: flex; align-items: flex-start; margin-bottom: 20px;">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-        </svg>                  
-        <div style="margin-left: 10px;">
-            <p style="color: red; margin: 0;">Solicitud atendida por el trabajador</p>
-            <p style=" margin: 0;">Nombre del trabajador: [Nombre]</p>
-            <p style=" margin: 0;">Fecha y hora: XX/XX/XXXX XX:XX</p>
-        </div>
-    </div>
-    
-    <div class="etapa" style="margin-left: 200px; display: flex; align-items:flex-start; margin-bottom: 20px;">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-        </svg>                   
-        <div style="margin-left: 10px;">
-            <p style="color: red; margin: 0;">Solicitud finalizada por el empleado</p>
-            <p style=" margin: 0;">Nombre del empleado: [Nombre]</p>
-            <p style=" margin: 0;">Fecha y hora: XX/XX/XXXX XX:XX</p>
-        </div>
-    </div>
-    
-    <div class="etapa" style="margin-left: 200px; display: flex; align-items: flex-start; margin-bottom: 20px;">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-        </svg>                  
-        <div style="margin-left: 10px;">
-            <p style="color: red; margin: 0;">Servicio aprobado por el jefe de departamento de mantenimiento</p>
-            <p style=" margin: 0;">Fecha y hora: XX/XX/XXXX XX:XX</p>
-        </div>
-    </div>
-</div>
 
 
 
@@ -236,6 +166,9 @@ margin: 0 auto; /* Centra horizontalmente */">
 
 </div>
  
+<script id="solicitud_id" data-solicitud-id="{{ id }}"></script>
+    <script src="{% static "dep_mantenimiento/js/Detalles.js" %}" ></script>
+
     </body>
  </html>
    

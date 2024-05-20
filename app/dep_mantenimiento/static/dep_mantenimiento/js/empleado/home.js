@@ -94,16 +94,34 @@ const listSolicitudes = async () => {
             }
             
             // Agregamos la información de pertenencia y departamento
-           // Agregamos la información de pertenencia y departamento
-            const perteneceInfo = solicitudes.nombre_completo_trabajador ? 
-                `De: ${solicitudes.nombre_completo_trabajador}` : 
-                `De: ${solicitudes.nombre_completo_jefe_departamento}`;
+            // Agregamos la información de pertenencia y departamento
+            let perteneceInfo = '';
 
-            const departamentoInfo = solicitudes.nombre_completo_trabajador ? 
-                solicitudes.departamento_trabajador : 
-                solicitudes.departamento_jefe_departamento;
-
-
+            // Verificamos si cada propiedad existe y agregamos la información correspondiente
+            if (solicitudes.nombre_completo_trabajador) {
+                perteneceInfo += `De: ${solicitudes.nombre_completo_trabajador}`;
+            } else if (solicitudes.nombre_completo_subdirectora) {
+                perteneceInfo += `De: ${solicitudes.nombre_completo_subdirectora}`;
+            } else if (solicitudes.nombre_completo_jefe_departamento) {
+                perteneceInfo += `De: ${solicitudes.nombre_completo_jefe_departamento}`;
+            }
+            // Si no se encuentra ninguna de las propiedades, puedes definir un valor por defecto
+             if (!perteneceInfo) {
+                 perteneceInfo = 'Información no disponible';
+             }
+            
+            
+ 
+            let departamentoInfo = '';
+ 
+            // Verificamos si cada propiedad existe y agregamos la información correspondiente
+            if (solicitudes.nombre_completo_trabajador) {
+                departamentoInfo += `De: ${solicitudes.departamento_trabajador}`;
+            } else if (solicitudes.departamento_jefe_departamento) {
+                departamentoInfo += `De: ${solicitudes.departamento_jefe_departamento}`;
+            } else if (solicitudes.departamento_subdirectora) {
+                departamentoInfo += `De: ${solicitudes.departamento_subdirectora}`;
+            }
            
 
             content += `
@@ -137,6 +155,11 @@ const listSolicitudes = async () => {
 };
 
 
+function openDetalle(solicitudId) {
+   
+    window.location.href = `/dep_mantenimiento/Empleado/Ver_Solicitud/${solicitudId}/` ;
+
+}
 
 function fimarSolicitud(solicitudId, event) {
     // Construye la URL con el ID de la solicitud
@@ -151,11 +174,6 @@ function getCookie(name) {
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-function openDetalle(solicitudId) {
-    // Mostrar una alerta con los detalles de la solicitud
-    alert(`Le diste clic a la solicitud: ${solicitudId}`);
-    console.log('Detalles de la solicitud:', solicitudId);
-}
 
 const reloadDataTable = async () => {
     await initDataTable(); // Llama a la función para inicializar la tabla DataTable nuevamente

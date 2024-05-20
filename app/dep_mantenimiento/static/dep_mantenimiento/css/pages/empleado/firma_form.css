@@ -99,65 +99,70 @@
    
 }
 
-.Fecha-solicitud{
-    font-size: 16px;
-    color: #0b0b0b !important;
-    text-align: center !important;
-    width: 150px !important;
-}
-.Folio-solicitud{
-    font-size: 16px;
-    color: #0b0b0b !important;
-    text-align: center !important;
-    width: 50px !important;
-}
+/* Campos ya llenados del formulario */
+
+
+
 
  /* Estilos para las etiquetas */
- .form-label {
-    font-size: 14px;
-    color: #002E6D;
+ .container-custom {
+    max-width: 100%;
+    margin-left: 0;
 }
 
 
-
-
-/* Estilos para el campo de descripción */
-.Descripcion-solicitud {
-    width: 100%;
-    height: 100px;
-    color: #002E6D;
-    border-radius:5px;
-    background-color:#F6F6F6;
+.row {
+    display: flex;
+    align-items: center;
 }
-
-
-
-
-
-
-
-.Departamento-solicitud,
-.Jefe-solicitud,
-.Servicio-solicitud {
+.col-form-label {
+    margin-right: 10px;
     font-size: 16px;
     color: #002E6D;
-    border-radius:5px;
-    background-color:#F6F6F6;
+    font-weight: bold;
+}
+.form-label {
+    font-size: 16px;
+    color: #000000;
+    margin-left: 10px;
+    margin-top: 10px;
+
+}
+.form-label.ms-3 {
+    display: block;
+    background-color: #F6F6F6;
+    border-radius: 5px;
+    height: 30px;  /* Altura del contenedor */
+    width: 300px;   /* Ancho del contenedor */
+    padding-left: 5px; /* Padding para que el contenido no esté pegado al borde */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra añadida */
+}
+
+.form-label.lg-3 {
+    display: block;
+    background-color: #F6F6F6;
+    border-radius: 5px;
+    height: 100px;  /* Altura del contenedor */
+    width: 100%;   /* Ancho del contenedor */
+    line-height: 20px; /* Centrado vertical del contenido */
+    padding-left: 15px; /* Padding para que el contenido no esté pegado al borde */
+    padding-right: 15px; /* Padding para que el contenido no esté pegado al borde */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra añadida */
 }
 
 
 
 
 
+/* Estilos para los botones */
 
 #enviar{
+   
     background-color: #012557;
     color: #ffffff;
     border-radius :50px;
     width: 150px;  
-  
 }
-
 #enviar:hover{
     background-color: #00002D;
     color: #FFFFFF;
@@ -197,18 +202,47 @@
     border-radius :50px;
     width: 230px;  
 }
-
-#CampoFirma,#CampoFirmaJefe{
+/* Estilos para el campo de firma */
+#CampoFirma{
+    background-color: #1B396B;
+    border-radius :10px;
+    width: 500px;
    
-    color: #012557;
-    font-size: 16px;
+   color: #FFFFFF;
     display: flex; /* Utilizamos flexbox para alinear el contenido */
     justify-content: center; /* Centramos horizontalmente */
     align-items: center; /* Centramos verticalmente */
     flex-direction: column; /* Alineamos los elementos en columna */
 }
+#CampoFirma .form-label{
+    color: #FFFFFF;
+
+}
+
+#CampoImagen{
+    background-color: #1B396B;
+    border-radius :10px;
+    width: 500px;
+   
+   color: #FFFFFF;
+    display: flex; /* Utilizamos flexbox para alinear el contenido */
+    justify-content: center; /* Centramos horizontalmente */
+    align-items: center; /* Centramos verticalmente */
+    flex-direction: column; /* Alineamos los elementos en columna */
+}
+#CampoImagen .form-label{
+    color: #FFFFFF;
+    font-weight: bold;
+
+}
+
+
+
+
+
 
 #pizarraFirma {
+    
     display: flex; /* Utilizamos flexbox para alinear el contenido */
     justify-content: center; /* Centramos horizontalmente */
     align-items: center; /* Centramos verticalmente */
@@ -216,4 +250,7 @@
     display: none; /* Por defecto ocultamos el contenedor */
 }
 
-#pizarra {border:1px solid black;}
+#pizarra {
+    background-color: #FFFFFF;
+    border-radius :10px;
+    border:1px solid black;}

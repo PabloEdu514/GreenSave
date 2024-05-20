@@ -1,0 +1,261 @@
+{% extends "dep_mantenimiento/layout/layout.html" %}
+{% load static %}
+{% block title %}<title>SARH | I.T. Morelia</title>{% endblock %}
+{% block navpath %} 
+   <li class="breadcrumb-item"><a href="{% url 'home' %}">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid-3x3-gap-fill" viewBox="0 0 16 16">
+         <path d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V7zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z"/>
+      </svg>
+   </a></li>
+   <li class="breadcrumb-item"><a href="{% url 'solicitud_detallada' solicitud_id=id %}">
+  
+
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+         <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+         <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+      </svg>
+   </a></li>
+   <li class="breadcrumb-item"> Navegación </li>
+   <li class="breadcrumb-item"> Directorio </li>
+
+{% endblock %}
+{% block content %}
+
+<span class="align-middle">
+
+   <!DOCTYPE html>
+   
+   <html>
+      <head>
+         <script id="user-data" data-user-id="{{ id }}"></script>
+         <script id="url-inicio" data-url-inicio="{% url 'inicio' %}"></script>
+         <!--bootstrap5 v5.2.3-->
+         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+         <!-- DataTable-->
+         <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+         <!-- Iconos-->
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+         <!--Mi css-->
+         <link rel="stylesheet" href="{% static "dep_mantenimiento/css/pages/solicitante/solDetallada.css" %}">
+         <!-- Incluye los estilos CSS de PDF.js -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf_viewer.css">
+      </head>
+      <body>
+
+<div class="container-fluid"id="Contenedor" >
+
+            <div class="container-fluid" id="ContenedorBotones">
+               <div class="row">
+                   <div class="col-auto me-auto">
+                     <button type="button" id="BotInicio" class="btn btn-light" onclick="volverInicio()">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                        Inicio
+                     
+                     </button> 
+                   </div>
+                 </div>
+            </div>     
+
+                 <div class="container-fluid" id="ContenedorCabezado">
+                  <div class="row" id="filaEncabezado">
+                     <div class="container" id="conArriba">
+                        <label class="form-label lg-3">
+                              El estado del servicio "<em>{{ solicitud.tipo_servicio }}</em>" se ha actualizado el {{ fecha_histo }} a las {{ hora_histo }}
+                        </label>
+                     </div>
+                  </div>
+                  <div class="row" id="filaPertenece">
+                     <div class="container" id="conPertence">
+                         <div class="row align-items-center">
+                             <!-- Columna para la foto de perfil -->
+                             <div class="col-md-auto">
+                                 <!-- Lógica para mostrar la foto de perfil o una por defecto -->
+                                 {% if solicitud.id_Trabajador %}
+                                     {% if solicitud.id_Trabajador.foto_Perfil %}
+                                         <img src="{{ solicitud.id_Trabajador.foto_Perfil.url }}" alt="Foto de perfil" class="img-fluid">
+                                     {% else %}
+                                         <i class="fa fa-user-circle" style="font-size: 50px; color: #1B396B;" aria-hidden="true"></i>
+                                     {% endif %}
+                                 {% elif solicitud.id_Jefe_Departamento %}
+                                     {% if solicitud.id_Jefe_Departamento.foto_Perfil %}
+                                         <img src="{{ solicitud.id_Jefe_Departamento.foto_Perfil.url }}" alt="Foto de perfil" class="img-fluid">
+                                     {% else %}
+                                         <i class="fa fa-user-circle" style="font-size: 50px; color: #1B396B;" aria-hidden="true"></i>
+                                     {% endif %}
+                                 {% elif solicitud.id_Subdirectora %}
+                                     {% if solicitud.id_Subdirectora.foto_Perfil %}
+                                         <img src="{{ solicitud.id_Subdirectora.foto_Perfil.url }}" alt="Foto de perfil" class="img-fluid">
+                                     {% else %}
+                                         <i class="fa fa-user-circle" style="font-size: 50px; color: #1B396B;" aria-hidden="true"></i>
+                                     {% endif %}
+                                 {% else %}
+                                     <i class="fa fa-user-circle" style="font-size: 50px; color: #1B396B;" aria-hidden="true"></i>
+                                 {% endif %}
+                             </div>
+                 
+                             <!-- Columna para la información del trabajador -->
+                             <div class="col-md-5 align-content-center">
+                                 <div class="row">
+                                     {% if solicitud.id_Trabajador %}
+                                         <label class="form-label">De: {{ solicitud.id_Trabajador.nombre_completo }}</label>
+                                         <label class="form-label">Puesto: {{ solicitud.id_Trabajador.puesto }}</label>
+                                         <label class="form-label">Departamento: {{ solicitud.id_Trabajador.departamento }}</label>
+                                     {% elif solicitud.id_Jefe_Departamento %}
+                                         <label class="form-label">De: {{ solicitud.id_Jefe_Departamento.nombre_completo }}</label>
+                                         <label class="form-label">Puesto: {{ solicitud.id_Jefe_Departamento.puesto }}</label>
+                                         <label class="form-label">Departamento: {{ solicitud.id_Jefe_Departamento.departamento }}</label>
+                                     {% elif solicitud.id_Subdirectora %}
+                                         <label class="form-label">De: {{ solicitud.id_Subdirectora.nombre_completo }}</label>
+                                         <label class="form-label">Puesto: {{ solicitud.id_Subdirectora.puesto }}</label>
+                                         <label class="form-label">Departamento: {{ solicitud.id_Subdirectora.departamento }}</label>
+                                     {% else %}
+                                         <label class="form-label">No se encontró información sobre quién inició la solicitud.</label>
+                                     {% endif %}
+                                     <label class="form-label">{{ fecha }} a las {{hora}} hrs. </label>
+
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+               </div>
+
+
+
+               <div class="container-fluid text-center " id="ContenedorSuperior">
+                  <div class ="row">
+                     <div class="col-auto me-auto">
+                        <img src="{% static 'dep_mantenimiento/img/TecMor.png' %}" class="logo" id="logoDerecha">
+                       </div>
+                       
+
+                       <div class="col-auto text-container">
+                       
+
+                        {% if solicitud.id_Trabajador %}
+                        <label class="form-label">Solicitud de {{ solicitud.id_Trabajador.nombre_completo }}</label>
+                                         
+                        {% elif solicitud.id_Jefe_Departamento %}
+                        <label class="form-label">Solicitud de {{ solicitud.id_Jefe_Departamento.nombre_completo }}</label>
+                                         
+                        {% elif solicitud.id_Subdirectora %}
+                        <label class="form-label">Solicitud de {{ solicitud.id_Subdirectora.nombre_completo }}</label>
+                        
+                        {% else %}
+                        <label class="form-label">No se encontró información sobre quién inició la solicitud.</label>
+                        {% endif %}
+                       </div>
+                 </div>
+                 <!-- Línea -->
+         
+
+               </div>
+               <hr class="custom-line">
+
+
+
+               <div>
+
+                <!--Aqui va la visualizacion del pdf de la solicitud-->
+
+
+               </div>
+
+
+
+
+
+
+
+
+
+
+            <div class="d-flex justify-content-center align-items-center " id="historial-container">
+                <!-- Aquí se mostrará el historial de solicitudes -->
+            </div>
+            
+         
+            <br>
+
+            
+    <div class="container-md">
+        <div class="row justify-content-center">
+            <div class="col-auto text-center">
+                <label class="form-label" style="font-weight: bold; color: #99344C;">Haz click en “Descargar Solicitud” para obtener el documento en pdf.</label>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <button class="btn fs-6" id="descargar">Descargar Solicitud</button>
+            </div>
+        </div>
+    </div>
+
+
+       
+
+
+</div>
+
+
+ 
+
+
+    
+               
+        
+
+
+
+
+
+
+
+
+
+      
+
+  
+    
+         
+         
+         
+         
+         
+  
+         
+         
+         
+         
+         
+         <!--bootstrap5 v5.2.3-->
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+         <!--jquery-->
+         <script src="https://code.jquery.com/jquery-3.7.1.js" ></script>
+         <!--DataTable.js-->
+         <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
+         <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js" ></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js" ></script>
+           <!-- Alertas-->
+           <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+         <!--Mi js-->
+         <script src="{% static "dep_mantenimiento/js/solicitante/detalles.js" %}" ></script>
+
+         <script id="solicitud_id" data-solicitud-id="{{ id }}"></script>
+         <script src="{% static "dep_mantenimiento/js/Detalles.js" %}" ></script>
+         <script src="{% static "dep_mantenimiento/js/solicitante/soldetalles.js" %}" ></script>
+      </body>
+   </html>
+    
+   
+
+
+
+
+
+
+
+</span>     
+{% endblock %}

@@ -7,8 +7,11 @@ from django.forms.widgets import TextInput, FileInput, ClearableFileInput, DateI
 
 class SolicitudMantenimientoForm(forms.Form):
    
+    fecha = forms.DateField(label='Fecha', widget=forms.DateInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
     folio = forms.CharField(label='Folio', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el folio'}))
-    tipos_servicio = forms.ChoiceField(label='Tipo de Servicio', choices=[
+    area_solicitante = forms.CharField(label='Área Solicitante', widget=forms.TextInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
+    responsable_Area = forms.CharField(label='Responsable del Área', widget=forms.TextInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
+    tipo_servicio = forms.ChoiceField(label='Tipo de Servicio', choices=[
         ('', 'Seleccionar'),
         ('Electrica', 'Electrica'),
         ('Herrería', 'Herrería'),
@@ -19,15 +22,8 @@ class SolicitudMantenimientoForm(forms.Form):
         ('Cerrajería', 'Cerrajería'),
         ('Otro', 'Otro'),
     ], widget=forms.Select(attrs={'class': 'form-select'}))
-    descripcion = forms.CharField(label='Descripción del Servicio o Falla a Reparar', widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese la descripción', 'rows': 2}))
-    des_Serv_no_Realizado = forms.CharField(label='Descripción del por qué no se puede realizar', widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese la descripción', 'rows': 2}), required=False)
-    motv_rechazo = forms.CharField(label='Descripción del por qué no se puede realizar', widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese la descripción', 'rows': 2}), required=False)
-    des_Serv_Realizado = forms.CharField(label='Descripción del trabajo o servicio realizado', widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese la descripción', 'rows': 2}), required=False)
-    material_utilizado = forms.CharField(label='Material utilizado', widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese la descripción', 'rows': 2}), required=False)
-    fecha = forms.DateField(label='Fecha', widget=forms.DateInput(attrs={'class': 'form-control', 'readonly': True}))  # Campo de solo lectura para la fecha
-    area_solicitante = forms.CharField(label='Área Solicitante', widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}))  # Campo de solo lectura para el área solicitante
-    responsable_Area = forms.CharField(label='Responsable del Área', widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}))  # Campo de solo lectura para el responsable del área
-
+    descripcion = forms.CharField(label='Descripción del Servicio o Falla a Reparar', widget=forms.Textarea(attrs={'class': 'form-control','placeholder': 'Ingrese la descripción', 'rows': 2}))
+    
 class Solcitud_confirmacion(forms.Form):
     fecha = forms.DateField(label='Fecha', widget=forms.DateInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
     folio = forms.CharField(label='Folio', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el folio'}))
@@ -98,4 +94,11 @@ class SolicitudAsignar(forms.Form):
             
             
 class firmaVoBoForm(forms.Form):
-    firma_Jefe_VoBo_img = forms.FileField( widget=forms.FileInput(attrs={'class': 'form-control'}))     # Campo para cargar la firma para el firma_Jefe_VoBo_img         
+    firma_Jefe_VoBo_img = forms.FileField( widget=forms.FileInput(attrs={'class': 'form-control'}))     # Campo para cargar la firma para el firma_Jefe_VoBo_img 
+    
+    
+class Rechazarform(forms.Form):
+    motv_rechazo= forms.CharField( widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese el motivo de rechazo', 'rows': 2}))          
+    
+class Peticionform(forms.Form):
+    des_Peticion_Mat= forms.CharField( widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese la descripcion de la petición', 'rows': 2}))     

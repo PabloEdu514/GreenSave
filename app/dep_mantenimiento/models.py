@@ -116,7 +116,7 @@ class Solicitud_Mantenimiento(models.Model):
     resolvio = models.BooleanField(default=False,blank=True)
     # Imagenes de las firmas
     firma_Jefe_Departamento_img= models.ImageField(null=True,upload_to='dep_mantenimiento/img/Firmas/Jefe',blank=True)
-    firma_Empleado_img= models.ImageField(null=True,upload_to='dep_mantenimiento/img/Firmas/Jefe/Empleado',blank=True)
+    firma_Empleado_img= models.ImageField(null=True,upload_to='dep_mantenimiento/img/Firmas/Empleado',blank=True)
     firma_Jefe_VoBo_img= models.ImageField(null=True,upload_to='dep_mantenimiento/img/Firmas/VoBo',blank=True)
     
     #Funcion para ocultar la solicitud en vez de eliminarlo
@@ -171,6 +171,12 @@ class imagenesEvidencias(models.Model):
 class HistorialSolicitud(models.Model):
     id = models.AutoField(primary_key=True)
     solicitud = models.ForeignKey('Solicitud_Mantenimiento', on_delete=models.CASCADE, related_name='historial')
+    # Campos para firmas
+    firma_Jefe_Departamento = models.BooleanField(default=False,blank=True)
+    firma_Empleado = models.BooleanField(default=False,blank=True)
+    firma_Jefe_VoBo = models.BooleanField(default=False,blank=True)
+    resolvio = models.BooleanField(default=False,blank=True)
+    # Tiempo de creacion y actualizacion 
     fecha= models.DateField(default=timezone.now,null=False,blank=True)
     hora= models.TimeField(auto_now_add=True, null=False, blank=True)
     nuevo_status = models.CharField(choices=Solicitud_Mantenimiento.estatus, max_length=50)
@@ -182,31 +188,33 @@ class HistorialSolicitud(models.Model):
         
 @receiver(post_save, sender=Solicitud_Mantenimiento)
 def crear_registro_historial(sender, instance, created, **kwargs):
+    # Obtener la fecha actual
+    fecha_actual = timezone.localtime(timezone.now())
+
+   
+    
     if created:
         # Si se ha creado una nueva solicitud, registrarla en el historial
         nuevo_historial = HistorialSolicitud.objects.create(
             solicitud=instance,
             nuevo_status=instance.status,
-            fecha=timezone.now().date(),
-            hora=timezone.now().time()
+            fecha=fecha_actual,
+            hora=timezone.now().time(),
+            firma_Jefe_Departamento=instance.firma_Jefe_Departamento  # Asignar directamente el valor de firma_Jefe_Departamento
+            
+            
         )
         nuevo_historial.save()
     else:
-        # Si la solicitud ya existe, actualizar el historial con el estado actual
-        nuevo_historial = HistorialSolicitud.objects.create(
-            solicitud=instance,
-            nuevo_status=instance.status,
-            fecha=timezone.now().date(),
-            hora=timezone.now().time()
-        )
-        nuevo_historial.save()
+        
 
         # Registrar en el historial cuando se firme la solicitud por el jefe de departamento
-        if instance.firma_Jefe_Departamento and instance.status == 'Enviado' and not instance.resolvio and instance.firma_Empleado:
+        if instance.firma_Jefe_Departamento and instance.status == 'Enviado' and  instance.resolvio == False and instance.firma_Empleado == False and instance.firma_Jefe_VoBo == False:
             nuevo_historial = HistorialSolicitud.objects.create(
                 solicitud=instance,
                 nuevo_status='Solicitud_firmada',
-                fecha=timezone.now().date(),
+                firma_Jefe_Departamento=True,
+                fecha=fecha_actual,
                 hora=timezone.now().time()
             )
             nuevo_historial.save()
@@ -216,7 +224,7 @@ def crear_registro_historial(sender, instance, created, **kwargs):
             nuevo_historial = HistorialSolicitud.objects.create(
                 solicitud=instance,
                 nuevo_status='Empleado_asignado',
-                fecha=timezone.now().date(),
+                fecha=fecha_actual,
                 hora=timezone.now().time()
             )
             nuevo_historial.save()
@@ -226,7 +234,8 @@ def crear_registro_historial(sender, instance, created, **kwargs):
             nuevo_historial = HistorialSolicitud.objects.create(
                 solicitud=instance,
                 nuevo_status='Firmado por el Empleado',
-                fecha=timezone.now().date(),
+                firma_Empleado=True,
+                fecha=fecha_actual,
                 hora=timezone.now().time()
             )
             nuevo_historial.save()
@@ -236,7 +245,7 @@ def crear_registro_historial(sender, instance, created, **kwargs):
             nuevo_historial = HistorialSolicitud.objects.create(
                 solicitud=instance,
                 nuevo_status='En espera de solucion',
-                fecha=timezone.now().date(),
+                fecha=fecha_actual,
                 hora=timezone.now().time()
             )
             nuevo_historial.save()
@@ -246,7 +255,8 @@ def crear_registro_historial(sender, instance, created, **kwargs):
             nuevo_historial = HistorialSolicitud.objects.create(
                 solicitud=instance,
                 nuevo_status='Resuelto',
-                fecha=timezone.now().date(),
+                resolvio=True,
+                fecha=fecha_actual,
                 hora=timezone.now().time()
             )
             nuevo_historial.save()    
@@ -256,7 +266,7 @@ def crear_registro_historial(sender, instance, created, **kwargs):
             nuevo_historial = HistorialSolicitud.objects.create(
                 solicitud=instance,
                 nuevo_status='Se rechazo la peticion',
-                fecha=timezone.now().date(),
+                fecha=fecha_actual,
                 hora=timezone.now().time()
             )
             nuevo_historial.save()                 
@@ -267,10 +277,23 @@ def crear_registro_historial(sender, instance, created, **kwargs):
             nuevo_historial = HistorialSolicitud.objects.create(
                 solicitud=instance,
                 nuevo_status='Servicio Realizado',
-                fecha=timezone.now().date(),
+                firma_Jefe_VoBo=True,
+                fecha=fecha_actual,
                 hora=timezone.now().time()
             )
-            nuevo_historial.save()       
+            nuevo_historial.save()     
+            
+         # Registrar en el historial cuando el servicio es realizado   
+        elif instance.firma_Jefe_Departamento and instance.id_Jefe_Mantenimiento and instance.status == 'Rechazado' :
+            nuevo_historial = HistorialSolicitud.objects.create(
+                solicitud=instance,
+                nuevo_status='Se rechazo la solicitud',
+                firma_Jefe_VoBo=True,
+                fecha=fecha_actual,
+                hora=timezone.now().time()
+            )
+            nuevo_historial.save()      
+              
                                
 
     
@@ -285,6 +308,9 @@ class CustomGroup(models.Model):
         verbose_name = 'Grupo'
     def __str__(self):
         return self.name
+
+
+
 
 # Define tus señales aquí
 @receiver(post_save, sender=trabajadores)

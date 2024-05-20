@@ -12,10 +12,10 @@ from datetime import datetime
 from django.db.models import Q
 from django.utils import timezone
 from django.db import transaction
-from .models import Solicitud_Mantenimiento, imagenesEvidencias,trabajadores
+from .models import HistorialSolicitud, Solicitud_Mantenimiento, imagenesEvidencias,trabajadores
 from django.shortcuts import redirect
-from datetime import datetime
-from .forms import Evidencias, Solcitud_confirmacion, SolicitudAsignar, SolicitudMantenimientoForm, SolicitudPeticion, firma_Formulario_Empleado, firmaVoBoForm, firmar_Formulario
+
+from .forms import Evidencias, Peticionform, Rechazarform, Solcitud_confirmacion, SolicitudAsignar, SolicitudMantenimientoForm, SolicitudPeticion, firma_Formulario_Empleado, firmaVoBoForm, firmar_Formulario
 from django.db import transaction,connection
 from dep.views import bitacora
 from django.core.exceptions import PermissionDenied
@@ -208,7 +208,7 @@ class vistas_solicitantes_cargar_inicio(View):
             if form.is_valid():
                 id_fecha = datetime.now().date()
                 id_folio = form.cleaned_data['folio']
-                id_tipos_servicio = form.cleaned_data['tipos_servicio']
+                id_tipos_servicio = form.cleaned_data['tipo_servicio']
                 id_descripcion = form.cleaned_data['descripcion']
                 hora_actual = datetime.now().time()
                 # Obtener la instancia del trabajador correspondiente al ID
@@ -250,78 +250,61 @@ class vistas_solicitantes_cargar_inicio(View):
             
         # Renderiza el formulario
         return render(request, 'dep_mantenimiento/layout/solicitante/formulario.html', {'form': form})
-    #funciones para editar la solicitud
-    def cargar_Formulario_Editar(request, idFormulario):
+    
+    
+    
+    
+    
+    
+    
+    def cargar_Formulario_Editar(request, idSolicitud):
         try:
-            solicitud = Solicitud_Mantenimiento.objects.get(id=idFormulario)
+            solicitud = Solicitud_Mantenimiento.objects.get(id=idSolicitud)
         except Solicitud_Mantenimiento.DoesNotExist:
-            return HttpResponse("La solicitud no existe", status=404)
-
-        # Obtener los valores necesarios para inicializar el formulario
-        departamento = solicitud.area_solicitante
-        nombre_jefe_departamento = solicitud.responsable_Area
-        tipo_servicio_id = solicitud.tipo_servicio
-        descripcion = solicitud.descripcion
-        fecha=solicitud.fecha
-        folio=solicitud.folio
-        # Crear un formulario con los datos de la solicitud
-        form = SolicitudMantenimientoForm(initial={
-            'area_solicitante': departamento,
-            'responsable_Area': nombre_jefe_departamento,
-            'tipo_servicio': tipo_servicio_id,
-            'descripcion': descripcion,
-            'fecha': fecha,
-            'folio': folio
-            
-        })
-        # Pasar idFormulario al contexto de la plantilla
-        context = {
-            'form': form,
-            'idFormulario': idFormulario,  # Pasar el ID de la solicitud al contexto
-        }
-
-        return render(request, 'dep_mantenimiento/layout/solicitante/formularioEdit.html', context)
-    
-    
-    
-    
-    
-    
-    def editarFormulario(request, idFormulario):
-        # Obtener la solicitud correspondiente al idFormulario
-        try:
-            solicitud = Solicitud_Mantenimiento.objects.get(id=idFormulario)
-        except Solicitud_Mantenimiento.DoesNotExist:
-            # Manejar el caso en que la solicitud no exista
-            return HttpResponse("La solicitud no existe", status=404)
-        
-        # Verificar si el método de solicitud es POST (es decir, se envió un formulario)
+            return HttpResponse("La solicitud no existe", status=404)      
         if request.method == 'POST':
-            # Crear un formulario con los datos de la solicitud y los datos enviados en la solicitud POST
-            form = SolicitudMantenimientoForm(request.POST, initial={
-                'folio': solicitud.folio,
-                'tipos_servicio': solicitud.tipo_servicio,
-                'descripcion': solicitud.descripcion,
-            })
-            # Verificar si el formulario es válido
-            if form.is_valid():
-                # Guardar los cambios en la solicitud
-                solicitud.folio = form.cleaned_data['folio']
-                solicitud.tipo_servicio = form.cleaned_data['tipos_servicio']
-                solicitud.descripcion = form.cleaned_data['descripcion']
-                solicitud.save()
-                # Redirigir a alguna página de éxito o cargar la vista de inicio, por ejemplo
-                return redirect('inicio')
+            form = Solcitud_confirmacion(request.POST)
+            
+            solicitud.descripcion = request.POST.get('descripcion')
+            solicitud.tipo_servicio = request.POST.get('tipo_servicio')
+            solicitud.save()
+            return redirect('inicio')
         else:
-            # Si el método de solicitud no es POST, cargar el formulario con los datos de la solicitud
-            form = SolicitudMantenimientoForm(initial={
-                'folio': solicitud.folio,
-                'tipos_servicio': solicitud.tipo_servicio,
+            form= Solcitud_confirmacion(initial={
+                'area_solicitante': solicitud.area_solicitante,
+                'responsable_Area': solicitud.responsable_Area,
+                'fecha': solicitud.fecha.strftime("%d/%m/%Y"),  # Formatear la fecha como dd/mm/aaaa
+                'tipo_servicio': solicitud.tipo_servicio,
                 'descripcion': solicitud.descripcion,
+                'folio': solicitud.folio,
             })
+            
+            context = {
+                'solicitud': solicitud,
+                'id': idSolicitud,
+                'form':form
+            }
+            return render(request, 'dep_mantenimiento/layout/solicitante/formularioEdit.html', context)
+   
+    def cargar_Solicitud(request, solicitud_id):
+        solicitud = Solicitud_Mantenimiento.objects.get(id=solicitud_id)
+        historial = HistorialSolicitud.objects.filter(solicitud=solicitud_id).order_by('-fecha', '-hora').first()
         
-        # Renderizar el formulario
-        return render(request, 'dep_mantenimiento/layout/solicitante/formularioEdit.html', {'form': form})
+        fecha_histo = historial.fecha.strftime("%d-%m-%Y") if historial else None
+        hora_histo = historial.hora.strftime("%H:%M") if historial else None
+
+        context = {
+            'solicitud': solicitud,
+            'id': solicitud_id,
+            'fecha': solicitud.fecha.strftime("%d/%m/%Y"),
+            'hora': solicitud.hora.strftime("%H:%M"),
+            'fecha_histo': fecha_histo,
+            'hora_histo': hora_histo,
+        }
+        
+        return render(request, 'dep_mantenimiento/layout/solicitante/solicitudDetallada.html', context)
+    
+    
         
 ####
 def eliminar_solicitud(request, solicitud_id):
@@ -498,47 +481,39 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
         }
         return render(request, 'dep_mantenimiento/layout/jDep/firma_form.html', context)
         
+ 
     @staticmethod
     def firmarFormularioVoBo(request, idSolicitud):
         try:
             solicitud = Solicitud_Mantenimiento.objects.get(id=idSolicitud)
+            evidencias = imagenesEvidencias.objects.filter(solicitud=idSolicitud)
         except Solicitud_Mantenimiento.DoesNotExist:
             return HttpResponse("La solicitud no existe", status=404)
         
-        
-        
         if request.method == 'POST':
-            form = firmaVoBoForm(request.POST, request.FILES)  # Pasar la instancia de la solicitud existente al formulario
+            form = firmaVoBoForm(request.POST, request.FILES)
             if form.is_valid():
-                 # Guarda la imagen en el campo firma_Jefe_Departamento_img del modelo Solicitud_Mantenimiento
                 id_firma_jefe_departamentoVoBoimg = form.cleaned_data['firma_Jefe_VoBo_img']
-                
-                        
-                # Obtener la instancia del jefe del departamento de Mantenimiento de Equipo
-                
-                solicitud.firma_Jefe_VoBo_img=id_firma_jefe_departamentoVoBoimg
-                solicitud.firma_Jefe_VoBo=True
+                solicitud.firma_Jefe_VoBo_img = id_firma_jefe_departamentoVoBoimg
+                solicitud.firma_Jefe_VoBo = True
                 solicitud.status = 'Realizado'
-                solicitud.save() # Guardar los cambios en la solicitud existente
+                solicitud.save()
                 bitacora(request.user, 'Solicitud_Mantenimiento', 'Post', f'Solicitud: {idSolicitud}', Departamento='dep_mantenimiento')
                 return redirect('inicio')
         else:
-            # Pre-rellenar el formulario con los datos existentes
             form = firmaVoBoForm()
-            empleado = trabajadores.objects.get(id=solicitud.id_Empleado.id)
-            # Obtener el empleado asociado a la solicitud
-            empleado = trabajadores.objects.get(id=solicitud.id_Empleado.id)
-            # Obtener el nombre completo del empleado
+            empleado = solicitud.id_Empleado
             nombre_completo_empleado = empleado.nombre_completo()
+        
         context = {
             'form': form,
             'id': idSolicitud,
-            'solicitud': solicitud,  # Incluir la solicitud en el contexto para acceso en la plantilla
-            'empleado': nombre_completo_empleado
+            'solicitud': solicitud,
+            'empleado': nombre_completo_empleado,
+            'evidencias': evidencias
         }
         return render(request, 'dep_mantenimiento/layout/jDep/firma_form_VoBo.html', context)
-   
-        
+            
         
     @staticmethod
     def editar_Formulario(request, idSolicitud):
@@ -625,6 +600,24 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
         except Solicitud_Mantenimiento.DoesNotExist:
             # Si no se encuentran solicitudes, lanzar una excepción Http404
             raise Http404("Las solicitudes del jefe de departamento no existen")
+        
+    def cargar_Solicitud(request, solicitud_id):
+        solicitud = Solicitud_Mantenimiento.objects.get(id=solicitud_id)
+        historial = HistorialSolicitud.objects.filter(solicitud=solicitud_id).order_by('-fecha', '-hora').first()
+        
+        fecha_histo = historial.fecha.strftime("%d-%m-%Y") if historial else None
+        hora_histo = historial.hora.strftime("%H:%M") if historial else None
+
+        context = {
+            'solicitud': solicitud,
+            'id': solicitud_id,
+            'fecha': solicitud.fecha.strftime("%d/%m/%Y"),
+            'hora': solicitud.hora.strftime("%H:%M"),
+            'fecha_histo': fecha_histo,
+            'hora_histo': hora_histo,
+        }
+        
+        return render(request, 'dep_mantenimiento/layout/jDep/solicitudDetallada.html', context)    
 
         
 
@@ -706,6 +699,25 @@ class vistas_Empleados(View):
         }
         return render(request, 'dep_mantenimiento/layout/empleado/firma_form.html', context)
                     
+    def cargar_Solicitud(request, solicitud_id):
+        solicitud = Solicitud_Mantenimiento.objects.get(id=solicitud_id)
+        historial = HistorialSolicitud.objects.filter(solicitud=solicitud_id).order_by('-fecha', '-hora').first()
+        
+        fecha_histo = historial.fecha.strftime("%d-%m-%Y") if historial else None
+        hora_histo = historial.hora.strftime("%H:%M") if historial else None
+
+        context = {
+            'solicitud': solicitud,
+            'id': solicitud_id,
+            'fecha': solicitud.fecha.strftime("%d/%m/%Y"),
+            'hora': solicitud.hora.strftime("%H:%M"),
+            'fecha_histo': fecha_histo,
+            'hora_histo': hora_histo,
+        }
+        
+        return render(request, 'dep_mantenimiento/layout/empleado/solicitudDetallada.html', context)         
+         
+         
                 
 
     @staticmethod
@@ -931,6 +943,7 @@ class vistas_Subdirectora(View):
     def firmarFormularioVoBo(request, idSolicitud):
         try:
             solicitud = Solicitud_Mantenimiento.objects.get(id=idSolicitud)
+            evidencias = imagenesEvidencias.objects.filter(solicitud=idSolicitud)
         except Solicitud_Mantenimiento.DoesNotExist:
             return HttpResponse("La solicitud no existe", status=404)
         
@@ -963,11 +976,28 @@ class vistas_Subdirectora(View):
             'form': form,
             'id': idSolicitud,
             'solicitud': solicitud,  # Incluir la solicitud en el contexto para acceso en la plantilla
-            'empleado': nombre_completo_empleado
+            'empleado': nombre_completo_empleado,
+            'evidencias': evidencias
         }
         return render(request, 'dep_mantenimiento/layout/subdirectora/firma_form_VoBo.html', context)
 
+    def cargar_Solicitud(request, solicitud_id):
+        solicitud = Solicitud_Mantenimiento.objects.get(id=solicitud_id)
+        historial = HistorialSolicitud.objects.filter(solicitud=solicitud_id).order_by('-fecha', '-hora').first()
+        
+        fecha_histo = historial.fecha.strftime("%d-%m-%Y") if historial else None
+        hora_histo = historial.hora.strftime("%H:%M") if historial else None
 
+        context = {
+            'solicitud': solicitud,
+            'id': solicitud_id,
+            'fecha': solicitud.fecha.strftime("%d/%m/%Y"),
+            'hora': solicitud.hora.strftime("%H:%M"),
+            'fecha_histo': fecha_histo,
+            'hora_histo': hora_histo,
+        }
+        
+        return render(request, 'dep_mantenimiento/layout/subdirectora/solicitudDetallada.html', context)
 
 
 
@@ -1113,7 +1143,104 @@ class vistas_Jefe_Mantenimiento(View):
             return render(request, 'dep_mantenimiento/layout/jMantenimiento/estatus.html',context)
    
    
+    def cargar_Solicitud(request, solicitud_id):
+        solicitud = Solicitud_Mantenimiento.objects.get(id=solicitud_id)
+        historial = HistorialSolicitud.objects.filter(solicitud=solicitud_id).order_by('-fecha', '-hora').first()
+        
+        fecha_histo = historial.fecha.strftime("%d-%m-%Y") if historial else None
+        hora_histo = historial.hora.strftime("%H:%M") if historial else None
+
+        
+        if request.method == 'POST':
+            form = SolicitudAsignar(request.POST)
+            if form.is_valid():
+                id_idEmpleado = form.cleaned_data['empleado']
+                id_materialAsignado = form.cleaned_data['material_Asignado']
+                empleado_asignado = trabajadores.objects.get(id=id_idEmpleado)
+                solicitud.id_Empleado = empleado_asignado
+                solicitud.material_asignado = id_materialAsignado 
+                solicitud.status = 'En_proceso'  # Actualizar el status a "En_proceso"
+                
+                # Verificar si se envió un motivo de rechazo y actualizar el atributo correspondiente
+                
+                
+                solicitud.save()
+                bitacora(request.user, 'Solicitud_Mantenimiento', 'add', f'solicitudId: {solicitud_id}', Departamento='dep_mantenimiento')
+                return redirect('inicio')
+            else:
+                print("El formulario no es válido")
+                print(form.errors)
+                return HttpResponseServerError("Error en el formulario. Por favor, corrija los errores y vuelva a intentarlo.")
+        else:
+            initial_data = {
+                'material_Asignado': solicitud.material_asignado,
+                'empleado': solicitud.id_Empleado.id if solicitud.id_Empleado else None,
+            }
+            form = SolicitudAsignar(initial=initial_data)
+    
+            if solicitud.id_Empleado:
+                form.fields['empleado'].widget.attrs['readonly'] = True
+
+
+
+            context = {
+                'solicitud': solicitud,
+                'id': solicitud_id,
+                'fecha': solicitud.fecha.strftime("%d/%m/%Y"),
+                'hora': solicitud.hora.strftime("%H:%M"),
+                'fecha_histo': fecha_histo,
+                'hora_histo': hora_histo,
+                'form': form
+            }
+        
+        return render(request, 'dep_mantenimiento/layout/jMantenimiento/solicitudDetallada.html', context)
    
+   
+    @staticmethod
+    def rechazarFormulario(request, idSolicitud):
+        try:
+            solicitud = Solicitud_Mantenimiento.objects.get(id=idSolicitud)
+        except Solicitud_Mantenimiento.DoesNotExist:
+            return HttpResponse("La solicitud no existe", status=404)
+        if request.method == 'POST':
+            form = Rechazarform(request.POST)  # Pasar la instancia de la solicitud existente al formulario
+            if form.is_valid():
+                 # Guarda la imagen en el campo firma_Jefe_Departamento_img del modelo Solicitud_Mantenimiento
+                motv_rechazo = form.cleaned_data['motv_rechazo']
+                solicitud.motv_rechazo = motv_rechazo
+                solicitud.status = 'Rechazado'
+                solicitud.save()
+                bitacora(request.user, 'Solicitud_Mantenimiento', 'Post', f'Folio: {solicitud.folio}', Departamento='dep_mantenimiento')
+                return redirect('inicio')
+        else:
+            form = Rechazarform()
+            contexto = {'form': form, 'solicitud': solicitud, 'id': idSolicitud,'fecha':solicitud.fecha.strftime("%d/%m/%Y")}
+        return render(request, 'dep_mantenimiento/layout/jMantenimiento/rechazar.html', contexto)
+    
+    @staticmethod
+    def peticionFormulario(request, idSolicitud):
+        try:
+            solicitud = Solicitud_Mantenimiento.objects.get(id=idSolicitud)
+        except Solicitud_Mantenimiento.DoesNotExist:
+            return HttpResponse("La solicitud no existe", status=404)
+        if request.method == 'POST':
+            form = Peticionform(request.POST)  # Pasar la instancia de la solicitud existente al formulario
+            if form.is_valid():
+                 # Guarda la imagen en el campo firma_Jefe_Departamento_img del modelo Solicitud_Mantenimiento
+                des_Peticion_Mat = form.cleaned_data['des_Peticion_Mat']
+                solicitud.des_Peticion_Mat = des_Peticion_Mat
+                solicitud.status = 'En_espera'
+                idsubdirectora = trabajadores.objects.filter(departamento='Servicios Administrativos', puesto='Subdirector').values('id').first()                        
+                # Obtener la instancia del jefe del departamento de Servicios Administrativos
+                sub = trabajadores.objects.get(id=idsubdirectora['id'])
+                solicitud.id_Subdirectora = sub
+                solicitud.save()
+                bitacora(request.user, 'Solicitud_Mantenimiento', 'Post', f'Folio: {solicitud.folio}', Departamento='dep_mantenimiento')
+                return redirect('inicio')
+        else:
+            form = Peticionform()
+            contexto = {'form': form, 'solicitud': solicitud, 'id': idSolicitud,'fecha':solicitud.fecha.strftime("%d/%m/%Y")}
+        return render(request, 'dep_mantenimiento/layout/jMantenimiento/peticion.html', contexto)
    
     @staticmethod
     def obtener_solicitudes(request, idJefeMantenimiento):
@@ -1191,6 +1318,80 @@ class vistas_Jefe_Mantenimiento(View):
             # Si no se encuentran solicitudes, lanzar una excepción Http404
             raise Http404("Las solicitudes del jefe de mantenimiento no existen")
         
+
+
+
+# Función para obtener el historial de solicitudes para todos los usuarios de una solicitud especifica
+def obtener_historial_solicitudes(request, solicitud_id):
+    try:
+        solicitud = Solicitud_Mantenimiento.objects.get(id=solicitud_id)
+        historial = HistorialSolicitud.objects.filter(solicitud=solicitud_id)
+        
+        # Obtener el nombre completo del trabajador, jefe de departamento y subdirectora si existen
+        nombre_trabajador = None
+        nombre_jefe = None
+        nombre_subdirectora = None
+        nombre_Empleado= None
+        nombre_Jefe_Mantenimiento = None
+        if solicitud.id_Trabajador:
+            nombre_trabajador = solicitud.id_Trabajador.nombre_completo()
+        if solicitud.id_Jefe_Departamento:
+            nombre_jefe = solicitud.id_Jefe_Departamento.nombre_completo()
+        if solicitud.id_Subdirectora:
+            nombre_subdirectora = solicitud.id_Subdirectora.nombre_completo()
+        if solicitud.id_Empleado:
+            nombre_Empleado = solicitud.id_Empleado.nombre_completo()
+            
+        if solicitud.id_Jefe_Mantenimiento:
+            nombre_Jefe_Mantenimiento = solicitud.id_Jefe_Mantenimiento.nombre_completo()         
+        
+        solicitud_dict = {
+            'id': solicitud.id,
+            'id_Trabajador': solicitud.id_Trabajador_id,
+            'nombre_trabajador': nombre_trabajador,
+            'id_Jefe_Departamento': solicitud.id_Jefe_Departamento_id,
+            'nombre_jefe': nombre_jefe,
+            'id_Subdirectora': solicitud.id_Subdirectora_id,
+            'nombre_subdirectora': nombre_subdirectora,
+            'id_Empleado': solicitud.id_Empleado_id,
+            'nombre_Empleado': nombre_Empleado,
+            'id_Jefe_Mantenimiento': solicitud.id_Jefe_Mantenimiento_id,
+            'nombre_Jefe_Mantenimiento': nombre_Jefe_Mantenimiento,
+            'status': solicitud.status,
+            'firma_Jefe_Departamento': solicitud.firma_Jefe_Departamento,
+            'firma_Empleado': solicitud.firma_Empleado,
+            'firma_Jefe_VoBo': solicitud.firma_Jefe_VoBo,
+            'resolvio': solicitud.resolvio
+        }
+        
+        historial_list = []
+        for item in historial:
+            historial_dict = {
+                'nuevo_status': item.nuevo_status,
+                'fecha': item.fecha.strftime('%d/%m/%Y'),
+                'hora': item.hora.strftime('%H:%M'),
+                'firma_Jefe_Departamento': item.firma_Jefe_Departamento,
+                'firma_Empleado': item.firma_Empleado,
+                'firma_Jefe_VoBo': item.firma_Jefe_VoBo,
+                'resolvio': item.resolvio
+            }
+            historial_list.append(historial_dict)
+
+        return JsonResponse({'historial': historial_list, 'solicitud': solicitud_dict})
+
+    except Solicitud_Mantenimiento.DoesNotExist:
+        return render(request, '404.html')
+
+
+
+
+
+
+
+
+
+
+
 
 
     

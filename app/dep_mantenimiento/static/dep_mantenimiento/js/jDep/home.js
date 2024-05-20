@@ -200,7 +200,11 @@ const listSolicitudes = async () => {
         alert(e);
     }
 };
+function openDetalle(solicitudId) {
+   
+    window.location.href = `/dep_mantenimiento/Jefe_Departamento/Ver_Solicitud/${solicitudId}/` ;
 
+}
 
 
 // Función para mostrar la alerta

@@ -1037,7 +1037,8 @@ class vistas_Subdirectora(View):
                     'firmaEmpleados': solicitud.firma_Empleado,
                     'firmaVobo':solicitud.firma_Jefe_VoBo,
                     'resolvio':solicitud.resolvio,
-                    'peticcion':solicitud.des_Peticion_Mat
+                    'peticcion':solicitud.des_Peticion_Mat,
+                    'id_subdirectora':idSubdirectora
                     
                 }
                  # Verificar si la solicitud tiene un trabajador asociado

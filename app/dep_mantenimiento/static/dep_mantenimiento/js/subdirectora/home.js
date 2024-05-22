@@ -76,14 +76,20 @@ const listSolicitudes = async () => {
               let actionElement;
               if ( solicitudes.resolvio === false && perteneceInfo && departamentoInfo && solicitudes.status === 'En_espera' ) {
                 actionElement = `
-                <button class="btn btn-sm-2" style="background-color: #fca311 !important;"    onclick="peticionSolicitud(${solicitudes.id})"    >   
+
+                <a class="btn btn-sm-2" style="background-color: #fca311 !important;"  href="/dep_mantenimiento/Formulario_Peticion/Subdirectora/Solicitud/${solicitudes.id}" role="button">
+
+                  
                 <i class="fa fa-exclamation-triangle" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
-                </button>`;
+                </a>`;
                 
                 
               }
               else if (solicitudes.resolvio === true && perteneceInfo && departamentoInfo && solicitudes.status === 'Enviado' ) {
                 actionElement = `
+
+                
+
                 <button class="btn btn-sm-2" style="background-color: #6a994e !important;">   
                 <i class="fa fa-check-square" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
                 </button>`;
@@ -95,16 +101,48 @@ const listSolicitudes = async () => {
                 <i class="fa fa-times-circle" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
                 </button>`;
               }
-              
+
+              else if ( solicitudes.resolvio === false && solicitudes.id_subdirectora && !perteneceInfo && !departamentoInfo && solicitudes.status === 'En_espera' ) {
+                actionElement = `
+
+                <a class="btn btn-sm-2" style="background-color: #fca311 !important;"  href="/dep_mantenimiento/Formulario_Peticion/Subdirectora/Solicitud/${solicitudes.id}" role="button">
+
+                  
+                <i class="fa fa-exclamation-triangle" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
+                </a>`;
+            
+             }
+
+             else if ( solicitudes.resolvio === true && solicitudes.id_subdirectora && !perteneceInfo && !departamentoInfo && solicitudes.status === 'En_espera' ) {
+                actionElement = `
+
+                <button class="btn btn-sm-2" style="background-color: #6a994e !important;">   
+                <i class="fa fa-check-square" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
+                </button>`;
+            
+            }
+
+
+            else if (solicitudes.resolvio === false && solicitudes.id_subdirectora && !perteneceInfo && !departamentoInfo && solicitudes.status === 'Rechazado' ) {
+                actionElement = `
+                <button class="btn btn-sm-2" style="background-color: rgba(255, 46, 0, 0.83) !important;">   
+                <i class="fa fa-times-circle" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
+                </button>`;
+              }
+
+
+
               
               else {
                 actionElement = !hideButtons ? `
-                    <a class="btn btn-sm-2" style="background-color: #1a759f !important;" onclick="editSolicitud(${solicitudes.id})" role="button">
+                    <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="/dep_mantenimiento/Formulario/Subdirectora/Solicitud/${solicitudes.id}" role="button">
                         <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
                     </a>
                     <a class="btn btn-sm-2" style="background-color: #d90429 !important;" href="/dep_mantenimiento/eliminar-solicitud/${solicitudes.id}" role="button">
                     <i class="fa fa-trash" aria-hidden="true" style=" color: #ffffff !important;" ></i>
                     </a>
+                    
+                    
                 ` : `
                     <button  class="btn  btn-sm-2"  style="background-color: #6c757d !important;" >
                         <i class="fa fa-lock" style=" color: #ffffff !important;" aria-hidden="true"></i>

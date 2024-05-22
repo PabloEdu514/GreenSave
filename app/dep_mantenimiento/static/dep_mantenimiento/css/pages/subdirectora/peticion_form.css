@@ -99,100 +99,72 @@
    
 }
 
-#fecha{
-    font-size: 16px;
-    color: #0b0b0b !important;
-    text-align: center !important;
-    width: 50px !important;
-}
-#folio{
-    font-size: 16px;
-    color: #0b0b0b !important;
-    text-align: center !important;
-    width: 50px !important;
-}
+/* Campos ya llenados del formulario */
+
+
+
 
  /* Estilos para las etiquetas */
- .form-label {
-    font-size: 14px;
+ .container-custom {
+    max-width: 100%;
+    margin-left: 0;
+}
+
+
+.row {
+    display: flex;
+    align-items: center;
+}
+.col-form-label {
+    margin-right: 10px;
+    font-size: 16px;
     color: #002E6D;
+    font-weight: bold;
+}
+.form-label {
+    font-size: 16px;
+    color: #000000;
+    margin-left: 10px;
+    margin-top: 10px;
+
+}
+.form-label.ms-3 {
+    display: block;
+    background-color: #F6F6F6;
+    border-radius: 5px;
+    height: 30px;  /* Altura del contenedor */
+    width: 300px;   /* Ancho del contenedor */
+    padding-left: 5px; /* Padding para que el contenido no esté pegado al borde */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra añadida */
 }
 
-
-#Area,#RespArea,#Tipo{
-    width: 200px;
-}
-
-/* Estilos para los campos de entrada */
-/* Estilos para el campo de descripción */
-#id_descripcion {
-    width: 100%;
-    height: 100px;
-    font-size: 14px;
-    color: #002E6D;
-}
-
-/* Estilos para el campo de tipo de servicio */
-#id_tipo_servicio {
-   width: 200px;
-   color: #002E6D;
-}
-
-
-
-
-/* Estilos para el campo de responsable de área */
-#id_responsable_Area {
-   width: 25%; 
-   font-size: 14px;
-    color: #002E6D;
-    background-color: #FFFFFF;
-    cursor: default; /* Desactiva la selección del cursor */
-    border: none; /* Quita los bordes */
-    outline: none; /* Quita el contorno de enfoque */
+.form-label.lg-3 {
+    display: block;
+    background-color: #F6F6F6;
+    border-radius: 5px;
+    height: 100px;  /* Altura del contenedor */
+    width: 100%;   /* Ancho del contenedor */
+    line-height: 20px; /* Centrado vertical del contenido */
+    padding-left: 15px; /* Padding para que el contenido no esté pegado al borde */
+    padding-right: 15px; /* Padding para que el contenido no esté pegado al borde */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra añadida */
 }
 
 
 
 
 
-/* Estilos para el campo de área solicitante */
-#id_area_solicitante {
-    width: 25%; 
-    font-size: 14px;
-    color: #002E6D;
-    background-color: #FFFFFF;
-    cursor: default; /* Desactiva la selección del cursor */
-    border: none; /* Quita los bordes */
-    outline: none; /* Quita el contorno de enfoque */
+/* Estilos para los botones */
+
+
+#enviar,#Rechazo{
    
-}
-#id_fecha{
-    
-    font-size: 14px;
-    width: 40%;
-    color: #002E6D;
-    background-color: #FFFFFF;
-    cursor: default; /* Desactiva la selección del cursor */
-   
-    outline: none; /* Quita el contorno de enfoque */
-}
-#id_folio{
-    width: 50%;
-    font-size: 14px;
-    color: #002E6D;
-    background-color: #FFFFFF;
-}
-
-#enviar{
     background-color: #012557;
     color: #ffffff;
     border-radius :50px;
     width: 150px;  
-  
 }
-
-#enviar:hover{
+#enviar:hoverm,#Rechazo:hover{
     background-color: #00002D;
     color: #FFFFFF;
     border-radius :50px;
@@ -200,15 +172,15 @@
 
 }
 
-#Rechazo{
+#Bcancelar{
    
-    background-color: rgba(255, 46, 0, 0.83);
+    background-color: #012557;
     color: #ffffff;
     border-radius :50px;
     width: 150px;  
 }
 
-#Rechazo:hover{
+#Bcancelar:hover{
     background-color: #00002D;
     
     color: #FFFFFF;
@@ -231,7 +203,6 @@
     border-radius :50px;
     width: 230px;  
 }
-
 /* Estilos para el campo de firma */
 #CampoFirma{
     background-color: #1B396B;
@@ -249,6 +220,27 @@
 
 }
 
+#CampoImagen{
+    background-color: #1B396B;
+    border-radius :10px;
+    width: 500px;
+   
+   color: #FFFFFF;
+    display: flex; /* Utilizamos flexbox para alinear el contenido */
+    justify-content: center; /* Centramos horizontalmente */
+    align-items: center; /* Centramos verticalmente */
+    flex-direction: column; /* Alineamos los elementos en columna */
+}
+#CampoImagen .form-label{
+    color: #FFFFFF;
+    font-weight: bold;
+
+}
+
+
+
+
+
 #pizarraFirma {
     
     display: flex; /* Utilizamos flexbox para alinear el contenido */
@@ -262,4 +254,3 @@
     background-color: #FFFFFF;
     border-radius :10px;
     border:1px solid black;}
-#pizarra {border:1px solid black;}

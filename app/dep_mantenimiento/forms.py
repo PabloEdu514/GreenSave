@@ -8,7 +8,7 @@ from django.forms.widgets import TextInput, FileInput, ClearableFileInput, DateI
 class SolicitudMantenimientoForm(forms.Form):
    
     fecha = forms.DateField(label='Fecha', widget=forms.DateInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
-    folio = forms.CharField(label='Folio', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el folio'}))
+    
     area_solicitante = forms.CharField(label='Área Solicitante', widget=forms.TextInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
     responsable_Area = forms.CharField(label='Responsable del Área', widget=forms.TextInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
     tipo_servicio = forms.ChoiceField(label='Tipo de Servicio', choices=[
@@ -26,7 +26,7 @@ class SolicitudMantenimientoForm(forms.Form):
     
 class Solcitud_confirmacion(forms.Form):
     fecha = forms.DateField(label='Fecha', widget=forms.DateInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
-    folio = forms.CharField(label='Folio', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el folio'}))
+    
     area_solicitante = forms.CharField(label='Área Solicitante', widget=forms.TextInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
     responsable_Area = forms.CharField(label='Responsable del Área', widget=forms.TextInput(attrs={'class': 'form-control-plaintext', ' readonly': True}))
     tipo_servicio = forms.ChoiceField(label='Tipo de Servicio', choices=[
@@ -80,7 +80,8 @@ class Evidencias(forms.ModelForm):
 class SolicitudAsignar(forms.Form):
     material_Asignado = forms.CharField(label='Material utilizado', widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese la descripción', 'rows': 2}))
     empleado = forms.ChoiceField(choices=[], widget=forms.Select(attrs={'class': 'form-select'}))
-
+ 
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Obtener todos los empleados que cumplen con los criterios especificados

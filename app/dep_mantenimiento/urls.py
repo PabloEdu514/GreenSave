@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.conf.urls import handler404,handler403
-from .views import Empleado_required, JefeDep_required, JefeMan_required, Solicitante_required, Sub_required, vistas_solicitantes_cargar_inicio,vistas_Jefe_Departamento_cargar_inicio,vistas_Empleados,vistas_Subdirectora,vistas_Jefe_Mantenimiento
+from .views import Empleado_required, JefeDep_required, JefeMan_required, Solicitante_required, Sub_required, generar_pdf, vistas_solicitantes_cargar_inicio,vistas_Jefe_Departamento_cargar_inicio,vistas_Empleados,vistas_Subdirectora,vistas_Jefe_Mantenimiento
 
 urlpatterns = [
     path('logout/', views.cerrar_sesion, name='cerrar_sesion'),
@@ -54,7 +54,9 @@ urlpatterns = [
      
    #Detalle solicitud
     path('CargarSolicitudDetallada/<int:solicitud_id>/', views.obtener_historial_solicitudes, name='cargar_historial_solicitudes'),
-   
+   #generar PDF 
+
+   path('generar-pdf/<int:solicitud_id>/', generar_pdf, name='generar_pdf'),
    
 ]
 

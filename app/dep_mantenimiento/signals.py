@@ -39,3 +39,4 @@ def asignar_grupo(sender, instance, created, **kwargs):
         
         grupo, _ = CustomGroup.objects.get_or_create(name=grupo_name)
         instance.grupos.add(grupo)
+        instance.save()

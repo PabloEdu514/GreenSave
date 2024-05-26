@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Solicitud de Mantenimiento del servicio {{solicitud.tipo_servicio}} del  {{fecha}}</title>
+<style>
+@page {
+    margin: 0;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    margin: 0;
+    padding: 0;
+}
+input[type="text"] {
+    border: none;
+    outline: none;
+}
+.page {
+    padding: 2cm;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+.red-bar {
+    background: red; height: 2px; width: 100%;
+}
+.header-section {
+    text-align: center;
+}
+.form-section, .service-section {
+    width: 100%;
+}
+.input-label {
+    margin: 10px 0 5px;
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+.service-section {
+    margin-top: 20px;
+}
+.service-section h3 {
+    background-color: #c8c8c8;
+    color: #fff;
+    padding: 5px;
+    margin: 0;
+    text-align: center;
+}
+.service-table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+.service-table td {
+    padding: 5px;
+    border: 1px solid #000;
+}
+.service-table label {
+    margin-right: 15px;
+    display: inline-block;
+    margin-bottom: -1px;
+}
+.input-group { 
+    display: flex; 
+    justify-content: space-between;  
+    margin-bottom: 10px; 
+    padding-top: 3%;
+}
+.large-input {
+    border: 1px solid #000;
+    margin: 0;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+.signature-section {
+    width: 100%;
+    margin-top: 10px;
+}
+.signature-section table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    margin-top: 5px;
+}
+.signature-section th, .signature-section td {
+    border: 2px solid #000;
+    padding: 10px;
+}
+.signature-section th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+.signature-section td {
+    height: 50px;
+    vertical-align: bottom;
+    text-align: center;
+}
+.signature-section .signature {
+}
+th {
+    border: 1px solid black;
+    text-align: center;
+    padding: 8px;
+    background-color: #b2afaf;
+}
+
+@media (max-width: 768px) {
+    .page {
+        padding: 10px;
+        margin: 10px;
+        min-height: auto;
+    }
+    .input-group > div, .input-group {
+        flex-direction: column;
+        flex-basis: 100%;
+    }
+    .input-group label, .service-table th, .service-table td {
+        font-size: smaller;
+    }
+    .large-input {
+        height: 100px;
+    }
+    .signature-section table, .signature-section th, .signature-section td {
+        font-size: smaller;
+    }
+    .signature img {
+        max-width: 100px;
+        height: auto;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="page">
+        <div class="red-bar"></div>
+        <div class="header-section">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/9/9d/TecNM_logo.png" alt="Logo TECNM" style="vertical-align: middle; height: 40px; width: 70px">
+            <h2 style="display: inline-block;">INSTITUTO TECNOLÓGICO DE MORELIA</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Itmorelia.png/640px-Itmorelia.png" alt="Logo ITM" style="vertical-align: middle; height: 40px; width: 40px">
+            <h3 style="display: inline-block;">Solicitud de mantenimiento</h3>
+        </div>
+        <div class="red-bar"></div>
+        <div class="input-group">
+            <div class= "fecha" style="width:150px; font-size:14px;">
+                <label>FECHA: {{fecha}}</label>
+            </div>
+            <div class= "folio" style=" font-size:14px;">
+                <label>FOLIO: {{solicitud.folio}}</label>
+            </div>
+        </div>
+        <div>Área Solicitante: {{solicitud.area_solicitante}}</div>
+        <div>Responsable del Área: {{solicitud.responsable_Area}}</div>
+        <div class="form-section">
+            <div class="service-section">
+                <h3>TIPO DE SERVICIO </h3>
+                <table class="service-table">
+                    <tr>
+                        <th>Recursos Materiales y Servicios</th>
+                        <th>Mantenimiento de Equipo</th>
+                        <th>Centro de Cómputo</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label style="text-align: center;"><input type="checkbox" name="servicio"> Limpieza</label>
+                            <label style="text-align: center;"><input type="checkbox" name="servicio"> Evento</label>
+                            <label style="text-align: center;"><input type="checkbox" name="servicio"> Mobiliario</label>
+                            <label style="text-align: center;"><input type="checkbox" name="servicio"> Otro</label>
+                        </td>
+                        <td>
+                            <label style="text-align: center;"><input type="checkbox" name="servicio" {% if "Electrica" in solicitud.tipo_servicio %}checked{% endif %}>Electrica</label>
+                            <label style="text-align: center;"><input type="checkbox" name="servicio" {% if "Herrería" in solicitud.tipo_servicio %}checked{% endif %}>Herrería</label>
+                            <label style="text-align: center;"><input type="checkbox" name="servicio" {% if "Plomería" in solicitud.tipo_servicio %}checked{% endif %}>Plomería</label>
+                            <label style="text-align: center;"><input type="checkbox" name="servicio" {% if "Pintura" in solicitud.tipo_servicio %}checked{% endif %}>Pintura</label>
+                            <label style="text-align: center;"><input type="checkbox" name="servicio" {% if "Cañones" in solicitud.tipo_servicio %}checked{% endif %}>Cañones</label>
+                            <label style="text-align: center;"><input type="checkbox" name="servicio" {% if "Pintarrón" in solicitud.tipo_servicio %}checked{% endif %}>Pintarrón</label>
+                            <label style="text-align: center;"><input type="checkbox" name="servicio" {% if "Cerrajería" in solicitud.tipo_servicio %}checked{% endif %}>Cerrajería</label>
+                            <label style="text-align: center;"><input type="checkbox" name="servicio" {% if "Otro" in solicitud.tipo_servicio %}checked{% endif %}>Otro</label>
+                        </td>
+                        <td>
+                            <label style="text-align: center;"><input type="checkbox" name="servicio"> Hardware</label>
+                            <label style="text-align: center;"><input type="checkbox" name="servicio"> Software</label>
+                            <label style="text-align: center;"><input type="checkbox" name="servicio"> Telefonía</label>
+                            <label style="text-align: center;"><input type="checkbox" name="servicio"> Internet</label>
+                            <label style="text-align: center;"><input type="checkbox" name="servicio"> Redes</label>
+                            <label style="text-align: center;"><input type="checkbox" name="servicio"> Otro</label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="th">
+                <label class="input-label">DESCRIPCIÓN DEL SERVICIO QUE SOLICITA O FALLA A REPARAR</label>
+                <textarea name="descripcion_servicio" class="large-input">{{solicitud.descripcion}}</textarea>
+                <label class="input-label">TRABAJO O SERVICIO REALIZADO</label>
+                <textarea name="trabajo_realizado" class="large-input">{{solicitud.des_Serv_Realizado}}</textarea>
+                <label class="input-label">MATERIAL UTILIZADO</label>
+                <textarea name="material_utilizado" class="large-input">{{solicitud.material_utilizado}}</textarea>
+            </div>
+            <div class="signature-section">
+                <table>
+                    <tr>
+                        <th>SOLICITA</th>
+                        <th>ATENDIÓ</th>
+                        <th>Vo.Bo.</th>
+                    </tr>
+                    <tr>
+                        <td class="signature">
+                            {% if solicitud.firma_Jefe_Departamento_img %}
+                                <img src="{{ solicitud.firma_Jefe_Departamento_img.url }}" alt="Firma">
+                                <br>
+                                {{solicitud.responsable_Area}}
+                            {% else %}
+                                <span>Sin firma</span>
+                            {% endif %}
+                        </td>
+                        <td class="signature">
+                            {% if solicitud.firma_Empleado_img %}
+                                <img src="{{ solicitud.firma_Empleado_img.url }}" alt="Firma">
+                                <br>
+                                {{empleado}}
+                            {% else %}
+                                <span>Sin firma</span>
+                            {% endif %}
+                        </td>
+                        <td class="signature">
+                            {% if solicitud.firma_Jefe_VoBo_img %}
+                                <img src="{{ solicitud.firma_Jefe_VoBo_img.url }}" alt="Firma">
+                                <br>
+                                {{solicitud.responsable_Area}}
+                            {% else %}
+                                <span>Sin firma</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

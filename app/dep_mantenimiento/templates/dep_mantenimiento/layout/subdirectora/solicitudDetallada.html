@@ -74,19 +74,19 @@
                                  <!-- Lógica para mostrar la foto de perfil o una por defecto -->
                                  {% if solicitud.id_Trabajador %}
                                      {% if solicitud.id_Trabajador.foto_Perfil %}
-                                         <img src="{{ solicitud.id_Trabajador.foto_Perfil.url }}" alt="Foto de perfil" class="img-fluid">
+                                         <img src="{{ solicitud.id_Trabajador.foto_Perfil.url }}" alt="Foto de perfil" class="img-fluid img-profile">
                                      {% else %}
                                          <i class="fa fa-user-circle" style="font-size: 50px; color: #1B396B;" aria-hidden="true"></i>
                                      {% endif %}
                                  {% elif solicitud.id_Jefe_Departamento %}
                                      {% if solicitud.id_Jefe_Departamento.foto_Perfil %}
-                                         <img src="{{ solicitud.id_Jefe_Departamento.foto_Perfil.url }}" alt="Foto de perfil" class="img-fluid">
+                                         <img src="{{ solicitud.id_Jefe_Departamento.foto_Perfil.url }}" alt="Foto de perfil" class="img-fluid img-profile">
                                      {% else %}
                                          <i class="fa fa-user-circle" style="font-size: 50px; color: #1B396B;" aria-hidden="true"></i>
                                      {% endif %}
                                  {% elif solicitud.id_Subdirectora %}
                                      {% if solicitud.id_Subdirectora.foto_Perfil %}
-                                         <img src="{{ solicitud.id_Subdirectora.foto_Perfil.url }}" alt="Foto de perfil" class="img-fluid">
+                                         <img src="{{ solicitud.id_Subdirectora.foto_Perfil.url }}" alt="Foto de perfil" class="img-fluid img-profile">
                                      {% else %}
                                          <i class="fa fa-user-circle" style="font-size: 50px; color: #1B396B;" aria-hidden="true"></i>
                                      {% endif %}
@@ -156,13 +156,11 @@
 
 
 
-               <div>
-
-                <!--Aqui va la visualizacion del pdf de la solicitud-->
-
-
-               </div>
-
+              
+               <!-- Agrega un contenedor para el visor de PDF -->
+               <div id="pdf-viewer-container" class="container-fluid text-center">
+                <canvas id="pdf-viewer"></canvas>
+                </div>
 
 
 
@@ -172,9 +170,31 @@
 
 
 
-            <div class="d-flex justify-content-center align-items-center " id="historial-container">
-                <!-- Aquí se mostrará el historial de solicitudes -->
-            </div>
+            
+               <hr class="custom-line">
+
+
+
+
+               {% if solicitud.Mat_Rechazo %}
+               <label class="form-label lg-3">El motivo del rechazo: </label>
+               <br>
+               <label class="form-label md-4">{{ solicitud.Mat_Rechazo }}</label>
+               <br>
+                {% elif solicitud.motv_rechazo %}
+                    <label class="form-label lg-3">El motivo del rechazo: </label>
+                    <br>
+                    <label class="form-label md-4">{{ solicitud.motv_rechazo }}</label>
+                    
+                {% endif %}
+
+
+               <div class="col-lg-8 offset-lg-4">
+                   <div class="d-block   justify-content-center align-items-center " id="historial-container">
+                       <!-- Aquí se mostrará el historial de solicitudes -->
+                   </div>
+                 </div>
+           
             
          
             <br>
@@ -188,7 +208,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-auto">
-                <button class="btn fs-6" id="descargar">Descargar Solicitud</button>
+                <button class="btn fs-6" onclick="window.location.href='{% url 'generar_pdf' solicitud_id=solicitud.id %}'" id="descargar">Descargar Solicitud</button>
             </div>
         </div>
     </div>
@@ -245,8 +265,40 @@
 
          <script id="solicitud_id" data-solicitud-id="{{ id }}"></script>
          <script src="{% static "dep_mantenimiento/js/Detalles.js" %}" ></script>
+         
          <script src="{% static "dep_mantenimiento/js/subdirectora/soldetalles.js" %}" ></script>
-      </body>
+           <!-- Incluye la biblioteca PDF.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+         <script>
+            // URL del PDF generado
+            var pdfUrl = "{% url 'generar_pdf' solicitud_id=solicitud.id %}";
+        
+            // Cargar el PDF usando PDF.js
+            var loadingTask = pdfjsLib.getDocument(pdfUrl);
+            loadingTask.promise.then(function(pdf) {
+                // Obtener la primera página del PDF
+                pdf.getPage(1).then(function(page) {
+                    // Escalar el contenido del PDF
+                    var scale = 1.5;
+                    var viewport = page.getViewport({ scale: scale });
+        
+                    // Obtener el lienzo del visor de PDF
+                    var canvas = document.getElementById('pdf-viewer');
+                    var context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+        
+                    // Renderizar la página en el lienzo
+                    var renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    page.render(renderContext);
+                });
+            });
+        </script>
+      
+        </body>
    </html>
     
    

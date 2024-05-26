@@ -12,6 +12,15 @@ from datetime import datetime
 from django.db.models import Q
 from django.utils import timezone
 from django.db import transaction
+
+
+
+
+from django.http import HttpResponse
+from django.template.loader import get_template
+from django.template import Context
+from weasyprint import HTML
+
 from .models import HistorialSolicitud, Solicitud_Mantenimiento, imagenesEvidencias,trabajadores
 from django.shortcuts import redirect
 
@@ -19,6 +28,8 @@ from .forms import Evidencias, Peticionform, Rechazarform, Solcitud_confirmacion
 from django.db import transaction,connection
 from dep.views import bitacora
 from django.core.exceptions import PermissionDenied
+from django.template.loader import render_to_string
+
 
 
 def grupo_trabajador_requerido(user):
@@ -207,7 +218,7 @@ class vistas_solicitantes_cargar_inicio(View):
             form = SolicitudMantenimientoForm(request.POST)
             if form.is_valid():
                 id_fecha = datetime.now().date()
-                id_folio = form.cleaned_data['folio']
+               
                 id_tipos_servicio = form.cleaned_data['tipo_servicio']
                 id_descripcion = form.cleaned_data['descripcion']
                 hora_actual = datetime.now().time()
@@ -228,7 +239,7 @@ class vistas_solicitantes_cargar_inicio(View):
                 # Crea una instancia del modelo Solicitud y asigna los valores
                 datos_nuevos = Solicitud_Mantenimiento(
                     fecha=id_fecha,
-                    folio=id_folio,
+                   
                     area_solicitante=departamento,
                     responsable_Area=nombre_jefe_departamento,  # Aquí asignamos el jefe del departamento como responsable del área
                     tipo_servicio=id_tipos_servicio,
@@ -238,7 +249,7 @@ class vistas_solicitantes_cargar_inicio(View):
                     id_Jefe_Departamento=jefe_departamento,
                     status='Enviado',
                 )
-                bitacora(request.user, 'Solicitud_Mantenimiento', 'add', f'Folio: {id_folio}',Departamento='dep_mantenimiento')
+               
 
                 # Guarda los datos en la base de datos
                 datos_nuevos.save()
@@ -376,7 +387,7 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
                 # Guardar los datos del formulario
                 id_fecha = datetime.now().date()
                 id_hora= datetime.now().time()
-                id_folio = form.cleaned_data['folio']
+               
                 id_tipos_servicio = form.cleaned_data['tipo_servicio']
                 id_descripcion = form.cleaned_data['descripcion']
                 # Obtener la instancia del trabajador correspondiente al ID
@@ -394,7 +405,7 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
                         
                 datos_nuevos = Solicitud_Mantenimiento(
                     fecha=id_fecha,
-                    folio=id_folio,
+                   
                     area_solicitante=id_departamento,
                     responsable_Area=id_nombre,  # Aquí asignamos el jefe del departamento como responsable del área
                     tipo_servicio=id_tipos_servicio,
@@ -406,8 +417,9 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
                     id_Jefe_Mantenimiento=jefe_departamento_instance,
                     firma_Jefe_Departamento=True
                 )
-                bitacora(request.user, 'Solicitud_Mantenimiento', 'add', f'Folio: {id_folio}', Departamento='dep_mantenimiento')
+               
                 datos_nuevos.save()
+                 
                 return redirect('inicio_jefe_departamento', id=id_JefeDepartamento)
         else:
             # La solicitud no es un POST, renderiza el formulario vacío
@@ -813,13 +825,14 @@ class vistas_Subdirectora(View):
        
     @staticmethod
     def cargar_Formulario(request, idSubdirectora):
+         
         if request.method == 'POST':
             form = Solcitud_confirmacion(request.POST, request.FILES)
             if form.is_valid():
                 # Guardar los datos del formulario
                 id_fecha = datetime.now().date()
                 id_hora= datetime.now().time()
-                id_folio = form.cleaned_data['folio']
+               
                 id_tipos_servicio = form.cleaned_data['tipo_servicio']
                 id_descripcion = form.cleaned_data['descripcion']
                 # Obtener la instancia del trabajador correspondiente al ID
@@ -836,7 +849,7 @@ class vistas_Subdirectora(View):
                         
                 datos_nuevos = Solicitud_Mantenimiento(
                     fecha=id_fecha,
-                    folio=id_folio,
+                   
                     area_solicitante=id_departamento,
                     responsable_Area=id_nombre,  # Aquí asignamos el jefe del departamento como responsable del área
                     tipo_servicio=id_tipos_servicio,
@@ -848,7 +861,7 @@ class vistas_Subdirectora(View):
                     id_Jefe_Mantenimiento=jefe_departamento_instance,
                     firma_Jefe_Departamento=True
                 )
-                bitacora(request.user, 'Solicitud_Mantenimiento', 'add', f'Folio: {id_folio}', Departamento='dep_mantenimiento')
+                
                 datos_nuevos.save()
                 return redirect('inicio_subdirector_servicios', id=idSubdirectora)
         else:
@@ -1385,12 +1398,57 @@ def obtener_historial_solicitudes(request, solicitud_id):
 
 
 
+#Generar el PDF
 
 
 
+def generar_pdf(request, solicitud_id):
+    try:
+        # Obtener el template HTML
+        template = get_template('dep_mantenimiento/layout/formato_solicitud.html')
+        
+        # Obtener la solicitud
+        solicitud = Solicitud_Mantenimiento.objects.get(id=solicitud_id)
+        
+        # Verificar si hay un empleado asociado
+        if solicitud.id_Empleado_id:
+            empleado = trabajadores.objects.get(id=solicitud.id_Empleado_id)
+            nombre_completo = empleado.nombre_completo()
+        else:
+            nombre_completo = "No hay empleado asociado"
+        
+        # Contexto de datos
+        context = {
+            'solicitud': solicitud,
+            'fecha': solicitud.fecha.strftime('%d/%m/%Y'),
+            'empleado': nombre_completo,
+        }
+        
+        # Renderizar el template con el contexto
+        html = template.render(context)
+        
+        # Crear el PDF con WeasyPrint
+        pdf = HTML(string=html).write_pdf()
+        
+        # Devolver el PDF como respuesta
+                # Obtener el nombre del tipo de servicio
+        tipo_servicio = solicitud.tipo_servicio
 
+        # Formatear la fecha como "dd/mm/yyyy"
+        fecha_formato = solicitud.fecha.strftime('%d/%m/%Y')
 
+        # Construir el nombre del archivo PDF
+        nombre_archivo = f"Solicitud de Mantenimiento del Servicio {tipo_servicio} de {fecha_formato}.pdf"
 
+        # Devolver el PDF como respuesta
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{nombre_archivo}"'
+        return response
+            
+    except Exception as e:
+        # Manejo de excepciones y registro de errores
+        print(f"Error al generar el PDF: {e}")
+        return HttpResponse("Error al generar el PDF", status=500)
 
 
 

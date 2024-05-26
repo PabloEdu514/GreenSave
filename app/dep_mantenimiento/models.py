@@ -58,7 +58,7 @@ class trabajadores(models.Model):
     
 class Solicitud_Mantenimiento(models.Model):
     id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    folio= models.IntegerField(null=False,blank=True)
+    folio= models.CharField(default="Sin Sello",max_length=250,null=False,blank=True)
     area_solicitante= models.CharField(max_length=150,null=False,blank=True)
     responsable_Area= models.CharField(max_length=300,null=False,blank=True)
     servicos={
@@ -241,7 +241,7 @@ def crear_registro_historial(sender, instance, created, **kwargs):
             nuevo_historial.save()
 
         # Registrar en el historial cuando el jefe de mantenimiento manda una petición a la subdirectora para que la resuelva    
-        elif instance.id_Jefe_Departamento and not instance.resolvio and instance.id_Subdirectora and instance.id_Jefe_Mantenimiento and instance.status == 'En_espera':
+        elif  instance.id_Subdirectora and instance.des_Peticion_Mat and instance.status == 'En_espera':
             nuevo_historial = HistorialSolicitud.objects.create(
                 solicitud=instance,
                 nuevo_status='En espera de solucion',
@@ -295,10 +295,36 @@ def crear_registro_historial(sender, instance, created, **kwargs):
             nuevo_historial.save()      
               
                                
+@receiver(post_save, sender=Solicitud_Mantenimiento)
+def create_folio(sender, instance, **kwargs):
+    # Verificar si las tres firmas están presentes
+    if instance.firma_Empleado and instance.firma_Jefe_Departamento and instance.firma_Jefe_VoBo:
+        # Si ya tiene un folio asignado, no volver a generarlo
+        if instance.folio == "Sin Sello":
+            # Obtener la fecha actual en el formato deseado
+            fecha_actual = timezone.localtime(timezone.now()).strftime("%d/%m/%Y")
+            hora_actual=timezone.localtime(timezone.now()).strftime("%H:%M")
+            # Obtener el departamento del trabajador
+            departamento = instance.area_solicitante
+           
 
-    
-    
-     
+            # Contar las solicitudes del mismo departamento en el mismo año
+            contador = Solicitud_Mantenimiento.objects.filter(
+                area_solicitante=departamento,
+                fecha__year=timezone.now().year,
+                ocultar=False,  # Excluir solicitudes ocultas
+                firma_Empleado=True,
+                firma_Jefe_Departamento=True,
+                firma_Jefe_VoBo=True
+            ).count() + 1
+
+            # Generar el folio
+            Foliosol = f"Dep.{departamento}-{fecha_actual}-{hora_actual}hrs-Num.{contador}"
+
+            # Actualizar la solicitud con el folio generado
+            instance.folio = Foliosol
+            instance.save()
+   
          
 class CustomGroup(models.Model):
     name = models.CharField(max_length=150, unique=True)
@@ -324,7 +350,8 @@ def asignar_grupo(sender, instance, created, **kwargs):
                 grupo.permisos = ['view_Solicitud_jefeDep', 'change_Solicitud_jefeDep', 'add_Solicitud_jefeDep', 'delete_Solicitud_jefeDep']
                 # Agrega el grupo al trabajador
                 instance.grupos.add(grupo)
-                
+             
+              
             else:
                 # Asigna permisos para el jefe de Mantenimiento de Equipo
                 grupo, _ = CustomGroup.objects.get_or_create(name='Jefe de Mantenimiento de Equipo')
@@ -353,4 +380,6 @@ def asignar_grupo(sender, instance, created, **kwargs):
              
             # Agrega el grupo al trabajador
             instance.grupos.add(grupo)
+      
         
+        instance.save() 

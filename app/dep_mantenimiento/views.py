@@ -490,6 +490,7 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
             'form': form,
             'id': idSolicitud,
             'solicitud': solicitud,  # Incluir la solicitud en el contexto para acceso en la plantilla
+            'fecha': solicitud.fecha.strftime("%d/%m/%Y"),  # Formatear la fecha como dd/mm/aaaa
         }
         return render(request, 'dep_mantenimiento/layout/jDep/firma_form.html', context)
         
@@ -553,7 +554,8 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
             context = {
                 'solicitud': solicitud,
                 'id': idSolicitud,
-                'form':form
+                'form':form,
+                'fecha': solicitud.fecha.strftime("%d/%m/%Y"),  # Formatear la fecha como dd/mm/aaaa
             }
             return render(request, 'dep_mantenimiento/layout/jDep/formularioedit.html', context)
                  

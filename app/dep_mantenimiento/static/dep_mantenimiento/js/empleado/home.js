@@ -82,15 +82,19 @@ const listSolicitudes = async () => {
             const descripcionLimitada = limitarDescripcion(solicitudes.descripcion, 10);
             // Botón o icono dependiendo del estado de la firma del empleado
             let actionElement;
-            if (solicitudes.fimrado_empleado === true) {
+            if (solicitudes.fimrado_empleado === true && solicitudes.status==="Realizado") {
                 actionElement = `
-                <button class="btn btn-sm-2" style="background-color: #6a994e !important;">   
+                <button class="btn btn-sm-2" style="background-color: #6a994e !important;" onclick="showSolicitudFirmada(); event.stopPropagation();">   
                 <i class="fa fa-check-square" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
                 </button>`;
-            } else {
+            } else if (solicitudes.fimrado_empleado === true && solicitudes.status==="En_proceso" ||solicitudes.status==="Enviado" ){
                 actionElement = `<a class="btn btn-sm-2" style="background-color: #118ab2 !important;" href="/dep_mantenimiento/Firmar_Formulario/Empleado/Solicitud/${solicitudes.id}"role="button">   
                                     <i class="fa fa-pencil-square-o" style="color: #ffffff !important; font-size: 25px ;" aria-hidden="true"></i>
                                  </a>`;
+            }else{
+
+                actionElement = ``;
+
             }
             
             // Agregamos la información de pertenencia y departamento
@@ -183,6 +187,16 @@ const reloadFilDataTable = async () => {
     const filtro = document.getElementById('Filtro').value;
     filterTable(filtro);
 };
+
+
+function showSolicitudFirmada() {
+    Swal.fire({
+        icon: 'success',
+        title: 'La solicitud ya ha sido firmada.',
+        
+        confirmButtonText: 'Aceptar'
+    });
+}
 
 
 // Función para filtrar la tabla

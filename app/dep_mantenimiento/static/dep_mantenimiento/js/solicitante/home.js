@@ -93,26 +93,25 @@ const listSolicitudes = async () => {
             let botones;
             if (solicitudes.firma_Jefe_Departamento == false) {
                 botones = !hideButtons ? `
-                <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="/dep_mantenimiento/Formulario/Docente/Solicitud/${solicitudes.id}" role="button">
-                    <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
+                <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="/dep_mantenimiento/Formulario/Docente/Solicitud/${solicitudes.id}" role="button" onclick="event.stopPropagation()">
+                    <i class="fa fa-pencil-square" aria-hidden="true" style="color: #ffffff !important;"></i>
                 </a>
-                <a class="btn btn-sm-2" style="background-color: #d90429 !important;" href="/dep_mantenimiento/eliminar-solicitud/${solicitudes.id}" role="button">
-                <i class="fa fa-trash" aria-hidden="true" style=" color: #ffffff !important;" ></i>
+                <a class="btn btn-sm-2" style="background-color: #d90429 !important;" role="button"  onclick="showDeleteAlert(${solicitudes.id}); event.stopPropagation();">
+                    <i class="fa fa-trash" aria-hidden="true" style="color: #ffffff !important;"></i>
                 </a>
-            ` : `
-                <button  class="btn  btn-sm-2"  style="background-color: #6c757d !important;" onclick="showTimeLimitAlert()" >
-                    <i class="fa fa-lock" style=" color: #ffffff !important;" aria-hidden="true"></i>
+                ` : `
+                <button class="btn btn-sm-2" style="background-color: #6c757d !important;" onclick="showTimeLimitAlert(); event.stopPropagation();">
+                    <i class="fa fa-lock" style="color: #ffffff !important;" aria-hidden="true"></i>
                 </button>
-            `;
-                
-            }
-            else {
+                `;
+            } else {
                 botones = `
-                <button  class="btn  btn-sm-2"  style="background-color: #6c757d !important;" onclick="showTimeLimitAlert()" >
-                    <i class="fa fa-lock" style=" color: #ffffff !important;" aria-hidden="true"></i>
+                <button class="btn btn-sm-2" style="background-color: #6c757d !important;" onclick="showTimeLimitAlert(); event.stopPropagation();">
+                    <i class="fa fa-lock" style="color: #ffffff !important;" aria-hidden="true"></i>
                 </button>
-            `;
+                `;
             }
+
 
             
             if (solicitudes.ocultar==false) { // Verifica si la solicitud no está oculta
@@ -156,9 +155,10 @@ function showTimeLimitAlert() {
     });
 }
 
-function showDeleteAlert() {
+function showDeleteAlert(solicitudId) {
 // Mostrar un toast de confirmación
 Swal.fire({
+
     icon: 'warning',
     title: '¿Estás seguro de que quieres borrar esta Solicitud?',
     showCancelButton: true,
@@ -173,6 +173,7 @@ Swal.fire({
 
 
 }
+
 
 
 

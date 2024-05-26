@@ -95,7 +95,7 @@ const listSolicitudes = async () => {
             let actionElement;
             if ( solicitudes.firmado_jefe_departamento === false && nombreTrabajador ) {
                 actionElement = `
-                <a class="btn btn-sm-2" style="background-color: #9a8c98 !important;" href="/dep_mantenimiento/Firmar_Formulario/Jefe_Departamento/Solicitud/${solicitudes.id}" role="button">
+                <a class="btn btn-sm-2" style="background-color: #9a8c98 !important;" href="/dep_mantenimiento/Firmar_Formulario/Jefe_Departamento/Solicitud/${solicitudes.id}" role="button" onclick="event.stopPropagation()">
                 <i class="fa fa-pencil-square-o" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
                 </a>
                 `;
@@ -104,7 +104,7 @@ const listSolicitudes = async () => {
               }
               else if (solicitudes.firmado_jefe_departamento === true && nombreTrabajador ) {
                 actionElement = `
-                <button class="btn btn-sm-2" style="background-color: #6a994e !important;"   onclick="showSolicitudFirmada()">   
+                <button class="btn btn-sm-2" style="background-color: #6a994e !important;"   onclick="showSolicitudFirmada(); event.stopPropagation();">   
                 <i class="fa fa-check-square" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
                 </button>`;
               }
@@ -113,14 +113,15 @@ const listSolicitudes = async () => {
               
               else {
                 actionElement = !hideButtons ? `
-                    <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="/dep_mantenimiento/Formulario/Jefe_Departamento/Solicitud/${solicitudes.id}" role="button">
+                    <a class="btn btn-sm-2" style="background-color: #1a759f !important;" href="/dep_mantenimiento/Formulario/Jefe_Departamento/Solicitud/${solicitudes.id}" role="button" onclick="event.stopPropagation()"  >
                         <i class="fa fa-pencil-square" aria-hidden="true" style=" color: #ffffff !important;"></i>
                     </a>
-                    <a class="btn btn-sm-2" style="background-color: #d90429 !important;" href="/dep_mantenimiento/eliminar-solicitud/${solicitudes.id}" role="button">
+                    <a class="btn btn-sm-2" style="background-color: #d90429 !important;" role="button"  onclick="showDeleteAlert(${solicitudes.id}); event.stopPropagation();">
+
                     <i class="fa fa-trash" aria-hidden="true" style=" color: #ffffff !important;" ></i>
                     </a>
                 ` : `
-                    <button  class="btn  btn-sm-2"  style="background-color: #6c757d !important;" onclick="showTimeLimitAlert()" >
+                    <button  class="btn  btn-sm-2"  style="background-color: #6c757d !important;" onclick="showTimeLimitAlert(); event.stopPropagation();" >
                         <i class="fa fa-lock" style=" color: #ffffff !important;" aria-hidden="true"></i>
                     </button>
                 `;
@@ -137,8 +138,8 @@ const listSolicitudes = async () => {
               }
             else if (solicitudes.firmado_jefe_departamento === true && nombreTrabajador && solicitudes.firmaEmpleados === true && solicitudes.firmaVobo === true) {
                 BotonVobo = `
-                <button class="btn btn-sm-2" style="background-color: #6a994e !important;">   
-                <i class="fa fa-check-square" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
+                <button class="btn btn-sm-2" style="background-color: #6a994e !important;"  onclick="showSolicitudFirmada(); event.stopPropagation();">   
+                <i class="fa fa-check-square" style="color: #ffffff;  font-size: 25px ; text-align: center;"></i>
                 </button>`;
               }
             else if (solicitudes.firmado_jefe_departamento === true  && solicitudes.firmaEmpleados === true && solicitudes.firmaVobo === false) {
@@ -150,7 +151,7 @@ const listSolicitudes = async () => {
             }
             else if (solicitudes.firmado_jefe_departamento === true  && solicitudes.firmaEmpleados === true && solicitudes.firmaVobo === true) {
                 BotonVobo = `
-                <button class="btn btn-sm-2" style="background-color: #6a994e !important;">   
+                <button class="btn btn-sm-2" style="background-color: #6a994e !important;" onclick="showSolicitudFirmada(); event.stopPropagation();">   
                 <i class="fa fa-check-square" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
                 </button>`;
             }
@@ -220,9 +221,9 @@ function showTimeLimitAlert() {
 
 function showSolicitudFirmada() {
     Swal.fire({
-        icon: 'info',
-        title: '¡Alerta!',
-        text: 'La solicitud ya ha sido firmada.',
+        icon: 'success',
+        title: 'La solicitud ya ha sido firmada.',
+        
         confirmButtonText: 'Aceptar'
     });
 }
@@ -236,7 +237,24 @@ const reloadFilDataTable = async () => {
     const filtro = document.getElementById('Filtro').value;
     filterTable(filtro);
 };
-
+function showDeleteAlert(solicitudId) {
+    // Mostrar un toast de confirmación
+    Swal.fire({
+    
+        icon: 'warning',
+        title: '¿Estás seguro de que quieres borrar esta Solicitud?',
+        showCancelButton: true,
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        // Si el usuario hace clic en "Aceptar", redirige a la URL con el ID de la solicitud
+        if (result.isConfirmed) {
+            window.location.href = `/dep_mantenimiento/eliminar-solicitud/${solicitudId}`;
+        }
+    });
+    
+    
+    }
 
 
 // Función para filtrar la tabla

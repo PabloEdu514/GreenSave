@@ -69,12 +69,12 @@
                  <div class="mb-3">
                      <div class="d-flex align-items-center justify-content-between">
                          <div class="d-flex align-items-center">
-                             <label for="G_fecha" class="form-label me-3">Fecha</label>
-                             {{ solicitud.fecha }}
+                             <label for="id_fecha" class="form-label ms-3">Fecha:</label>
+                             <label for="id_fecha" class="form-label ms-3">  {{ fecha }}</label>
                          </div>
                          <div class="d-flex align-items-center  ">
-                             <label for="G_folio" class="solicitud-label me-3">Folio:</label>
-                             {{ solicitud.folio }}
+                             <label for="id_folio" class="form-label ms-3">Folio:</label>
+                             <label for="id_fecha" class="form-label ms-3"> {{ solicitud.folio }}</label>
                          </div>
                      </div>
                  </div>
@@ -99,15 +99,15 @@
                   <!-- Mostrar la imagen actual si existe -->
                  {% if solicitud.firma_Jefe_Departamento_img %}
                  <div class="container-fluid" id="CampoFirma">
-                    
-                     <img src="{{ solicitud.firma_Jefe_Departamento_img.url }}" alt="Firma Actual" width="400"style="border: 2px solid black; border-radius:5px">
+                    <p class="nombre-firma">Solicita</p>
+                    <img src="{{ solicitud.firma_Jefe_Departamento_img.url }}" alt="Firma Actual" width="400"style="border: 2px solid black; border-radius:5px; background-color:#ffffff;">
                      <p class="nombre-firma">{{ solicitud.responsable_Area }}</p>
                  </div>
                  {% endif %}
  
  
  
- 
+                    <br>
  
  
                  <div class="row justify-content-center">

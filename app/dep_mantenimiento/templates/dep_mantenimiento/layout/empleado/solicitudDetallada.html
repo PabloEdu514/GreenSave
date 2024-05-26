@@ -176,12 +176,7 @@
                <hr class="custom-line">
 
 
-               
-               <label class="form-label lg-3">Material que debes utilizar: </label>
-               <br>
-                <label class="form-label md-4">{{ solicitud.material_asignado }}</label>
-
-
+              
 
 
 
@@ -194,7 +189,7 @@
                      <label class="form-label lg-3">El motivo del rechazo: </label>
                      <br>
                      <label class="form-label md-4">{{ solicitud.motv_rechazo }}</label>
-                     {% elif solicitud.material_asignado %}
+                {% elif solicitud.material_asignado %}
                      <label class="form-label lg-3">Material que debes utilizar: </label>
                      <br>
                       <label class="form-label md-4">{{ solicitud.material_asignado }}</label>

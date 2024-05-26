@@ -154,17 +154,7 @@
                </div>
                <hr class="custom-line">
 
-               {% if solicitud.Mat_Rechazo %}
-               <label class="form-label lg-3">El motivo del rechazo: </label>
-               <br>
-               <label class="form-label md-4">{{ solicitud.Mat_Rechazo }}</label>
-               <br>
-                {% elif solicitud.motv_rechazo %}
-                    <label class="form-label lg-3">El motivo del rechazo: </label>
-                    <br>
-                    <label class="form-label md-4">{{ solicitud.motv_rechazo }}</label>
-                    
-                {% endif %}
+               
 
 
 
@@ -184,7 +174,17 @@
 
 
                <hr class="custom-line">
-
+               {% if solicitud.Mat_Rechazo %}
+               <label class="form-label lg-3">El motivo del rechazo: </label>
+               <br>
+               <label class="form-label md-4">{{ solicitud.Mat_Rechazo }}</label>
+               <br>
+                {% elif solicitud.motv_rechazo %}
+                    <label class="form-label lg-3">El motivo del rechazo: </label>
+                    <br>
+                    <label class="form-label md-4">{{ solicitud.motv_rechazo }}</label>
+                    
+                {% endif %}
 
                <div class="col-lg-8 offset-lg-4">
                    <div class="d-block   justify-content-center align-items-center " id="historial-container">

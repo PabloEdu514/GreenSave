@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.conf.urls import handler404,handler403
-from .views import Empleado_required, JefeDep_required, JefeMan_required, Solicitante_required, Sub_required, generar_pdf, vistas_solicitantes_cargar_inicio,vistas_Jefe_Departamento_cargar_inicio,vistas_Empleados,vistas_Subdirectora,vistas_Jefe_Mantenimiento
+from .views import Empleado_required, JefeDep_required, JefeMan_required, Solicitante_required, Sub_required, generar_pdf, vistas_solicitantes,vistas_Jefe_Departamento,vistas_Empleados,vistas_Subdirectora,vistas_Jefe_Mantenimiento
 
 urlpatterns = [
     path('logout/', views.cerrar_sesion, name='cerrar_sesion'),
@@ -9,24 +9,24 @@ urlpatterns = [
     path('Ingresar', views.inicio, name='inicio'),
 
     # Enlaces del Docente
-    path('CargarSolicitudes/<int:id_Docente>/', Solicitante_required(views.vistas_solicitantes_cargar_inicio.obtener_solicitudes), name='obtener_solicitudes'),
-    path('Inicio/Docente/<int:id>/', Solicitante_required(views.vistas_solicitantes_cargar_inicio.cargar_Inicio), name='inicio_docente'),
-    path('Docente/Ver_Solicitud/<int:solicitud_id>/',Solicitante_required(views.vistas_solicitantes_cargar_inicio.cargar_Solicitud), name='solicitud_detallada'),
+    path('CargarSolicitudes/<int:id_Docente>/', Solicitante_required(views.vistas_solicitantes.obtener_solicitudes), name='obtener_solicitudes'),
+    path('Inicio/Docente/<int:id>/', Solicitante_required(views.vistas_solicitantes.cargar_Inicio), name='inicio_docente'),
+    path('Docente/Ver_Solicitud/<int:solicitud_id>/',Solicitante_required(views.vistas_solicitantes.cargar_Solicitud), name='solicitud_detallada'),
     
     # Enlaces del para guardar el formulario
-    path('Formulario/Docente/<int:id_Docente>/', Solicitante_required(views.vistas_solicitantes_cargar_inicio.cargar_Formulario), name='formulario_docente'),
-    path('guardar/<int:id_Docente>/', Solicitante_required(views.vistas_solicitantes_cargar_inicio.guardar_datos_Docente), name='guardar_formulario_Docente'),
+    path('Formulario/Docente/<int:id_Docente>/', Solicitante_required(views.vistas_solicitantes.cargar_Formulario), name='formulario_docente'),
+    path('guardar/<int:id_Docente>/', Solicitante_required(views.vistas_solicitantes.guardar_datos_Docente), name='guardar_formulario_Docente'),
     #Enlaces del para Editar el formulario
-    path('Formulario/Docente/Solicitud/<int:idSolicitud>/', Solicitante_required(views.vistas_solicitantes_cargar_inicio.cargar_Formulario_Editar), name='formulario_editar'),
+    path('Formulario/Docente/Solicitud/<int:idSolicitud>/', Solicitante_required(views.vistas_solicitantes.cargar_Formulario_Editar), name='formulario_editar'),
    
     # Enlaces del jefe de Departamento
-    path('CargarSolicitudesJdep/<int:id_Jefe>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.obtener_solicitudes), name='obtener_solicitudes_jefe_departamento'),
-    path('Inicio/Jefe_Departamento/<int:id>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.cargar_Inicio), name='inicio_jefe_departamento'),
-    path('Formulario/Jefe_Departamento/<int:id_JefeDepartamento>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.cargar_Formulario), name='formulario_jefe_departamento'),
-    path('Formulario/Jefe_Departamento/Solicitud/<int:idSolicitud>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.editar_Formulario), name='editar_Formulario'),
-    path('Firmar_Formulario/Jefe_Departamento/Solicitud/<int:idSolicitud>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.firmarFormulario), name='firmar_Formulario'),
-    path('Firmar_Formulario_VoBo/Jefe_Departamento/Solicitud/<int:idSolicitud>/',JefeDep_required( views.vistas_Jefe_Departamento_cargar_inicio.firmarFormularioVoBo), name='firmar_Formulario_VoBo'),
-    path('Jefe_Departamento/Ver_Solicitud/<int:solicitud_id>/',JefeDep_required(views.vistas_Jefe_Departamento_cargar_inicio.cargar_Solicitud), name='solicitud_Detallada'),
+    path('CargarSolicitudesJdep/<int:id_Jefe>/',JefeDep_required( views.vistas_Jefe_Departamento.obtener_solicitudes), name='obtener_solicitudes_jefe_departamento'),
+    path('Inicio/Jefe_Departamento/<int:id>/',JefeDep_required( views.vistas_Jefe_Departamento.cargar_Inicio), name='inicio_jefe_departamento'),
+    path('Formulario/Jefe_Departamento/<int:id_JefeDepartamento>/',JefeDep_required( views.vistas_Jefe_Departamento.cargar_Formulario), name='formulario_jefe_departamento'),
+    path('Formulario/Jefe_Departamento/Solicitud/<int:idSolicitud>/',JefeDep_required( views.vistas_Jefe_Departamento.editar_Formulario), name='editar_Formulario'),
+    path('Firmar_Formulario/Jefe_Departamento/Solicitud/<int:idSolicitud>/',JefeDep_required( views.vistas_Jefe_Departamento.firmarFormulario), name='firmar_Formulario'),
+    path('Firmar_Formulario_VoBo/Jefe_Departamento/Solicitud/<int:idSolicitud>/',JefeDep_required( views.vistas_Jefe_Departamento.firmarFormularioVoBo), name='firmar_Formulario_VoBo'),
+    path('Jefe_Departamento/Ver_Solicitud/<int:solicitud_id>/',JefeDep_required(views.vistas_Jefe_Departamento.cargar_Solicitud), name='solicitud_Detallada'),
 
     # Enlaces del Empleados
     path('CargarSolicitudesEmpleados/<int:idEmpleado>/', Empleado_required(views.vistas_Empleados.obtener_solicitudes), name='obtener_solicitudes_empleados'),

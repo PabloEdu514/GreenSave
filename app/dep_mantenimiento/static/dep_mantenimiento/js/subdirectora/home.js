@@ -191,7 +191,7 @@ const listSolicitudes = async () => {
             }
 
             let BotonVobo;
-            if ( solicitudes.firmado_jefe_departamento === true  && solicitudes.firmaEmpleados === true && solicitudes.firmaVobo === false) {
+            if ( solicitudes.firmado_jefe_departamento === true  && solicitudes.firmaEmpleados === true && solicitudes.firmaVobo === false && solicitudes.status==="Solicitud_Firmada") {
                 BotonVobo = `
                 <a class="btn btn-sm-2" style="background-color: #9a8c98 !important;" href="/dep_mantenimiento/Firmar_Formulario_VoBo/Subdirectora/Solicitud/${solicitudes.id}" role="button">
                 <i class="fa fa-pencil-square-o" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>

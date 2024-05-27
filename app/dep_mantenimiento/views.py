@@ -112,7 +112,7 @@ def Solicitante_required(view_func):
     return wrapper
 
 #Vistas para el Docente
-class vistas_solicitantes_cargar_inicio(View):
+class vistas_solicitantes(View):
     @staticmethod
     def cargar_Inicio(request, id):
         # Lógica para determinar el tipo de usuario
@@ -253,7 +253,7 @@ class vistas_solicitantes_cargar_inicio(View):
 
                 # Guarda los datos en la base de datos
                 datos_nuevos.save()
-
+                messages.success(request, 'La solicitud ha sido enviada.')
                 # Redirige a la URL de la vista de inicio del docente
                 return redirect('inicio_docente', id=id_Docente)
         else:
@@ -279,7 +279,10 @@ class vistas_solicitantes_cargar_inicio(View):
             solicitud.descripcion = request.POST.get('descripcion')
             solicitud.tipo_servicio = request.POST.get('tipo_servicio')
             solicitud.save()
-            return redirect('inicio')
+            messages.success(request, 'La solicitud ha sido editado correctamente.')
+            # Redirige a la URL de la vista de inicio del docente
+
+            return redirect('inicio_docente', id=solicitud.id_Trabajador.id)
         else:
             form= Solcitud_confirmacion(initial={
                 'area_solicitante': solicitud.area_solicitante,
@@ -329,7 +332,7 @@ def eliminar_solicitud(request, solicitud_id):
      
         # Guardar en la bitácora
         bitacora(request.user, 'Solicitud_Mantenimiento', 'delete', f'Solicitud eliminada: {solicitud_id}',Departamento='dep_mantenimiento')
-
+        messages.success(request, 'La solicitud ha sido eliminado correctamente.')
         # Reiniciar la secuencia de las solicitudes
         # DELETE FROM solicitud_mantenimiento WHERE id = solicitud_id;
         # SELECT setval('solicitud_mantenimiento_id_seq', (SELECT MAX(id) FROM solicitud_mantenimiento));
@@ -361,7 +364,7 @@ def JefeDep_required(view_func):
     
  
 #vistas Jefe Departamento
-class vistas_Jefe_Departamento_cargar_inicio(View):
+class vistas_Jefe_Departamento(View):
     @staticmethod
     def cargar_Inicio(request, id):
         # Lógica para determinar el tipo de usuario
@@ -419,6 +422,7 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
                 )
                
                 datos_nuevos.save()
+                messages.success(request, 'La solicitud ha enviada correctamente.')
                  
                 return redirect('inicio_jefe_departamento', id=id_JefeDepartamento)
         else:
@@ -472,6 +476,7 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
                 solicitud.firma_Jefe_Departamento=True
                 solicitud.id_Jefe_Mantenimiento=jefe_departamento_instance
                 solicitud.save() # Guardar los cambios en la solicitud existente
+                messages.success(request, 'La solicitud ha sido firmada correctamente.')
                 bitacora(request.user, 'Solicitud_Mantenimiento', 'Post', f'Solicitud: {idSolicitud}', Departamento='dep_mantenimiento')
                 return redirect('inicio')
         else:
@@ -511,6 +516,7 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
                 solicitud.firma_Jefe_VoBo = True
                 solicitud.status = 'Realizado'
                 solicitud.save()
+                messages.success(request, 'La solicitud ha sido firmada y enviada correctamente.')
                 bitacora(request.user, 'Solicitud_Mantenimiento', 'Post', f'Solicitud: {idSolicitud}', Departamento='dep_mantenimiento')
                 return redirect('inicio')
         else:
@@ -540,7 +546,9 @@ class vistas_Jefe_Departamento_cargar_inicio(View):
             solicitud.descripcion = request.POST.get('descripcion')
             solicitud.tipo_servicio = request.POST.get('tipo_servicio')
             solicitud.save()
+            messages.success(request, 'La solicitud ha sido editado correctamente.')
             return redirect('inicio')
+            
         else:
             form= Solcitud_confirmacion(initial={
                 'area_solicitante': solicitud.area_solicitante,
@@ -694,7 +702,7 @@ class vistas_Empleados(View):
                 solicitud.status = 'Solicitud_Firmada'
                 solicitud.firma_Empleado = True
                 solicitud.save()
-                
+                messages.success(request, 'La solicitud ha sido firmada y enviada correctamente.')
                 return redirect('inicio')
             
             
@@ -865,6 +873,7 @@ class vistas_Subdirectora(View):
                 )
                 
                 datos_nuevos.save()
+                messages.success(request, 'La solicitud ha enviada correctamente.')
                 return redirect('inicio_subdirector_servicios', id=idSubdirectora)
         else:
             # La solicitud no es un POST, renderiza el formulario vacío
@@ -899,6 +908,7 @@ class vistas_Subdirectora(View):
             solicitud.descripcion = request.POST.get('descripcion')
             solicitud.tipo_servicio = request.POST.get('tipo_servicio')
             solicitud.save()
+            messages.success(request, 'La solicitud ha editada correctamente.')
             return redirect('inicio')
         else:
             form= Solcitud_confirmacion(initial={
@@ -933,11 +943,13 @@ class vistas_Subdirectora(View):
                     solicitud.Mat_Rechazo = request.POST.get('Mat_Rechazo')
                     solicitud.status = 'Rechazado'
                     solicitud.resolvio = False
+                    messages.warning(request, 'La solicitud se la petición se ha rechazado y enviado correctamente.')
                 # Si hay una descripción de resuelto, cambiar el estatus a Enviado
             elif request.POST.get('Mat_Resuelto'):
                     solicitud.Mat_Resuelto = request.POST.get('Mat_Resuelto')
                     solicitud.status = 'Enviado'
                     solicitud.resolvio = True
+                    messages.warning(request, 'La solicitud de la petición se ha resuelto y enviado correctamente.')
               
               
             solicitud.save()
@@ -976,7 +988,9 @@ class vistas_Subdirectora(View):
                 solicitud.firma_Jefe_VoBo_img=id_firma_jefe_departamentoVoBoimg
                 solicitud.firma_Jefe_VoBo=True
                 solicitud.status = 'Realizado'
+                
                 solicitud.save() # Guardar los cambios en la solicitud existente
+                messages.success(request, 'La solicitud se ha firmado correctamente.')
                 bitacora(request.user, 'Solicitud_Mantenimiento', 'Post', f'Solicitud: {idSolicitud}', Departamento='dep_mantenimiento')
                 return redirect('inicio')
         else:
@@ -1181,6 +1195,7 @@ class vistas_Jefe_Mantenimiento(View):
                 
                 
                 solicitud.save()
+                messages.success(request, 'La asignacion del empleado exitosa.')
                 bitacora(request.user, 'Solicitud_Mantenimiento', 'add', f'solicitudId: {solicitud_id}', Departamento='dep_mantenimiento')
                 return redirect('inicio')
             else:
@@ -1226,6 +1241,7 @@ class vistas_Jefe_Mantenimiento(View):
                 solicitud.motv_rechazo = motv_rechazo
                 solicitud.status = 'Rechazado'
                 solicitud.save()
+                messages.warning(request, 'La solicitud ha sido rechazada.')  # Definir el mensaje de alerta
                 bitacora(request.user, 'Solicitud_Mantenimiento', 'Post', f'Folio: {solicitud.folio}', Departamento='dep_mantenimiento')
                 return redirect('inicio')
         else:
@@ -1252,6 +1268,7 @@ class vistas_Jefe_Mantenimiento(View):
                 solicitud.id_Subdirectora = sub
                 solicitud.save()
                 bitacora(request.user, 'Solicitud_Mantenimiento', 'Post', f'Folio: {solicitud.folio}', Departamento='dep_mantenimiento')
+                messages.warning(request, 'La petición ha sido enviada.')  # Definir el mensaje de alerta
                 return redirect('inicio')
         else:
             form = Peticionform()

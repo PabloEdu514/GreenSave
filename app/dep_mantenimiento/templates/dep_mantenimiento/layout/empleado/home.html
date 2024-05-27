@@ -153,6 +153,22 @@
          <script src="{% static "dep_mantenimiento/js/empleado/home.js" %}" ></script>
          <!-- Alertas-->
          <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+         {% if messages %}
+         {% for message in messages %}
+            <script>
+               Swal.fire({
+                     icon: '{{ message.tags }}',
+                     title: '{{ message }}',
+               
+                     toast: true,
+                     position: 'top-end',
+                     showConfirmButton: false,
+                     timer: 3000,
+                     timerProgressBar: true
+               });
+            </script>
+         {% endfor %}
+         {% endif %}
       </body>
    </html>
     

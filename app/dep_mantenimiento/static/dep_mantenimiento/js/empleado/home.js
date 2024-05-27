@@ -82,12 +82,12 @@ const listSolicitudes = async () => {
             const descripcionLimitada = limitarDescripcion(solicitudes.descripcion, 10);
             // Botón o icono dependiendo del estado de la firma del empleado
             let actionElement;
-            if (solicitudes.fimrado_empleado === true && solicitudes.status==="Realizado") {
+            if (solicitudes.fimrado_empleado === true && solicitudes.status==="Solicitud_Firmada" || solicitudes.status==="Realizado") {
                 actionElement = `
                 <button class="btn btn-sm-2" style="background-color: #6a994e !important;" onclick="showSolicitudFirmada(); event.stopPropagation();">   
                 <i class="fa fa-check-square" style="color: #ffffff;  font-size: 25px ; text-align: center "></i>
                 </button>`;
-            } else if (solicitudes.fimrado_empleado === true && solicitudes.status==="En_proceso" ||solicitudes.status==="Enviado" ){
+            } else if (solicitudes.fimrado_empleado === false && solicitudes.status==="En_proceso" || solicitudes.status==="Enviado") {
                 actionElement = `<a class="btn btn-sm-2" style="background-color: #118ab2 !important;" href="/dep_mantenimiento/Firmar_Formulario/Empleado/Solicitud/${solicitudes.id}"role="button">   
                                     <i class="fa fa-pencil-square-o" style="color: #ffffff !important; font-size: 25px ;" aria-hidden="true"></i>
                                  </a>`;

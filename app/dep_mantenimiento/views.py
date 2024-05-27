@@ -13,7 +13,7 @@ from django.db.models import Q
 from django.utils import timezone
 from django.db import transaction
 
-
+from django.db.models import Count
 
 
 from django.http import HttpResponse
@@ -1031,10 +1031,35 @@ class vistas_Subdirectora(View):
 
 
 
+    @staticmethod
+    def cargarHistorico(request):
+        # Obtener todas las solicitudes realizadas
+        solicitudes_realizadas = Solicitud_Mantenimiento.objects.filter(status='Realizado')
+        
+        # Contar las solicitudes realizadas por cada empleado
+        empleados_conteo = solicitudes_realizadas.values('id_Empleado').annotate(total=Count('id')).order_by('-total')
+        
+        # Obtener la información de los empleados
+        empleados = trabajadores.objects.filter(id__in=[e['id_Empleado'] for e in empleados_conteo])
+        
+        # Crear un diccionario para acceder rápidamente a la información de los empleados
+        empleados_dict = {empleado.id: empleado for empleado in empleados}
+        
+        # Crear una lista con la información combinada de empleados y el conteo de solicitudes
+        empleados_info = []
+        for e in empleados_conteo:
+            empleado = empleados_dict[e['id_Empleado']]
+            empleados_info.append({
+                'id': empleado.id,
+                'nombre': empleado.nombre_completo(),
+                'total_solicitudes': e['total'],
+                'foto_perfil': empleado.foto_Perfil if empleado.foto_Perfil else None,
+            })
 
-
-
-
+        context = {
+            'empleados_info': empleados_info,
+        }
+        return render(request, 'dep_mantenimiento/layout/subdirectora/historico.html', context)
 
        
     @staticmethod

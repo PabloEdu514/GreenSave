@@ -1,0 +1,133 @@
+{% extends "dep_mantenimiento/layout/layout.html" %}
+{% load static %}
+{% block title %}<title>SARH | I.T. Morelia</title>{% endblock %}
+{% block navpath %}
+   <li class="breadcrumb-item"><a href="{% url 'home' %}">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid-3x3-gap-fill" viewBox="0 0 16 16">
+         <path d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V7zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z"/>
+      </svg>
+   </a></li>  
+   <li class="breadcrumb-item"><a href="{% url 'cargarHistorico' %}">
+
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+         <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+         <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+      </svg>
+   </a></li>
+   <li class="breadcrumb-item"> Navegación </li>
+   <li class="breadcrumb-item"> directorio </li>
+
+{% endblock %}
+{% block content %} 
+<span class="align-middle">
+
+
+    <html>
+    <head>
+       
+        <link rel="stylesheet" href="{% static "dep_mantenimiento/css/pages/subdirectora/historico.css" %}">
+        <!--Iconos-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-VF43PqFHZBCZh4ysadDxE2NVWvwuCFVcRY+2Yv29O2hXPIghXJfVQfRYHA3wEY0tDpgmSRThyM9jT+GjRQtrNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <!--bootstrap5 v5.2.3-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    </head>
+   
+     <body>
+
+
+        
+        
+        <div class="container-fluid" id="ContenedorBotones">
+            <div class="row">
+                <div class="col-auto me-auto">
+                    <a href="{% url 'inicio' %}" class="top-button"  id="Binicio">
+                        <i class="fas fa-arrow-left" ></i></a>
+                </div>
+              </div>
+        </div>
+
+        
+       
+<!-- Team -->
+<section id="team" class="pb-5">
+    <div class="container">
+
+        
+
+        <h5 class="section-title h1">Historico de Empelados</h5>
+        <div class="row">
+            <!-- For para crear a todos los empleados -->
+            {% for empleado in empleados_info %}
+            <!-- Empleado -->
+
+           <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                <div class="mainflip">
+                    <div class="frontside">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <p>
+                                    <img class="img-fluid" src="{% if empleado.foto_perfil %}{{ empleado.foto_perfil.url }}{% else %}https://cdn.pixabay.com/photo/2022/02/09/20/31/worker-7004157_1280.png{% endif %}" alt="foto_Perfil">
+
+                                </p>
+                                <h4 class="card-title">{{ empleado.nombre }}</h4>
+                                {% if forloop.first %}
+                                    <p class="card-text">Empleado Destacado</p>
+                                {% endif %}
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <div class="backside">
+                        <div class="card">
+                            <div class="card-body text-center mt-4">
+                                <h4 class="card-title">Información</h4>
+                                <h2 class="card-text ">Solicitudes Realizadas: {{ empleado.total_solicitudes }}</h2>
+                                <h2 class="card-text">
+                                    Desempeño: 
+                                    {% if empleado.total_solicitudes < 10 %}
+                                    Bajo
+                                    {% elif empleado.total_solicitudes < 15 %}
+                                    Medio
+                                    {% else %}
+                                    Alto
+                                    {% endif %}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ./Team member -->
+        {% endfor %}
+
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+        <!--bootstrap5 v5.2.3-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+        <!--jquery-->
+        <script src="https://code.jquery.com/jquery-3.7.1.js" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js" ></script>
+        <!--Mi js-->
+        <script src="{% static "dep_mantenimiento/js/subdirectora/historico.js" %}" ></script>
+    </body>
+
+    
+ </span>
+ 
+
+{% endblock %}
+
+
+
+      

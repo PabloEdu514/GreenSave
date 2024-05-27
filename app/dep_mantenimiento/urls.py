@@ -41,6 +41,7 @@ urlpatterns = [
     path('Formulario_Peticion/Subdirectora/Solicitud/<int:idSolicitud>/',Sub_required( views.vistas_Subdirectora.peticion_formulario), name='peticion_formulario'),
     path('Firmar_Formulario_VoBo/Subdirectora/Solicitud/<int:idSolicitud>/',Sub_required( views.vistas_Subdirectora.firmarFormularioVoBo), name='firmarFormulario_VoBo'),
     path('Subdirectora/Ver_Solicitud/<int:solicitud_id>/',Sub_required(views.vistas_Subdirectora.cargar_Solicitud), name='solicitudDET'),
+    path('Subdirectora/Historico_Empleados/',Sub_required(views.vistas_Subdirectora.cargarHistorico), name='cargarHistorico'),
 
    # Enlaces del Jefe de Mantenimiento
     path('CargarSolicitudesJefeMantenimiento/<int:idJefeMantenimiento>/', JefeMan_required(views.vistas_Jefe_Mantenimiento.obtener_solicitudes), name='obtener_solicitudes_jefe_mantenimiento'),

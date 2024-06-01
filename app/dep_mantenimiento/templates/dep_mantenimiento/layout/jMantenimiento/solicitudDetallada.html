@@ -246,8 +246,32 @@
                 <br>
 
 
-
-
+                 <!-- Campo de carga de archivos para múltiples imágenes -->
+                 {% if evidencias %}
+                 <div class="mb-3" id="campoEvidencias">
+                    <label class="col-form-label col-form-label-lg">Evidencias Del Trabajo Realizado</label>
+                    <!-- Carousel de imágenes -->
+                    <div id="carouselEvidencias" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for evidencia in evidencias %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ evidencia.evidenciasIMG.url }}" class="d-block mx-auto custom-image-size" alt="Evidencia">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev"  type="button" data-bs-target="#carouselEvidencias" data-bs-slide="prev">
+                            <i class="fa fa-arrow-circle-left" style="color: #1B396B;   font-size: 50px; " aria-hidden="true"></i>
+                            <span class="visually-hidden"  >Previous</span>
+                        </button>
+                        <button class="carousel-control-next"  type="button" data-bs-target="#carouselEvidencias" data-bs-slide="next">
+                            <i class="fa fa-arrow-circle-right" style="color: #1B396B;  font-size: 50px; " aria-hidden="true"></i>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                
+                </div>
+                {% endif %}   
+                <br>
 
 
                <div class="col-lg-8 offset-lg-4">

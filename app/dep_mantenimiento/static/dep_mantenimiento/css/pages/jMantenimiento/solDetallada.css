@@ -203,3 +203,11 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra añadida */
 }
 
+
+#campoEvidencias{
+    display: block;
+    background-color: #F6F6F6;
+    border-radius: 5px;
+   
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra añadida */
+}

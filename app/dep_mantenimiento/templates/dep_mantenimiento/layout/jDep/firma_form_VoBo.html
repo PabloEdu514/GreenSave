@@ -113,6 +113,7 @@
                             <br>
                           
                              <!-- Campo de carga de archivos para múltiples imágenes -->
+                             {% if evidencias %}
                              <div class="mb-3" id="campoEvidencias">
                                 <label class="col-form-label col-form-label-lg">Evidencias Del Trabajo Realizado</label>
                                 <!-- Carousel de imágenes -->
@@ -133,8 +134,9 @@
                                         <span class="visually-hidden">Next</span>
                                     </button>
                                 </div>
-                                
+                            
                             </div>
+                            {% endif %}   
                         </div>
                         </div>
 

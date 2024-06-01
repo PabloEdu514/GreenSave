@@ -186,6 +186,40 @@
                     
                 {% endif %}
 
+
+
+               
+                        <br>
+                                
+                        <!-- Campo de carga de archivos para múltiples imágenes -->
+                        {% if evidencias %}
+                        <div class="mb-3" id="campoEvidencias">
+                        <label class="col-form-label col-form-label-lg">Evidencias Del Trabajo Realizado</label>
+                        <!-- Carousel de imágenes -->
+                        <div id="carouselEvidencias" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                {% for evidencia in evidencias %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <img src="{{ evidencia.evidenciasIMG.url }}" class="d-block mx-auto custom-image-size" alt="Evidencia">
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <button class="carousel-control-prev"  type="button" data-bs-target="#carouselEvidencias" data-bs-slide="prev">
+                                <i class="fa fa-arrow-circle-left" style="color: #1B396B;   font-size: 50px; " aria-hidden="true"></i>
+                                <span class="visually-hidden"  >Previous</span>
+                            </button>
+                            <button class="carousel-control-next"  type="button" data-bs-target="#carouselEvidencias" data-bs-slide="next">
+                                <i class="fa fa-arrow-circle-right" style="color: #1B396B;  font-size: 50px; " aria-hidden="true"></i>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    
+                    </div>
+                    {% endif %}   
+
+
+
+
                <div class="col-lg-8 offset-lg-4">
                    <div class="d-block   justify-content-center align-items-center " id="historial-container">
                        <!-- Aquí se mostrará el historial de solicitudes -->
@@ -247,9 +281,9 @@
          
          
          
-         <!--bootstrap5 v5.2.3-->
-         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-         <!--jquery-->
+          <!--bootstrap5 v5.2.3-->
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+          <!--jquery-->
          <script src="https://code.jquery.com/jquery-3.7.1.js" ></script>
          <!--DataTable.js-->
          <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>

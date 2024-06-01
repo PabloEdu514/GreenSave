@@ -303,7 +303,7 @@ class vistas_solicitantes(View):
     def cargar_Solicitud(request, solicitud_id):
         solicitud = Solicitud_Mantenimiento.objects.get(id=solicitud_id)
         historial = HistorialSolicitud.objects.filter(solicitud=solicitud_id).order_by('-fecha', '-hora').first()
-        
+        evidencias = imagenesEvidencias.objects.filter(solicitud=solicitud_id)
         fecha_histo = historial.fecha.strftime("%d-%m-%Y") if historial else None
         hora_histo = historial.hora.strftime("%H:%M") if historial else None
 
@@ -314,6 +314,7 @@ class vistas_solicitantes(View):
             'hora': solicitud.hora.strftime("%H:%M"),
             'fecha_histo': fecha_histo,
             'hora_histo': hora_histo,
+            'evidencias': evidencias
         }
         
         return render(request, 'dep_mantenimiento/layout/solicitante/solicitudDetallada.html', context)
@@ -626,7 +627,7 @@ class vistas_Jefe_Departamento(View):
     def cargar_Solicitud(request, solicitud_id):
         solicitud = Solicitud_Mantenimiento.objects.get(id=solicitud_id)
         historial = HistorialSolicitud.objects.filter(solicitud=solicitud_id).order_by('-fecha', '-hora').first()
-        
+        evidencias = imagenesEvidencias.objects.filter(solicitud=solicitud_id)
         fecha_histo = historial.fecha.strftime("%d-%m-%Y") if historial else None
         hora_histo = historial.hora.strftime("%H:%M") if historial else None
 
@@ -637,6 +638,7 @@ class vistas_Jefe_Departamento(View):
             'hora': solicitud.hora.strftime("%H:%M"),
             'fecha_histo': fecha_histo,
             'hora_histo': hora_histo,
+            'evidencias': evidencias
         }
         
         return render(request, 'dep_mantenimiento/layout/jDep/solicitudDetallada.html', context)    
@@ -724,7 +726,7 @@ class vistas_Empleados(View):
     def cargar_Solicitud(request, solicitud_id):
         solicitud = Solicitud_Mantenimiento.objects.get(id=solicitud_id)
         historial = HistorialSolicitud.objects.filter(solicitud=solicitud_id).order_by('-fecha', '-hora').first()
-        
+        evidencias = imagenesEvidencias.objects.filter(solicitud=solicitud_id)
         fecha_histo = historial.fecha.strftime("%d-%m-%Y") if historial else None
         hora_histo = historial.hora.strftime("%H:%M") if historial else None
 
@@ -735,6 +737,7 @@ class vistas_Empleados(View):
             'hora': solicitud.hora.strftime("%H:%M"),
             'fecha_histo': fecha_histo,
             'hora_histo': hora_histo,
+            'evidencias': evidencias
         }
         
         return render(request, 'dep_mantenimiento/layout/empleado/solicitudDetallada.html', context)         
@@ -1013,7 +1016,7 @@ class vistas_Subdirectora(View):
     def cargar_Solicitud(request, solicitud_id):
         solicitud = Solicitud_Mantenimiento.objects.get(id=solicitud_id)
         historial = HistorialSolicitud.objects.filter(solicitud=solicitud_id).order_by('-fecha', '-hora').first()
-        
+        evidencias = imagenesEvidencias.objects.filter(solicitud=solicitud_id)
         fecha_histo = historial.fecha.strftime("%d-%m-%Y") if historial else None
         hora_histo = historial.hora.strftime("%H:%M") if historial else None
 
@@ -1024,6 +1027,7 @@ class vistas_Subdirectora(View):
             'hora': solicitud.hora.strftime("%H:%M"),
             'fecha_histo': fecha_histo,
             'hora_histo': hora_histo,
+            'evidencias': evidencias
         }
         
         return render(request, 'dep_mantenimiento/layout/subdirectora/solicitudDetallada.html', context)
@@ -1201,7 +1205,7 @@ class vistas_Jefe_Mantenimiento(View):
     def cargar_Solicitud(request, solicitud_id):
         solicitud = Solicitud_Mantenimiento.objects.get(id=solicitud_id)
         historial = HistorialSolicitud.objects.filter(solicitud=solicitud_id).order_by('-fecha', '-hora').first()
-        
+        evidencias = imagenesEvidencias.objects.filter(solicitud=solicitud_id) 
         fecha_histo = historial.fecha.strftime("%d-%m-%Y") if historial else None
         hora_histo = historial.hora.strftime("%H:%M") if historial else None
 
@@ -1246,7 +1250,8 @@ class vistas_Jefe_Mantenimiento(View):
                 'hora': solicitud.hora.strftime("%H:%M"),
                 'fecha_histo': fecha_histo,
                 'hora_histo': hora_histo,
-                'form': form
+                'form': form,
+                'evidencias': evidencias
             }
         
         return render(request, 'dep_mantenimiento/layout/jMantenimiento/solicitudDetallada.html', context)
